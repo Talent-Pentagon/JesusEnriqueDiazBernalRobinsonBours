@@ -1,0 +1,13 @@
+int main() {
+    int a = 10;
+    int b = a * 15;
+    if (b > 10) {
+        printf("b es mayor que 10\n");
+    } else {
+        printf("b no es mayor\n");
+    }
+    class
+    delete
+}
+if
+class
