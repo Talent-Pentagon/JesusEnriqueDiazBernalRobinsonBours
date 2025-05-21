@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #define MAX_TOKEN 500
 
@@ -45,14 +44,19 @@ struct Node *symbol_table = NULL;
 // Funcion para verificar si un identificador ya existe en la tabla de simbolos
 int exists_in_symbol_table(const char *id)
 {
+    printf("Verificando si el identificador '%s' existe en la tabla de simbolos...\n", id);
     struct Node *current = symbol_table;
+    int count = 0;
     while (current != NULL)
     {
-        if (strcmp(current->data, id) == 0)
-            return 1;
+        count++;
+        if (strcmp(current->data, id) == 0){
+            printf("El identificador '%s' ya existe", id);
+            return count;
+        }
         current = current->next;
     }
-    return 0;
+    return -1;
 }
 
 // Funcion para determinar si un caracter es una letra (a-z, A-Z)
@@ -130,9 +134,7 @@ int identifier_count = 0;
 // Funcion que determina si un estado es un estado aceptador
 int Accept(int estado)
 {
-    if (estado == 1 || estado == 2 || estado == 3 || estado == 4 ||
-        estado == 5 || estado == 7)
-    {
+    if (estado > 2 && estado < 9){
         return 1;
     }
     return 0;
@@ -145,17 +147,10 @@ int Error(int estado)
 }
 
 // Tabla de transiciones del DFA
-int TransitionTable[10][10] = {
-    [0] = {6, 6, 5, 5, 1, 2, 3, 4, 8, 10}, // Estado de inicio
-    [1] = {0},                             // Estado de (
-    [2] = {0},                             // Estado de )
-    [3] = {0},                             // Estado de {
-    [4] = {0},                             // Estado de }
-    [5] = {0},                             // Estado de aceptacion de otros caracteres
-    [6] = {6, 6, 6, 7, 7, 7, 7, 7, 7, 10}, // Estado de identificador
-    [7] = {0},                             // Estado de aceptacion de identificador
-    [8] = {8, 8, 8, 8, 8, 8, 8, 8, 9, 8},  // Estado de string
-    [9] = {0}                              // Estado de aceptacion de string
+int TransitionTable[3][10] = {
+    [0] = {1, 1, 0, 0, 3, 4, 5, 6, 2, 0}, // Estado de inicio
+    [1] = {1, 1, 1, 7, 7, 7, 7, 7, 7, 7}, // Estado de identificador
+    [2] = {2, 2, 2, 2, 2, 2, 2, 2, 8, 8},  // Estado de string
 };
 
 // Funcion que determina la columna de la tabla de transiciones segun el caracter
@@ -221,38 +216,15 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
     buffer[index] = '\0';
 
     // Estados aceptadores de parentesis y llaves
-    for (int i = 1; i < 5; i++)
-    {
-        if (estado == i)
-        {
-            fprintf(tokens_file, "%d\n", i);
-            return;
-        }
-    }
-
-    // Estado aceptador de delimitadores y otros caracteres
-    if (estado == 5)
-    {
-        if (es_espacio(buffer[0]))
-        {
-            return;
-        }
-        for (int i = 0; i < symbolLength; i++)
-        {
-            if (strcmp(buffer, simbolos[i]) == 0)
-            {
-                fprintf(tokens_file, "%d\n", i + keywordLength + sizeof(separadores) / sizeof(separadores[0]) + 1);
-                return;
-            }
-        }
-        identifier_count++;
-        fprintf(tokens_file, "%d, %d\n", identifier_id, identifier_count);
+    if(estado > 2 && estado < 7){
+        fprintf(tokens_file, "%d\n", estado);
         return;
     }
 
     // Estado aceptador de identificadores
     if (estado == 7)
     {
+        // printf("Token: %s\n", buffer);
         for (int i = 0; i < keywordLength; i++)
         {
             if (strcmp(buffer, palabras_clave[i]) == 0)
@@ -262,13 +234,18 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
             }
         }
 
-        if (!exists_in_symbol_table(buffer))
+        int exists = exists_in_symbol_table(buffer);
+
+        if (exists == -1)
         {
             insertAtEnd(&symbol_table, buffer); // SYMBOL TABLE: Agregar identificador
             identifier_count++;
+            fprintf(tokens_file, "%d, %d\n", identifier_id, identifier_count);
+        }
+        else{
+            fprintf(tokens_file, "%d, %d\n", identifier_id, exists);
         }
 
-        fprintf(tokens_file, "%d, %d\n", identifier_id, identifier_count);
         return;
     }
 }
@@ -319,14 +296,17 @@ int main(int argc, char *argv[])
             // Determinar el nuevo estado del DFA
             estado = T(estado, c);
             // Guardar el caracter en el buffer
-            buffer[index++] = c;
+            if(estado != 0){
+                buffer[index++] = c;
+            }
+            // printf("Estado: %d, Caracter: %c\n", estado, c);
 
             if (Advance(estado, c))
             {
                 // Leer el siguiente caracter
                 c = fgetc(archivo);
-                if (c == EOF)
-                    break; // evitar pasar EOF a T()
+                // if (c == EOF)
+                //     break; // evitar pasar EOF a T()
             }
         }
 

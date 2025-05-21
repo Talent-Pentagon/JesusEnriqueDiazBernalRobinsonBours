@@ -61,14 +61,14 @@ int main()
     fclose(symtab_file);
 
     // ---------- Imprimir tokens ----------
-    printf("Tokens leídos: %d\n", tokens_size);
+    printf("Tokens leidos: %d\n", tokens_size);
     for (int i = 0; i < tokens_size; i++)
     {
         printf("%s\n", tokens[i]);
     }
 
     // ---------- Imprimir símbolos ----------
-    printf("\nSímbolos leídos: %d\n", symbols_size);
+    printf("\nSimbolos leidos: %d\n", symbols_size);
     for (int i = 0; i < symbols_size; i++)
     {
         printf("%s\n", symbols[i]);
