@@ -17,5 +17,8 @@ COPY bin/ ./bin/
 RUN gcc -o ./src/lexer ./src/lexer.c
 RUN gcc -o ./src/parser ./src/parser.c
 
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 # Set default command to bash (interactive)
 CMD ["/bin/bash"]

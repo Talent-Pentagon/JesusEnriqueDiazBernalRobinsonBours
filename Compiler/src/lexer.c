@@ -44,14 +44,13 @@ struct Node *symbol_table = NULL;
 // Funcion para verificar si un identificador ya existe en la tabla de simbolos
 int exists_in_symbol_table(const char *id)
 {
-    printf("Verificando si el identificador '%s' existe en la tabla de simbolos...\n", id);
     struct Node *current = symbol_table;
     int count = 0;
     while (current != NULL)
     {
         count++;
-        if (strcmp(current->data, id) == 0){
-            printf("El identificador '%s' ya existe", id);
+        if (strcmp(current->data, id) == 0)
+        {
             return count;
         }
         current = current->next;
@@ -134,7 +133,8 @@ int identifier_count = 0;
 // Funcion que determina si un estado es un estado aceptador
 int Accept(int estado)
 {
-    if (estado > 2 && estado < 9){
+    if (estado > 2 && estado < 9)
+    {
         return 1;
     }
     return 0;
@@ -150,7 +150,7 @@ int Error(int estado)
 int TransitionTable[3][10] = {
     [0] = {1, 1, 0, 0, 3, 4, 5, 6, 2, 0}, // Estado de inicio
     [1] = {1, 1, 1, 7, 7, 7, 7, 7, 7, 7}, // Estado de identificador
-    [2] = {2, 2, 2, 2, 2, 2, 2, 2, 8, 8},  // Estado de string
+    [2] = {2, 2, 2, 2, 2, 2, 2, 2, 0, 0}, // Estado de string
 };
 
 // Funcion que determina la columna de la tabla de transiciones segun el caracter
@@ -216,7 +216,8 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
     buffer[index] = '\0';
 
     // Estados aceptadores de parentesis y llaves
-    if(estado > 2 && estado < 7){
+    if (estado > 2 && estado < 7)
+    {
         fprintf(tokens_file, "%d\n", estado);
         return;
     }
@@ -242,7 +243,8 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
             identifier_count++;
             fprintf(tokens_file, "%d, %d\n", identifier_id, identifier_count);
         }
-        else{
+        else
+        {
             fprintf(tokens_file, "%d, %d\n", identifier_id, exists);
         }
 
@@ -268,7 +270,7 @@ int main(int argc, char *argv[])
     }
 
     // Abrir el archivo de entrada
-    FILE *archivo = fopen(argv[1], "r");
+    FILE *archivo = fopen(argv[1], "rb");
     if (!archivo)
     {
         printf("No se pudo abrir el archivo de lectura.\n");
@@ -286,6 +288,7 @@ int main(int argc, char *argv[])
     c = fgetc(archivo);
     while (c != EOF)
     {
+
         // Inicializar el estado del DFA en INICIO
         int estado = 0;
         // Reiniciar el buffer
@@ -296,7 +299,8 @@ int main(int argc, char *argv[])
             // Determinar el nuevo estado del DFA
             estado = T(estado, c);
             // Guardar el caracter en el buffer
-            if(estado != 0){
+            if (estado != 0)
+            {
                 buffer[index++] = c;
             }
             // printf("Estado: %d, Caracter: %c\n", estado, c);
@@ -305,8 +309,8 @@ int main(int argc, char *argv[])
             {
                 // Leer el siguiente caracter
                 c = fgetc(archivo);
-                // if (c == EOF)
-                //     break; // evitar pasar EOF a T()
+                if ((unsigned char)c == 255)
+                    break; // evitar pasar EOF a T()
             }
         }
 
