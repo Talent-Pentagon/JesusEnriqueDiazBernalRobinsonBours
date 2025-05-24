@@ -3,3 +3,6 @@ bin/
 
 # Ignore results
 results/
+
+# Ignore wandb runs
+wandb/
