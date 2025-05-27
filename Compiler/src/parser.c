@@ -17,7 +17,7 @@ void IDS();
 void SEPS();
 void STATEMENTS();
 void STATEMENTSPRIME();
-
+void CONFIDENCE();
 
 char **tokens;
 char *current_token = NULL; // Variable global para el token actual
@@ -156,6 +156,29 @@ void CLASSIFICATION(){
     printf("Clasificacion completada.\n");
 }
 
+void CONFIDENCE(){
+    printf("Confianza en la clasificacion:\n");
+    if(OOP == 1 && PRO == 1){
+        printf("El codigo es hibrido.\n");
+        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
+        printf("Confianza: \n ", counter/ max_tokens * 100);
+    }
+    else if(OOP == 1){
+        printf("El codigo es OOP.\n");
+        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
+        printf("Confianza: \n ", counter/ max_tokens * 100);
+    }
+    else if(PRO == 1){
+        printf("El codigo es procedural.\n");
+        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
+        printf("Confianza: \n ", counter/ max_tokens * 100);
+    }
+    else{
+        printf("No se encontro codigo.\n");
+        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
+    }
+}
+
 
 int main()
 {
@@ -199,18 +222,7 @@ int main()
     printf("Valor de OOP: %d\n", OOP);
     printf("Valor de PRO: %d\n", PRO);
 
-    if(OOP == 1 && PRO == 1){
-        printf("El codigo es hibrido.\n");
-    }
-    else if(OOP == 1){
-        printf("El codigo es OOP.\n");
-    }
-    else if(PRO == 1){
-        printf("El codigo es procedural.\n");
-    }
-    else{
-        printf("No se encontro codigo.\n");
-    }
+    CONFIDENCE(); // Imprimir confianza en la clasificación
 
 
     // ---------- Liberar memoria ----------
