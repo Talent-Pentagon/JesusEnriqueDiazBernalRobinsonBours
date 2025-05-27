@@ -218,7 +218,8 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
     // Estados aceptadores de parentesis y llaves
     if (estado > 2 && estado < 7)
     {
-        fprintf(tokens_file, "%d\n", estado);
+        printf("%d\n", estado-2);
+        fprintf(tokens_file, "%d\n", estado-2);
         return;
     }
 
@@ -230,6 +231,7 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
         {
             if (strcmp(buffer, palabras_clave[i]) == 0)
             {
+                printf("%d\n", i + separadorLength + 1);
                 fprintf(tokens_file, "%d\n", i + separadorLength + 1);
                 return;
             }
@@ -241,11 +243,14 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
         {
             insertAtEnd(&symbol_table, buffer); // SYMBOL TABLE: Agregar identificador
             identifier_count++;
-            fprintf(tokens_file, "%d, %d\n", identifier_id, identifier_count);
+            printf("%d, %d\n", identifier_id, identifier_count);
+            // Se quita la tabla de simbolos para el parser
+            fprintf(tokens_file, "%d\n", identifier_id);
         }
         else
         {
-            fprintf(tokens_file, "%d, %d\n", identifier_id, exists);
+            printf("%d, %d\n", identifier_id, exists);
+            fprintf(tokens_file, "%d\n", identifier_id);
         }
 
         return;
