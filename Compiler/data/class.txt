@@ -1,0 +1,10 @@
+//Jesus Enrique Diaz Bernal Robinson Bours - A00227255
+#include <iostream>
+
+using namespace std;
+
+// Node structure which contains a number and 2 pointers, one to the previous node and one to the next node
+struct Node{
+    int val;
+    Node *prev, *next;
+};
