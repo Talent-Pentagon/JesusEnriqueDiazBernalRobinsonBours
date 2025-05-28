@@ -104,28 +104,14 @@ const char *separadores[] = {
 const char *palabras_clave[] = {
     "class",
     "struct",
-    "public",
-    "private",
-    "protected",
-    "extends",
-    "implements",
-    "override",
-    "virtual",
 };
 
-// Definicion de los simbolos del lenguaje
-const char *simbolos[] = {
-    ";", "*", ",", "&", "<", ">", ".", ":", "="};
-
-// Longitud de los arreglos
-int symbolLength = sizeof(simbolos) / sizeof(simbolos[0]);
 int keywordLength = sizeof(palabras_clave) / sizeof(palabras_clave[0]);
 int separadorLength = sizeof(separadores) / sizeof(separadores[0]);
 
 // Marcar el token de identificadores
 int identifier_id = 1 + sizeof(separadores) / sizeof(separadores[0]) +
-                    sizeof(palabras_clave) / sizeof(palabras_clave[0]) +
-                    sizeof(simbolos) / sizeof(simbolos[0]);
+                    sizeof(palabras_clave) / sizeof(palabras_clave[0]);
 
 // Contador de identificadores
 int identifier_count = 0;

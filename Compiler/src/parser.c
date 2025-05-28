@@ -88,7 +88,7 @@ void STATEMENTSPRIME(){
 }
 
 void STATEMENTS(){
-    if(strcmp(current_token, "23") == 0 || strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0){
+    if(strcmp(current_token, "7") == 0 || strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0){
         IDS(); // Clasificar identificadores
         STATEMENTSPRIME(); // Clasificar declaraciones
     }
@@ -118,8 +118,8 @@ void SEPS(){
 }
 
 void IDS(){
-    if(strcmp(current_token, "23") == 0){
-        Match("23");
+    if(strcmp(current_token, "7") == 0){
+        Match("7");
         IDS();
     }
     else if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 
