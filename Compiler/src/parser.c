@@ -51,14 +51,14 @@ char *Get_NextToken() {
         return current_token; // No hay más tokens
     }
     current_token = tokens[counter];
-    printf("Token actual: %s\n", current_token);
+    // printf("Token actual: %s\n", current_token);
     counter++;
     return current_token;
 }
 
 int Match(char *y) {
     if(strcmp(current_token, y) == 0) {
-        printf("Token '%s' match con '%s'\n", current_token, y);
+        // printf("Token '%s' match con '%s'\n", current_token, y);
         current_token = Get_NextToken();
         return 1; // Match exitoso
     }
@@ -78,8 +78,12 @@ void STATEMENTSPRIME(){
         SEPS(); // Clasificar separadores
         STATEMENTS(); // Clasificar declaraciones
     }
-    else{
+    else if(strcmp(current_token, "4") == 0 || strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 || strcmp(current_token, "3") == 0){
         return; // EPSILON
+    }
+    else{
+        printf("Error: token '%s' no coincide con ninguna regla de statementprime.\n", current_token);
+        CONFIDENCE(); // Imprimir confianza en la clasificación
     }
 }
 
@@ -88,8 +92,12 @@ void STATEMENTS(){
         IDS(); // Clasificar identificadores
         STATEMENTSPRIME(); // Clasificar declaraciones
     }
-    else{
+    else if(strcmp(current_token, "4") == 0 || strcmp(current_token, "$") == 0){
         return; // EPSILON
+    }
+    else{
+        printf("Error: token '%s' no coincide con ninguna regla de statements.\n", current_token);
+        CONFIDENCE(); // Imprimir confianza en la clasificación
     }
 }
 
@@ -114,8 +122,13 @@ void IDS(){
         Match("23");
         IDS();
     }
-    else{
+    else if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 
+    || strcmp(current_token, "3") == 0 || strcmp(current_token, "$") == 0 || strcmp(current_token, "2") == 0 || strcmp(current_token, "4") == 0){
         return; // EPSILON
+    }
+    else{
+        printf("Error: token '%s' no coincide con ninguna regla de identificadores.\n", current_token);
+        CONFIDENCE(); // Imprimir confianza en la clasificación
     }
 }
 
@@ -134,49 +147,48 @@ void CLASSES(){
 
 void CODE() {
     if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0){
+        OOP = 1; // Indicar que se encontró OOP
         CLASSES();
         IDS();
         CODE();
-        OOP = 1; // Indicar que se encontró OOP
     }
     else if(strcmp(current_token, "1") == 0){
+        PRO = 1; // Indicar que se encontró PRO
         SEPS();
         IDS();
         CODE();
-        PRO = 1; // Indicar que se encontró PRO
+    }
+    else if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 || strcmp(current_token, "3") == 0 || strcmp(current_token, "$") == 0){
+        return; // EPSILON
     }
     else{
-        return; // EPSILON
+        printf("Error: token '%s' no coincide con ninguna regla de código.\n", current_token);
+        CONFIDENCE(); // Imprimir confianza en la clasificación
     }
 }
 
 void CLASSIFICATION(){
     IDS(); // Clasificar identificadores
     CODE();
-    printf("Clasificacion completada.\n");
 }
 
 void CONFIDENCE(){
-    printf("Confianza en la clasificacion:\n");
+    printf("--------------------------------------------\n");
     if(OOP == 1 && PRO == 1){
         printf("El codigo es hibrido.\n");
-        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
-        printf("Confianza: \n ", counter/ max_tokens * 100);
     }
     else if(OOP == 1){
         printf("El codigo es OOP.\n");
-        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
-        printf("Confianza: \n ", counter/ max_tokens * 100);
     }
     else if(PRO == 1){
         printf("El codigo es procedural.\n");
-        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
-        printf("Confianza: \n ", counter/ max_tokens * 100);
     }
     else{
         printf("No se encontro codigo.\n");
-        printf("Tokens procesados: %d de %d\n", counter, max_tokens);
     }
+    printf("Tokens procesados: %d de %d\n", counter, max_tokens);
+    printf("Confianza: %.2f%%\n", (float)counter / max_tokens * 100);
+    exit(0); // Terminar el programa después de imprimir la confianza
 }
 
 
