@@ -1,0 +1,11 @@
+class Control {
+    void ejecutar() {
+        if (a > b) {
+            while (x < 10) {
+                x = x + 1;
+            }
+        } else {
+            y = 0;
+        }
+    }
+};
