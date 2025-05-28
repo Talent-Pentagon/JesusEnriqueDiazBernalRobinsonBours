@@ -1,4 +1,4 @@
-//Jesus Enrique Diaz Bernal Robinson Bours - A00227255
+//Jesus Moises Diego Juan Mariana
 #include <iostream>
 
 using namespace std;
