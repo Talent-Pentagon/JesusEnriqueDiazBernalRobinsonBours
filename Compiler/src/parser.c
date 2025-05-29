@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #define INITIAL_CAPACITY 100
 
@@ -22,7 +23,23 @@ int counter = 0; // Contador para el número de tokens procesados
 int max_tokens = 0; // Variable para almacenar el número máximo de tokens
 int OOP = 0; // Variable para indicar si se encontró OOP
 int PRO = 0; // Variable para indicar si se encontró PRO
+FILE *output_file = NULL; // Archivo de salida para classification.txt
 
+// Función para imprimir tanto a consola como a archivo
+void txt_printf(const char *format, ...) {
+    va_list args1, args2;
+    va_start(args1, format);
+    va_copy(args2, args1);
+    
+    // Imprimir a archivo si está abierto
+    if (output_file != NULL) {
+        vfprintf(output_file, format, args2);
+        fflush(output_file); // Asegurar que se escriba inmediatamente
+    }
+    
+    va_end(args1);
+    va_end(args2);
+}
 
 // Función para agregar una línea a un arreglo dinámico de cadenas
 void add_line(char ***arr, int *size, int *capacity, const char *line)
@@ -199,24 +216,43 @@ void CONFIDENCE(){
     printf("--------------------------------------------\n");
     if(OOP == 1 && PRO == 1){
         printf("El codigo es hibrido.\n");
+        txt_printf("Hibrido\n");
     }
     else if(OOP == 1){
         printf("El codigo es OOP.\n");
+        txt_printf("OOP\n");
     }
     else if(PRO == 1){
         printf("El codigo es procedural.\n");
+        txt_printf("Procedural\n");
     }
     else{
         printf("No se encontro codigo.\n");
+        txt_printf("Texto\n");
     }
     printf("Tokens procesados: %d de %d\n", counter, max_tokens);
     printf("Confianza: %.2f%%\n", (float)counter / max_tokens * 100);
+    txt_printf("%.2f%%\n", (float)counter / max_tokens * 100);
+    
+    // Cerrar archivo de salida
+    if (output_file != NULL) {
+        fclose(output_file);
+        output_file = NULL;
+    }
+    
     exit(0); // Terminar el programa después de imprimir la confianza
 }
 
 
 int main()
 {
+    // Abrir archivo de salida para escritura
+    output_file = fopen("classification.txt", "w");
+    if (!output_file) {
+        printf("Error: No se pudo crear el archivo classification.txt\n");
+        return 1;
+    }
+    
     printf("--------------------------------------------\n");
     printf("Parser iniciado.\n");
     // ---------- Leer tokens.txt ----------
