@@ -5,20 +5,17 @@
 #define INITIAL_CAPACITY 100
 
 // Prototipos de funciones
-// void PRO();
-// void FUN();
-// void CLASSESPRIME();
-// void OOP();
-// void OOPPRODS(int x);
 void CLASSIFICATION();
 void CODE();
 void CLASSES();
 void IDS();
 void SEPS();
+void SEPSPRIME();
 void STATEMENTS();
 void STATEMENTSPRIME();
 void CONFIDENCE();
 
+// Variables globales
 char **tokens;
 char *current_token = NULL; // Variable global para el token actual
 int counter = 0; // Contador para el número de tokens procesados
@@ -44,6 +41,7 @@ void add_line(char ***arr, int *size, int *capacity, const char *line)
     (*size)++;
 }
 
+// Función para obtener el siguiente token
 char *Get_NextToken() {
     if (counter >= max_tokens) {
         printf("No hay mas tokens disponibles.\n");
@@ -51,24 +49,28 @@ char *Get_NextToken() {
         return current_token; // No hay más tokens
     }
     current_token = tokens[counter];
-    // printf("Token actual: %s\n", current_token);
     counter++;
     return current_token;
 }
 
+// Función para hacer match con un token específico
 int Match(char *y) {
+    // Token actual es "$", significa que no hay más tokens
+    if (current_token == "$") {
+        printf("Clasificacion finalizada.\n");
+        CONFIDENCE(); // No hay token actual
+    }
     if(strcmp(current_token, y) == 0) {
-        // printf("Token '%s' match con '%s'\n", current_token, y);
         current_token = Get_NextToken();
         return 1; // Match exitoso
     }
     else{
-        // printf("Error: token '%s' no coincide con '%s'\n", current_token, y);
-        return 0; // Match fallido
+        printf("Error: token '%s' no coincide con '%s'.\n", current_token, y);
+        CONFIDENCE(); // Match fallido
     }
 }
 
-
+// Funcion para clasificar declaraciones prime
 void STATEMENTSPRIME(){
     if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0){
         CLASSES(); // Clasificar clases
@@ -83,32 +85,48 @@ void STATEMENTSPRIME(){
     }
     else{
         printf("Error: token '%s' no coincide con ninguna regla de statementprime.\n", current_token);
-        CONFIDENCE(); // Imprimir confianza en la clasificación
+        CONFIDENCE(); // Error
     }
 }
 
+// Funcion para clasificar declaraciones
 void STATEMENTS(){
     if(strcmp(current_token, "7") == 0 || strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0){
         IDS(); // Clasificar identificadores
-        STATEMENTSPRIME(); // Clasificar declaraciones
+        STATEMENTSPRIME(); // Clasificar declaraciones prime
     }
     else if(strcmp(current_token, "4") == 0 || strcmp(current_token, "$") == 0){
         return; // EPSILON
     }
     else{
         printf("Error: token '%s' no coincide con ninguna regla de statements.\n", current_token);
-        CONFIDENCE(); // Imprimir confianza en la clasificación
+        CONFIDENCE(); // Error
     }
 }
 
+// Funcion para clasificar separadores prime
+void SEPSPRIME(){
+    if(strcmp(current_token, "3") == 0){
+        Match("3"); // Match {
+        STATEMENTS(); // Clasificar declaraciones
+        Match("4"); // Match }
+    }
+    else if(strcmp(current_token, "4") == 0 || strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 || strcmp(current_token, "3") == 0 || strcmp(current_token, "$") == 0 || strcmp(current_token, "7") == 0){
+        return; // EPSILON
+    }
+    else{
+        printf("Error: token '%s' no coincide con ninguna regla de separadores prime.\n", current_token);
+        CONFIDENCE(); // Error
+    }
+}
+
+// Funcion para clasificar separadores
 void SEPS(){
     if(strcmp(current_token, "1") == 0){
         Match("1"); // Match (
         IDS(); // Clasificar identificadores
         Match("2"); // Match )
-        Match("3"); // Match {
-        STATEMENTS(); // Clasificar declaraciones
-        Match("4"); // Match }
+        SEPSPRIME(); // Clasificar separadores prime
     }
     if(strcmp(current_token, "3") == 0){
         Match("3"); // Match {
@@ -117,10 +135,11 @@ void SEPS(){
     }
 }
 
+// Funcion para clasificar identificadores
 void IDS(){
     if(strcmp(current_token, "7") == 0){
-        Match("7");
-        IDS();
+        Match("7"); // Match identificador
+        IDS(); // Clasificar identificadores
     }
     else if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 
     || strcmp(current_token, "3") == 0 || strcmp(current_token, "$") == 0 || strcmp(current_token, "2") == 0 || strcmp(current_token, "4") == 0){
@@ -128,10 +147,11 @@ void IDS(){
     }
     else{
         printf("Error: token '%s' no coincide con ninguna regla de identificadores.\n", current_token);
-        CONFIDENCE(); // Imprimir confianza en la clasificación
+        CONFIDENCE(); // ERROR
     }
 }
 
+// Funcion para clasificar clases
 void CLASSES(){
     if(strcmp(current_token, "5") == 0){
         Match("5"); // Match class
@@ -145,33 +165,36 @@ void CLASSES(){
     }
 }
 
+// Funcion para clasificar el codigo
 void CODE() {
     if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0){
         OOP = 1; // Indicar que se encontró OOP
-        CLASSES();
-        IDS();
-        CODE();
+        CLASSES(); // Clasificar clases
+        IDS(); // Clasificar identificadores
+        CODE(); // Clasificar código
     }
     else if(strcmp(current_token, "1") == 0){
         PRO = 1; // Indicar que se encontró PRO
-        SEPS();
-        IDS();
-        CODE();
+        SEPS(); // Clasificar separadores
+        IDS(); // Clasificar identificadores
+        CODE(); // Clasificar código
     }
     else if(strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 || strcmp(current_token, "1") == 0 || strcmp(current_token, "3") == 0 || strcmp(current_token, "$") == 0){
         return; // EPSILON
     }
     else{
         printf("Error: token '%s' no coincide con ninguna regla de código.\n", current_token);
-        CONFIDENCE(); // Imprimir confianza en la clasificación
+        CONFIDENCE(); // Error
     }
 }
 
+// Funcion para empezar a clasificar
 void CLASSIFICATION(){
     IDS(); // Clasificar identificadores
-    CODE();
+    CODE(); // Clasificar código
 }
 
+// Funcion para imprimir la confianza en la clasificacion
 void CONFIDENCE(){
     printf("--------------------------------------------\n");
     if(OOP == 1 && PRO == 1){
@@ -234,6 +257,7 @@ int main()
     printf("Valor de OOP: %d\n", OOP);
     printf("Valor de PRO: %d\n", PRO);
 
+    // Empezar la clasificación
     CONFIDENCE(); // Imprimir confianza en la clasificación
 
 
