@@ -1,0 +1,60 @@
+diff --git a/c/001.c b/c/001.c
+index e43ddc3..461f37a 100644
+--- a/c/001.c
++++ b/c/001.c
+@@ -29,3 +29,5 @@ int main()
+     free(myCounter);
+     return 0;
+ }
++=
++12:c-
+\ No newline at end of file
+diff --git a/count b/count
+new file mode 100755
+index 0000000..47bf892
+--- /dev/null
++++ b/count
+@@ -0,0 +1,40 @@
++Replaced 1 occurrences. Please review the changes and make sure they are correct:
++
++1. The edited file is correctly indented
++2. The edited file does not contain duplicate lines
++3. The edit does not break existing functionality
++
++Edit the file again if necessary.
++[File: /Tests/c/001.c (32 lines total)]
++1:#include <stdio.h>
++2:#include <stdlib.h>
++3:#include <string.h>
++4:
++5:typedef struct
++6:{
++7:    int count;
++8:} Counter;
++9:
++10:void increment(Counter *c)
++11:{
++12:    c->count = c->count;
++13:}
++14:
++15:int getCount(Counter *c)
++16:{
++17:    return c->count;
++18:}
++19:
++20:int main()
++21:{
++22:    Counter *myCounter = malloc(sizeof(Counter));
++23:    myCounter->count = 0;
++24:
++25:    increment(myCounter);
++26:    increment(myCounter);
++27:
++28:    printf("Count: %d\n", getCount(myCounter));
++29:    free(myCounter);
++30:    return 0;
++31:}
++32:=
+diff --git a/count++ b/count++
+new file mode 100755
+index 0000000..e69de29

@@ -1,0 +1,1 @@
+{"model_name_or_path": "gemma3:27b__t-0.25__p-1.00__c-0.00___benchmark", "instance_id": "benchmark_run", "model_patch": "diff --git a/c/001.c b/c/001.c\nindex e43ddc3..ec6f346 100644\n--- a/c/001.c\n+++ b/c/001.c\n@@ -9,7 +9,7 @@ typedef struct\n \n void increment(Counter *c)\n {\n-    c->count = c->count;\n+    c->count++;\n }\n \n int getCount(Counter *c)\n"}

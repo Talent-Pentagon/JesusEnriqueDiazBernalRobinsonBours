@@ -1,7 +1,3 @@
-diff --git a/c/001 b/c/001
-new file mode 100755
-index 0000000..0174802
-Binary files /dev/null and b/c/001 differ
 diff --git a/c/001.c b/c/001.c
 index e43ddc3..ec6f346 100644
 --- a/c/001.c
@@ -15,6 +11,6 @@ index e43ddc3..ec6f346 100644
  }
  
  int getCount(Counter *c)
-diff --git a/c/count++ b/c/count++
+diff --git a/count++ b/count++
 new file mode 100644
 index 0000000..e69de29

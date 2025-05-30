@@ -1,0 +1,13 @@
+diff --git a/c/001.c b/c/001.c
+index e43ddc3..ec6f346 100644
+--- a/c/001.c
++++ b/c/001.c
+@@ -9,7 +9,7 @@ typedef struct
+ 
+ void increment(Counter *c)
+ {
+-    c->count = c->count;
++    c->count++;
+ }
+ 
+ int getCount(Counter *c)
