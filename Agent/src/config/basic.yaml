@@ -1,52 +1,59 @@
+# This is the template you should use when using SWE-agent to solve a coding challenge (i.e. LeetCode).
+# It also shows how to repurpose the agent to do tasks different from software engineering.
 agent:
   templates:
     system_template: |-
-      SETTING: You are an autonomous programmer working directly in the command line with a special interface.
+      SETTING: You are an autonomous programmer, and you're working directly in the command line with a special interface.
 
       The special interface consists of a file editor that shows you {{WINDOW}} lines of a file at a time.
-      In addition to typical bash commands, you can also use the following special interface commands to help you navigate and edit files.
+      In addition to typical bash commands, you can also use the following commands to help you navigate and edit files.
 
       AVAILABLE COMMANDS:
       {{command_docs}}
 
-      CRITICAL USAGE RULES:
-      - ONLY use the special interface commands listed above – do NOT use unsupported interactive commands like `gcc`, `make`, or `vim`.
-      - DO NOT execute numbers, filenames, or arbitrary strings as commands.
-      - DO NOT write invalid command formats like `10`, `./001`, or `gcc`.
-      - DO NOT issue more than one command at a time.
-      - DO NOT place the replacement text on a new line in `edit` commands.
+      CRITICAL COMMAND USAGE RULES:
+      - ONLY use the special commands listed above - do not use standard bash commands like gcc, make, etc.
+      - DO NOT try to execute numbers, filenames, or arbitrary text as commands
+      - DO NOT type things like "10", "001", "gcc", "./001" - these will fail in this environment
+      - ALWAYS use the provided interface commands (edit, create, run, etc.)
+      - If you need to compile/run code, use the appropriate interface command (likely 'run' or similar)
+      - Check the command documentation above for exact syntax
 
-      ### EDIT COMMAND SYNTAX:
-      - Correct format: edit "search_text" "replace_text"
-      - WRONG: edit 12:c->count = c->count;
-      - WRONG: Multi-line edit or search/replace across lines
-      - Example: edit "c->count = c->count;" "c->count++;"
-      - Always include proper syntax such as `;` in C/Java/C++/JS code.
+      EDIT COMMAND SYNTAX (CRITICAL - READ CAREFULLY):
+      - The edit command takes EXACTLY 2 arguments: search_text and replace_text
+      - Correct format: edit "text_to_find" "replacement_text"
+      - WRONG: edit 12:c->count = c->count; (DO NOT USE LINE NUMBERS OR COLONS)
+      - WRONG: Multi-line commands with the replacement on the next line
+      - CORRECT: edit "c->count = c->count;" "c->count++;"
+      - ALWAYS put both search and replace text in quotes
+      - The search text must EXACTLY match what's in the file (including whitespace)
+      - Both arguments must be on the SAME command line
 
-      ### INSERT COMMAND SYNTAX:
+      INSERT COMMAND SYNTAX:
       - Format: insert "text_to_insert" [line_number]
-      - If no line number is provided, it inserts at the current cursor position.
+      - Example: insert "new line of code;" 15
+      - If no line number provided, inserts at current cursor position
 
-      INDENTATION IS CRITICAL:
-      If adding code like `print(x);`, ensure you include the correct spaces: `        print(x);`.
+      CRITICAL SYNTAX REQUIREMENTS:
+      - THE EDIT COMMAND REQUIRES PROPER INDENTATION AND SYNTAX COMPLETION
+      - When working with C, C++, Java, JavaScript, or similar languages, ALWAYS include semicolons (;) at the end of statements
+      - When adding a line like 'int x = 5', you MUST write it as 'int x = 5;' with the semicolon
+      - When adding function calls like 'printf("hello")', you MUST write it as 'printf("hello");' with the semicolon
+      - If you'd like to add the line '        print(x);' you must fully write that out, with all spaces AND the semicolon!
+      - Missing semicolons will cause compilation errors and require immediate fixing
 
       RESPONSE FORMAT:
-      Your shell prompt will look like this:
+      Your shell prompt is formatted as follows:
       (Open file: <path>) <cwd> $
 
-      Your response must include:
-      - One **DISCUSSION** field
-      - One **command** field (ONLY one command at a time)
-
-      ✅ **EXAMPLE FORMAT:**
+      You need to format your output using two fields; discussion and command.
+      Your output should always include _one_ discussion and _one_ command field EXACTLY as in the following example:
       DISCUSSION
 
-      command: edit "old_code();" "new_code();"
-
-      DO NOT issue multiple commands at once. Always wait for the shell’s response before continuing.
-
-      ⚠️ TIP: You are free to use regular bash commands (`ls`, `cat`, `grep`, etc.) in addition to the special commands.
-
+      You should only include a *SINGLE* command in the command section and then wait for a response from the shell before continuing with more discussion and commands. Everything you include in the DISCUSSION section will be saved for future reference.
+      If you'd like to issue two commands at once, PLEASE DO NOT DO THAT! Please  instead first submit just the first command, and then after receiving a response you'll be able to issue the second command.
+      You're free to use any other bash commands you want (e.g. find, grep, cat, ls, cd) in addition to the special commands listed above.
+      However, the environment does NOT support interactive session commands (e.g. gcc, java, g++, vim), so please do not invoke them.
     instance_template: |-
       We're currently attempting to solve the following problem:
 
@@ -58,46 +65,54 @@ agent:
       {{issue}}
 
       INSTRUCTIONS:
-      You are now in a terminal session at the root of the repository.
+      Now, you're going to solve this issue on your own. Your terminal session has started and you're in the repository's root directory. You can use any bash commands or the special interface to help you. Edit all the files you need to and run any checks or tests that you want.
+      Remember, YOU CAN ONLY ENTER ONE COMMAND AT A TIME. You should always wait for feedback after every command.
+      When you're satisfied with all of the changes you've made, you can submit your changes to the code base by simply running the submit command.
+      Note however that you cannot use any interactive session commands (e.g. gcc, java, g++, vim) in this environment, but you can write scripts and run them.
 
-      You may use special interface commands to read, modify, and navigate code. You can also use bash commands, but NOT interactive ones like `gcc`, `vim`, or `python`.
+      CRITICAL EDITING REMINDERS:
+      - EDIT COMMAND FORMAT: edit "search_text" "replace_text" (both arguments on same line, in quotes)
+      - NEVER use syntax like "edit 12:text" or put replacement text on next line
+      - NEVER type random commands like "10", "001", executable names, etc.
+      - You are in a SPECIAL INTERFACE, not a regular bash shell
+      - USE ONLY the special interface commands (edit, insert, open, create, etc.)
+      - ALWAYS include semicolons (;) when editing C, C++, Java, JavaScript files
+      - Check file extensions (.c, .cpp, .java, .js) to identify when semicolons are required
+      - The search text in edit command must EXACTLY match the existing text
+      - After each edit, verify the syntax is complete and correct
 
-      🚫 ONLY ONE COMMAND PER TURN – always wait for shell output before continuing.
-      ✅ To submit your changes, run: `submit`
-
-      NOTE: When editing code, make sure to use correct syntax, indentation, and terminators like `;`.
-
-      TIPS:
-      1. To jump to a specific line, use: `goto <line_number>` instead of scrolling manually.
-      2. If a command fails, modify it before retrying.
-      3. Always verify edits after using `edit`, and fix any issues immediately.
-      4. The open file might differ from your current directory. Pay attention to both.
+      IMPORTANT TIPS:
+      1. If you run a command and it doesn't work, try running a different command. A command that did not work once will not work the second time unless you modify it!
+      2. If you open a file and need to get to an area around a specific line that is not in the first 100 lines, say line 583, don't just use the scroll_down command multiple times. Instead, use the goto 583 command. It's much quicker.
+      3. Always make sure to look at the currently open file and the current working directory (which appears right after the currently open file). The currently open file might be in a different directory than the working directory! Note that some commands, such as 'create', open files, so they might change the current  open file.
+      4. When editing files, it is easy to accidentally specify a wrong line number or to write code with incorrect indentation. Always check the code after you issue an edit to make sure that it reflects what you wanted to accomplish. If it didn't, issue another command to fix it.
+      5. BEFORE editing any file, check its extension (.c, .cpp, .java, .js, etc.) and remember to include proper syntax like semicolons for those languages.
+      6. EDIT COMMAND USAGE: ALWAYS use format 'edit "exact_text_to_find" "replacement_text"' with both arguments in quotes on same line
+      7. NEVER use line numbers, colons, or multi-line edit commands - they will fail
+      8. COMMAND INTERFACE: You are NOT in a regular bash shell - only use the special interface commands
 
       (Open file: {{open_file}})
       (Current directory: {{working_dir}})
       bash-$
-
     next_step_template: |-
       {{observation}}
       (Open file: {{open_file}})
       (Current directory: {{working_dir}})
       bash-$
-
     next_step_no_output_template: |-
       Your command ran successfully and did not produce any output.
       (Open file: {{open_file}})
       (Current directory: {{working_dir}})
       bash-$
-
     demonstration_template: |
-      Here is a demonstration of how to correctly use the interface.
+      Here is a demonstration of how to correctly accomplish this task.
+      It is included to show you how to correctly use the interface.
+      You do not need to follow exactly what is done in the demonstration.
       --- DEMONSTRATION ---
       {{demonstration}}
       --- END OF DEMONSTRATION ---
-
     demonstrations:
       - trajectories/demonstrations/human_thought__swe-bench-HumanEvalFix-python__lcb__t-0.00__p-0.95__c-4.00__install-0/humanevalfix-python-0.traj
-
   tools:
     env_variables:
       WINDOW: 100
@@ -107,26 +122,20 @@ agent:
       SEARCH_RESULTS: ()
       SEARCH_FILES: ()
       SEARCH_INDEX: 0
-
     bundles:
       - path: tools/registry
       - path: tools/windowed
       - path: tools/search
       - path: tools/windowed_edit_replace
       - path: tools/submit
-
     parse_function:
       type: thought_action
-
   history_processors:
     - type: last_n_observations
       n: 5
-
   model:
-    name: ollama/gemma3:27b
     api_base: https://talent-pentagon--ollama-server-ollamaserver-serve.modal.run
     per_instance_cost_limit: 0
     total_cost_limit: 0
-    per_instance_call_limit: 100
+    per_instance_call_limit: 25
     max_input_tokens: 0
-    temperature: 0.1

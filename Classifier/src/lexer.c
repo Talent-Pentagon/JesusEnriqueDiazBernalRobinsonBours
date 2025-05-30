@@ -204,8 +204,8 @@ void write_token(FILE *tokens_file, char *buffer, int index, int estado)
     // Estados aceptadores de parentesis y llaves
     if (estado > 2 && estado < 7)
     {
-        printf("%d\n", estado-2);
-        fprintf(tokens_file, "%d\n", estado-2);
+        printf("%d\n", estado - 2);
+        fprintf(tokens_file, "%d\n", estado - 2);
         return;
     }
 
