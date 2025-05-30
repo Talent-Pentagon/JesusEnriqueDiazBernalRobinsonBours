@@ -6,3 +6,5 @@ results/
 
 # Ignore wandb runs
 wandb/
+
+*.exe
