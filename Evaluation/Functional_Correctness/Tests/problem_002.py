@@ -1,32 +1,47 @@
 import subprocess
 import os
 
-def run_test_case(executable_path, input_data, expected_output):
+def run_test_case(executable_path, expected_output, test_name, failures):
     result = subprocess.run(
         [os.path.abspath(executable_path)],
-        input=input_data,
         text=True,
         capture_output=True
     )
-    assert result.stdout.strip() == expected_output.strip(), f"Expected '{expected_output}', got '{result.stdout.strip()}'"
+    actual_output = result.stdout.strip()
+    expected_output = expected_output.strip()
+
+    try:
+        assert actual_output == expected_output, \
+            f"Expected '{expected_output}', got '{actual_output}'"
+    except AssertionError as e:
+        failures.append(f"[{test_name}] FAILED: {e}")
 
 def run_tests(executable_path):
-    # Test 1
-    run_test_case(executable_path, "2 3\n", "5")
+    failures = []
+    test_cases = [
+        ("2", "Test 1: Two increments should return 2"),
+    ]
 
-    # Test 2
-    run_test_case(executable_path, "10 15\n", "25")
+    for expected_output, test_name in test_cases:
+        run_test_case(executable_path, expected_output, test_name, failures)
 
-    # Test 3: Negative numbers
-    run_test_case(executable_path, "-5 -8\n", "-13")
+    total_tests = len(test_cases)
+    failed_tests = len(failures)
+    passed_tests = total_tests - failed_tests
 
-    # Test 4: Zero
-    run_test_case(executable_path, "0 0\n", "0")
+    print(f"\n--- TEST RESULTS ---")
+    print(f"Total: {total_tests}")
+    print(f"Passed: {passed_tests}")
+    print(f"Failed: {failed_tests}")
 
-    # Test 5: Mixed positive and negative
-    run_test_case(executable_path, "-7 4\n", "-3")
-
-    print("All tests passed.")
+    if failures:
+        print("\n--- TEST FAILURES ---")
+        for failure in failures:
+            print(failure)
+        return False
+    else:
+        print("✅ All C++ tests passed.")
+        return True
 
 if __name__ == "__main__":
-    run_tests("./add")
+    run_tests("./counter")  

@@ -1,9 +1,10 @@
 import subprocess
 import os
 
-def run_test_case(executable_path, expected_output, test_name, failures):
+def run_test_case(executable_path, input_data, expected_output, test_name, failures):
     result = subprocess.run(
-        [os.path.abspath(executable_path)],
+        ["java", executable_path],  # Java class name only, no .class or .java
+        input=input_data,           # Send input via stdin
         text=True,
         capture_output=True
     )
@@ -19,11 +20,15 @@ def run_test_case(executable_path, expected_output, test_name, failures):
 def run_tests(executable_path):
     failures = []
     test_cases = [
-        ("2", "Test 1: Two increments should return 2"),
+        ("42", "x = 42", "Test 1: Positive number"),
+        ("0", "x = 0", "Test 2: Zero"),
+        ("-100", "x = -100", "Test 3: Negative number"),
+        ("9999", "x = 9999", "Test 4: Large number"),
+        ("7", "x = 7", "Test 5: Single digit"),
     ]
 
-    for expected_output, test_name in test_cases:
-        run_test_case(executable_path, expected_output, test_name, failures)
+    for input_data, expected_output, test_name in test_cases:
+        run_test_case(executable_path, input_data, expected_output, test_name, failures)
 
     total_tests = len(test_cases)
     failed_tests = len(failures)
@@ -44,4 +49,4 @@ def run_tests(executable_path):
         return True
 
 if __name__ == "__main__":
-    run_tests("./counter") 
+    run_tests("./c_object")

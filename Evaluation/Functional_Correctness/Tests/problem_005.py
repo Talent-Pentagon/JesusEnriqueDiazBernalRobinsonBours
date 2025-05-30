@@ -1,9 +1,9 @@
 import subprocess
 import os
 
-def run_test_case(executable_path, expected_output, test_name, failures):
+def run_test_case(executable_path, input_data, expected_output, test_name, failures):
     result = subprocess.run(
-        [os.path.abspath(executable_path)],
+        [os.path.abspath(executable_path), input_data],
         text=True,
         capture_output=True
     )
@@ -19,11 +19,15 @@ def run_test_case(executable_path, expected_output, test_name, failures):
 def run_tests(executable_path):
     failures = []
     test_cases = [
-        ("2", "Test 1: Two increments should return 2"),
+        ("Tesla", "Model: Tesla", "Test 1: Tesla"),
+        ("Honda", "Model: Honda", "Test 2: Honda"),
+        ("1234", "Model: 1234", "Test 3: Numeric model"),
+        ("Cybertruck", "Model: Cybertruck", "Test 4: Cybertruck"),
+        ("A", "Model: A", "Test 5: Single character"),
     ]
 
-    for expected_output, test_name in test_cases:
-        run_test_case(executable_path, expected_output, test_name, failures)
+    for input_data, expected_output, test_name in test_cases:
+        run_test_case(executable_path, input_data, expected_output, test_name, failures)
 
     total_tests = len(test_cases)
     failed_tests = len(failures)
@@ -40,8 +44,8 @@ def run_tests(executable_path):
             print(failure)
         return False
     else:
-        print("✅ All C tests passed.")
+        print("✅ All C++ tests passed.")
         return True
 
 if __name__ == "__main__":
-    run_tests("./counter") 
+    run_tests("./cpp_car")
