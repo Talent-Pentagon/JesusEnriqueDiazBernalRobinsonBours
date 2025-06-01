@@ -1,22 +1,25 @@
 #include <iostream>
 using namespace std;
 
-class Counter {
-private:
-    static int count;
+class Base {
 public:
-    Counter() { count++; }
-    int getCount() { return count; }
+    virtual void speak() {
+        cout << "Base" << endl;
+    }
 };
 
-int Counter::count = 0;
+class Derived : public Base {
+public:
+    void speak() override {
+        cout << "Derived" << endl;
+    }
+};
+
+void announce(Bas&e b) {
+    b.speak(); 
+}
 
 int main() {
-    int n;
-    cout << "Enter number of objects to create: ";
-    cin >> n;
-    Counter* counters = new Counter[n];
-    cout << "Count: " << Counter::count << endl; (if count was public)
-    delete[] counters;
-    return 0;
+    Derived d;
+    announce(d);
 }

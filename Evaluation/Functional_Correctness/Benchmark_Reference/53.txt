@@ -1,28 +1,18 @@
 #include <iostream>
 using namespace std;
 
-class A {
-public:
-    void show() { cout << "Class A" << endl; }
+class Base {
+    virtual void show();
 };
 
-class B {
+class Derived : public Base {
 public:
-    void show() { cout << "Class B" << endl; }
-};
-
-class C : public A, public B {
-public:
-    void display() {
-        A::show();
+    void show() override { 
+        cout << "Derived" << endl;
     }
 };
 
 int main() {
-    int choice;
-    cout << "Enter any number to test: ";
-    cin >> choice;
-    C obj;
-    obj.display();
-    return 0;
+    Derived d;
+    d.show();
 }

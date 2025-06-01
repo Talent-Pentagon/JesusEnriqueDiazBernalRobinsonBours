@@ -2,22 +2,15 @@
 using namespace std;
 
 class Number {
-private:
-    int value;
 public:
-    Number(int v) : value(v) {}
-    Number operator+(const Number& other) {
-        return Number(value + other.value);
-    }
-    int getValue() const { return value; }
+    int get() { return 42; }
 };
 
+void display(number n) { 
+    cout << "Value: " << n << endl;
+}
+
 int main() {
-    int a, b;
-    cout << "Enter two numbers: ";
-    cin >> a >> b;
-    Number n1(a), n2(b);
-    Number result = n1 + n2;
-    cout << "Result: " << result.getValue() << endl;
-    return 0;
+    Number n;
+    display(n);
 }

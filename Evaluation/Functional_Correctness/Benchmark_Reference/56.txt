@@ -1,25 +1,24 @@
 #include <iostream>
 using namespace std;
 
-template<class T>
-class Container {
-private:
-    T data;
+class SelfCopy {
 public:
-    Container(T d) : data(d) {}
-    T getData() { return data; }
+    int value;
+
+    SelfCopy(int v) : value(v) {}
+
+    SelfCopy(const SelfCopy& other) {
+        value = other.value;
+    }
+
+    void print() {
+        cout << "Value: " << value << endl;
+    }
 };
 
-template<class T>
-void display(Container<T> c) {
-    cout << "Data: " << c.getData() << endl;
-}
-
 int main() {
-    int value;
-    cout << "Enter an integer: ";
-    cin >> value;
-    Container<int> c(value);
-    display(c);
+    SelfCopy a(10);
+    SelfCopy b = a;
+    b.print();
     return 0;
 }

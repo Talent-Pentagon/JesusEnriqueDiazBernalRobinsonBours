@@ -1,23 +1,22 @@
 #include <iostream>
 using namespace std;
 
-class Point {
-private:
-    int x, y;
+class Parent {
 public:
-    Point(int a, int b) : x(a), y(b) {}
-    friend void display(Point p); // Friend declaration
+    virtual void greet() {
+        cout << "Hello from Parent" << endl;
+    }
 };
 
-void display(Point p) {
-    cout << "Point: (" << p.x << ", " << p.y << ")" << endl;
-}
+class Child : public Parent {
+public:
+    void greet() override {
+        cout << "Hello from Child" << endl;
+    }
+};
 
 int main() {
-    int x, y;
-    cout << "Enter x and y coordinates: ";
-    cin >> x >> y;
-    Point p(x, y);
-    display(p);
-    return 0;
+    Parent* p = new Child();
+    p->greet();
+    delete p;
 }
