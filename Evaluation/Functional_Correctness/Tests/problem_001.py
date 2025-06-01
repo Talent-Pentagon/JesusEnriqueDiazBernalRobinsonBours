@@ -44,4 +44,4 @@ def run_tests(executable_path):
         return True
 
 if __name__ == "__main__":
-    run_tests("./counter") 
+    run_tests("./program.exe") 

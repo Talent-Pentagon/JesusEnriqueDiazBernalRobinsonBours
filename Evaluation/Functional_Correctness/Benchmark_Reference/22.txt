@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+typedef struct {
+    double principal;
+    double rate;
+    int time;
+    double (*interest)(struct Loan*);
+} Loan;
+
+double getInterest(Loan* l) {
+    return (l->principal * l->rate * l->time) / 100.0;
+}
+
+int main() {
+    Loan loan = {1000, 5, 2, getInterest};
+    printf("Interest: %.2f\n", loan.interest(&loan));
+    return 0;
+}

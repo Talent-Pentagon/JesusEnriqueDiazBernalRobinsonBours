@@ -6,8 +6,8 @@ class Animal {
     }
 }
 
-class Dog extends Animal {
-    void bark() {\n        super(name);\n        System.out.println(name + " says woof");\n\n
+class Dog extends Animal {\n    public Dog(String name) {\n        super(name);\n    }
+    void bark() {
         System.out.println(name + " says woof");
     }
 }

@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+typedef struct {
+    double radius;
+    double (*circumference)(struct Circle*);
+} Circle;
+
+double getCircumference(Circle* c) {
+    return 2 * 3.14159 * c->radius;
+}
+
+int main() {
+    Circle c = {7, getCircumference};
+    printf("Circumference: %.2f\n", c.circumference(&c));
+    return 0;
+}

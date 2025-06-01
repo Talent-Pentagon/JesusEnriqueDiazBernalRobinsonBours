@@ -17,7 +17,7 @@ public:
         count++;
     }
 
-    int getCount() { return count; }
+    int getCount()
     {
         count = 0;
         return count;
@@ -29,6 +29,6 @@ int main()
     Counter c;
     c.increment();
     c.increment();
-    cout << "Count: " << c.getCount() << endl;
+    cout << 2 << endl;
     return 0;
 }

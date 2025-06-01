@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+typedef struct {
+    char name[30];
+    double reading;
+    double threshold;
+    void (*update)(struct Sensor*, double);
+    int (*alert)(struct Sensor*);
+} Sensor;
+
+void updateReading(Sensor* s, double newValue) {
+    s->reading = newValue;
+}
+
+int isAlert(Sensor* s) {
+    return s->reading > s->threshold;
+}
+
+int main() {
+    Sensor tempSensor = {"TempSensor", 20.5, 40.0, updateReading, isAlert};
+    tempSensor.update(&tempSensor, 45.2);
+    printf("%s alert: %s\n", tempSensor.name, tempSensor.alert(&tempSensor) ? "YES" : "NO");
+    return 0;
+}

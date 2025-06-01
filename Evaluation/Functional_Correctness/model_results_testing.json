@@ -1,0 +1,21 @@
+[
+    {
+        "test_module": "Student",
+        "language": "java",
+        "category": "NA",
+        "description": "Description",
+        "filename": "Student.java",
+        "code": [
+            "class Student {\n    private String name;\n    private int[] grades;\n\n    public Student(String name, int[] grades) {\n        this.name = name;\n        this.grades = grades;\n    }\n\n    public double average() {\n        int sum = 0;\n        for (int grade : grades)\n            sum += grade;\n        return grades.length == 0 ? 0 : (double) sum / grades.length;\n    }\n\n    public void printInfo() {\n        System.out.printf(\"Student: %s, Average: %.2f%n\", name, average());\n    }\n\n    public static void main(String[] args) {\n        int[] grades = {90, 80, 70, 85};\n        Student student = new Student(\"Alice\", grades);\n        student.printInfo();\n    }\n}" ]
+    },
+    {
+        "test_module": "Animals",
+        "language": "java",
+        "category": "NA",
+        "description": "Description",
+        "filename": "Animals.java",
+        "code": [
+                "class Animal {\n    String name;\n\n    public Animal(String name) {\n        this.name = name;\n    }\n}\n\nclass Dog extends Animal {\n    public Dog(String name) {\n        super(name);\n    }\n\n    void bark() {\n        System.out.println(name + \" says woof\");\n    }\n}\n\npublic class Animals {\n    public static void main(String[] args) {\n        String name = args.length > 0 ? args[0] : \"Default\";\n        Dog d = new Dog(name);\n        d.bark();\n    }\n}"
+            ]
+    }
+]

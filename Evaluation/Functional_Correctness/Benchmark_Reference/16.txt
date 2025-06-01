@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+typedef struct {
+    double length;
+    double width;
+    double (*area)(struct Rectangle*);
+} Rectangle;
+
+double getArea(Rectangle* r) {
+    return r->length * r->width;
+}
+
+int main() {
+    Rectangle r = {10, 5, getArea};
+    printf("Area: %.2f\n", r.area(&r));
+    return 0;
+}

@@ -6,8 +6,8 @@ typedef struct {
     void (*print)(void);
 } Object;
 
-void printObject(Object obj) {
-    printf("x = %d\n", obj.x);
+void printObject(Object *obj) {
+    printf("x = %d\n", obj->x);
 }
 
 int main(int argc, char *argv[]) {

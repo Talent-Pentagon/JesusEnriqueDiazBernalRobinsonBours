@@ -1,5 +1,3 @@
-package Tests.java;
-
 public class Counter {
     private int count;
 
@@ -23,4 +21,3 @@ public class Counter {
         System.out.println("Count: " + c.getCount());
     }
 }
-=++

@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+typedef struct {
+    double distance;
+    double time;
+    double (*speed)(struct Motion*);
+} Motion;
+
+double getSpeed(Motion* m) {
+    return m->time != 0 ? m->distance / m->time : 0;
+}
+
+int main() {
+    Motion m = {150, 3, getSpeed};
+    printf("Speed: %.2f km/h\n", m.speed(&m));
+    return 0;
+}
