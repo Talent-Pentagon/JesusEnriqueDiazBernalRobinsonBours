@@ -2,10 +2,9 @@ import subprocess
 import os
 import sys
 
-def run_test_case(executable_path, input_text, expected_output, test_name, failures):
+def run_test_case(executable_path, expected_output, test_name, failures):
     result = subprocess.run(
         [os.path.abspath(executable_path)],
-        input=input_text,
         text=True,
         capture_output=True
     )
@@ -14,40 +13,39 @@ def run_test_case(executable_path, input_text, expected_output, test_name, failu
 
     try:
         assert actual_output == expected_output, \
-            f"Expected: '{expected_output}', Got: '{actual_output}'"
+            f"Expected:\n'{expected_output}'\nGot:\n'{actual_output}'"
     except AssertionError as e:
         failures.append(f"[{test_name}] FAILED: {e}")
-
 
 def run_tests(executable_path):
     failures = []
 
+    # Expected output from the current main function
+    expected_output = """
+Running: Backup Database (Priority 5)
+Running: Update Firmware (Priority 2)
+Running: Send Logs (Priority 1)
+""".strip()
+
     test_cases = [
         {
-            "name": "Add + Get",
-            "input": "add apple 10\nget apple\nexit\n",
-            "expected_output": "10"
+            "name": "Default Scheduler Output",
+            "expected_output": expected_output
         },
         {
-            "name": "Add + Restock + Get",
-            "input": "add banana 5\nrestock banana 3\nget banana\nexit\n",
-            "expected_output": "8"
-        },
-        {
-            "name": "Get Missing Item",
-            "input": "get orange\nexit\n",
-            "expected_output": "-1"
+            "name": "Repeat Run",
+            "expected_output": expected_output
         }
     ]
 
     for case in test_cases:
-        run_test_case(executable_path, case["input"], case["expected_output"], case["name"], failures)
+        run_test_case(executable_path, case["expected_output"], case["name"], failures)
 
     print("\n--- TEST RESULTS ---")
     print(f"Total: {len(test_cases)}")
     print(f"Passed: {len(test_cases) - len(failures)}")
     print(f"Failed: {len(failures)}")
-    
+
     if failures:
         print("\n--- FAILURES ---")
         for fail in failures:
@@ -55,9 +53,8 @@ def run_tests(executable_path):
     else:
         print("✅ All tests passed.")
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_xyz.py <path_to_executable>")
+        print("Usage: python test_scheduler.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])

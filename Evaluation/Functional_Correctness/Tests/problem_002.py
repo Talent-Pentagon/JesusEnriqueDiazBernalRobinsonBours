@@ -1,5 +1,6 @@
 import subprocess
 import os
+import sys
 
 def run_test_case(executable_path, expected_output, test_name, failures):
     result = subprocess.run(
@@ -44,4 +45,7 @@ def run_tests(executable_path):
         return True
 
 if __name__ == "__main__":
-    run_tests("./program.exe")  
+    if len(sys.argv) != 2:
+        print("Usage: python test_xyz.py <path_to_executable>")
+        sys.exit(1)
+    run_tests(sys.argv[1])

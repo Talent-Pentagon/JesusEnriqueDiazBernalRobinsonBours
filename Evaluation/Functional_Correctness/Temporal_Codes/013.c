@@ -10,7 +10,10 @@ double toFahrenheit(Temperature* temp) {
 }
 
 int main() {
-    Temperature temp = {25.0, toFahrenheit};
+    double celsius;
+    scanf("%lf", &celsius);
+    Temperature temp = {celsius, toFahrenheit};
     printf("%.2f\n", temp.toFahrenheit(&temp));
     return 0;
 }
+

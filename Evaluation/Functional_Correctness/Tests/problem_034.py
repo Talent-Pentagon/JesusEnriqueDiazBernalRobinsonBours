@@ -14,29 +14,33 @@ def run_test_case(executable_path, input_text, expected_output, test_name, failu
 
     try:
         assert actual_output == expected_output, \
-            f"Expected: '{expected_output}', Got: '{actual_output}'"
+            f"Expected:\n'{expected_output}'\nGot:\n'{actual_output}'"
     except AssertionError as e:
         failures.append(f"[{test_name}] FAILED: {e}")
-
 
 def run_tests(executable_path):
     failures = []
 
     test_cases = [
         {
-            "name": "Add + Get",
-            "input": "add apple 10\nget apple\nexit\n",
-            "expected_output": "10"
+            "name": "Basic operations",
+            "input": "4\ndeposit 500\nwithdraw 200\nprint\nwithdraw 2000\n",
+            "expected_output": "Owner: Alice | Balance: 1300.00\nInsufficient funds"
         },
         {
-            "name": "Add + Restock + Get",
-            "input": "add banana 5\nrestock banana 3\nget banana\nexit\n",
-            "expected_output": "8"
+            "name": "Withdraw exact balance",
+            "input": "3\nwithdraw 1000\nprint\ndeposit 100\n",
+            "expected_output": "Owner: Alice | Balance: 0.00"
         },
         {
-            "name": "Get Missing Item",
-            "input": "get orange\nexit\n",
-            "expected_output": "-1"
+            "name": "Multiple deposits and prints",
+            "input": "5\ndeposit 200\nprint\ndeposit 300\nwithdraw 100\nprint\n",
+            "expected_output": "Owner: Alice | Balance: 1200.00\nOwner: Alice | Balance: 1400.00"
+        },
+        {
+            "name": "Unknown operation",
+            "input": "2\ntransfer 100\nprint\n",
+            "expected_output": "Unknown operation: transfer\nOwner: Alice | Balance: 1000.00"
         }
     ]
 
@@ -47,7 +51,7 @@ def run_tests(executable_path):
     print(f"Total: {len(test_cases)}")
     print(f"Passed: {len(test_cases) - len(failures)}")
     print(f"Failed: {len(failures)}")
-    
+
     if failures:
         print("\n--- FAILURES ---")
         for fail in failures:
@@ -55,9 +59,8 @@ def run_tests(executable_path):
     else:
         print("✅ All tests passed.")
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_xyz.py <path_to_executable>")
+        print("Usage: python test_account.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])

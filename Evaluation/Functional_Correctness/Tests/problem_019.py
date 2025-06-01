@@ -18,25 +18,24 @@ def run_test_case(executable_path, input_text, expected_output, test_name, failu
     except AssertionError as e:
         failures.append(f"[{test_name}] FAILED: {e}")
 
-
 def run_tests(executable_path):
     failures = []
 
     test_cases = [
         {
-            "name": "Add + Get",
-            "input": "add apple 10\nget apple\nexit\n",
-            "expected_output": "10"
+            "name": "Radius 7",
+            "input": "7\n",
+            "expected_output": "43.98"
         },
         {
-            "name": "Add + Restock + Get",
-            "input": "add banana 5\nrestock banana 3\nget banana\nexit\n",
-            "expected_output": "8"
+            "name": "Radius 0",
+            "input": "0\n",
+            "expected_output": "0.00"
         },
         {
-            "name": "Get Missing Item",
-            "input": "get orange\nexit\n",
-            "expected_output": "-1"
+            "name": "Radius 3.5",
+            "input": "3.5\n",
+            "expected_output": "21.99"
         }
     ]
 
@@ -47,7 +46,7 @@ def run_tests(executable_path):
     print(f"Total: {len(test_cases)}")
     print(f"Passed: {len(test_cases) - len(failures)}")
     print(f"Failed: {len(failures)}")
-    
+
     if failures:
         print("\n--- FAILURES ---")
         for fail in failures:
@@ -55,9 +54,8 @@ def run_tests(executable_path):
     else:
         print("✅ All tests passed.")
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_xyz.py <path_to_executable>")
+        print("Usage: python test_circle_circumference.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])
