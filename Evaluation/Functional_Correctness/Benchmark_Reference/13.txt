@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+typedef struct {
+    double celsius;
+    double (*toFahrenheit)(struct Temperature*);
+} Temperature;
+
+double toFahrenheit(Temperature* temp) {
+    return temp->celsius * 9.0 / 5 + 32;
+}
+
+int main() {
+    Temperature temp = {25.0, toFahrenheit};
+    printf("Temp in F: %.2f\n", temp.toFahrenheit(&temp));
+    return 0;
+}

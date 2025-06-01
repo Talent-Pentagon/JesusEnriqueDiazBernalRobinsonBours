@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+typedef struct {
+    char name[50];
+    double hoursWorked;
+    double hourlyRate;
+    double (*calculatePay)(struct Employee*);
+} Employee;
+
+double calculatePay(Employee* emp) {
+    return emp->hoursWorked * emp->hourlyRate;
+}
+
+int main() {
+    Employee emp = {"John Doe", 40, 15.0, calculatePay};
+    printf("Pay for %s: %.2f\n", emp.name, emp.calculatePay(&emp));
+    return 0;
+}

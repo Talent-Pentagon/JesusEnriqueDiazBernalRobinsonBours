@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char title[50];
+    char author[50];
+} Book;
+
+typedef struct {
+    Book* books;
+    int count;
+    void (*add)(struct Library*, const char*, const char*);
+    Book* (*find)(struct Library*, const char*);
+} Library;
+
+void addBook(Library* lib, const char* title, const char* author) {
+    lib->books = realloc(lib->books, sizeof(Book) * (lib->count + 1));
+    strcpy(lib->books[lib->count].title, title);
+    strcpy(lib->books[lib->count].author, author);
+    lib->count++;
+}
+
+Book* findBook(Library* lib, const char* title) {
+    for (int i = 0; i < lib->count; i++) {
+        if (strcmp(lib->books[i].title, title) == 0) {
+            return &lib->books[i];
+        }
+    }
+    return NULL;
+}
+
+int main() {
+    Library lib = {NULL, 0, addBook, findBook};
+    lib.add(&lib, "1984", "Orwell");
+    lib.add(&lib, "Dune", "Herbert");
+
+    Book* found = lib.find(&lib, "Dune");
+    if (found) printf("Found: %s by %s\n", found->title, found->author);
+    free(lib.books);
+    return 0;
+}

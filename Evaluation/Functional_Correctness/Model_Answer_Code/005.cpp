@@ -4,7 +4,7 @@ using namespace std;
 class Car {
     string model;
 public:
-    Car(string m) : model(m) {
+    Car(string m) {
         model = m;
     }
     void show() {
@@ -14,7 +14,7 @@ public:
 
 int main(int argc, char* argv[]) {
     if (argc < 2) return 1;
-    Car c(argv[1]);
+    Car c("default");
     c.show();
     return 0;
 }

@@ -8,40 +8,39 @@ import os
 def load_answer(data_model):
         
     test_id = data_model['test_module']
+    filename = data_model['filename']
     language = data_model['language']
-    return test_id, language
+    return test_id, filename, language
 
-def save_code(code, test_id, language):
+def save_code(code, filename, language):
     ext_map = {"java", "cpp", "c" }
     if language not in ext_map:
         raise ValueError(f"Unsupported language: {language}")
 
     output_folder = "Model_Answer_Code"
     os.makedirs(output_folder, exist_ok=True)
-    filename = os.path.join(output_folder, f"{test_id}.{language}")
+    filename = os.path.join(output_folder, f"{filename}")
     with open(filename, "w") as f:
         f.write(code)
-    return filename
+    return 0
 
 
 
 def compile_answer(filename, language):
     exe_name = "prog.exe"
+    src_file = os.path.join("Model_Answer_Code", filename)
     
     if language == "java":
-        src_file = filename
-        print(src_file)
-        compile_proc = subprocess.run(["javac", src_file], capture_output=True, text=True,timeout=2)
+        print(f"Compiling Java code from {src_file} ...")
+        compile_proc = subprocess.run(["javac", src_file], capture_output=True, text=True,timeout=10)
         if compile_proc.returncode != 0:
             print(f"Compilation failed: {compile_proc.stderr}")
             return None
-        # Return the class name (filename without .java)
         class_name = os.path.splitext(os.path.basename(src_file))[0]
         return class_name
 
 
     elif language == "cpp":
-        src_file = filename
         compile_proc = subprocess.run(["g++", src_file, "-o", "prog.exe"], capture_output=True, text=True)
         if compile_proc.returncode != 0:
             print(f"Compilation failed: {compile_proc.stderr}")
@@ -49,7 +48,6 @@ def compile_answer(filename, language):
         return exe_name
 
     elif language == "c":
-        src_file = filename
         compile_proc = subprocess.run(["gcc", src_file, "-o", "prog.exe"], capture_output=True, text=True)
         if compile_proc.returncode != 0:
             print(f"Compilation failed: {compile_proc.stderr}")
@@ -70,23 +68,24 @@ def load_test_runner(test_id):
 
 
 def main(model_results_path):
+    # JSON-escaped string
     with open(model_results_path, "r", encoding='utf-8') as f:
         data_model = json.load(f)
     
-    # input of k
     k = int(input("Enter the value of k: "))
     k_passes = 0
     for item in data_model:
         i = 0
         answer_passes = False
-        test_id, language = load_answer(item)
+        test_id, filename, language = load_answer(item)
         for answer in item['code']:
-            filename = save_code(answer, test_id, language)
+            save_code(answer, filename, language)
+            # filename = save_code(answer, filename, language)
             exe_path = compile_answer(filename, language)
             
             if exe_path is not None:
                 run_tests = load_test_runner(test_id)
-                print(f"Running tests for problem {test_id} ...")
+                print(f"\nRunning tests for problem {test_id} ... in  {language} with filename {filename}")
                 results = run_tests(exe_path)  # pass the executable path to test runner                
                 if results:
                     print("All tests passed.")
@@ -102,7 +101,7 @@ def main(model_results_path):
     pass_result = k_passes/ len(data_model) if data_model else 0
     print("\nk_passes:", k_passes)  
     print("Total problems:", len(data_model))
-    print(f"Pass@k: {pass_result*100}%\n")
+    print(f"Pass@{k}: {pass_result:.2%}\n")  # Redondear a dos decimales
 
 if __name__ == "__main__":
     import sys

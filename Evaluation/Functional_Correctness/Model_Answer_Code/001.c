@@ -25,7 +25,7 @@ int main()
     increment(myCounter);
     increment(myCounter);
 
-    printf("Count: %d\n", getCount(myCounter));
+    printf("%d\n", getCount(myCounter));
     free(myCounter);
     return 0;
 }
