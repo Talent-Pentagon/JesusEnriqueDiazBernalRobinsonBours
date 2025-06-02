@@ -33,7 +33,7 @@ int main() {
     scanf("%d", &n);  // Number of operations
 
     for (int i = 0; i < n; i++) {
-        char op[10];
+        char op[50];
         double amount;
         scanf("%s", op);
 
@@ -49,6 +49,9 @@ int main() {
             acc.print(&acc);
         } else {
             printf("Unknown operation: %s\n", op);
+            // Discard rest of the line to avoid reading parameters as next op
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
         }
     }
 

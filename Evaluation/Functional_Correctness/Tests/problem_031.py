@@ -18,26 +18,15 @@ def run_test_case(executable_path, input_text, expected_output, test_name, failu
     except AssertionError as e:
         failures.append(f"[{test_name}] FAILED: {e}")
 
-
 def run_tests(executable_path):
     failures = []
 
     test_cases = [
-        {
-            "name": "Add + Get",
-            "input": "add apple 10\nget apple\nexit\n",
-            "expected_output": "10"
-        },
-        {
-            "name": "Add + Restock + Get",
-            "input": "add banana 5\nrestock banana 3\nget banana\nexit\n",
-            "expected_output": "8"
-        },
-        {
-            "name": "Get Missing Item",
-            "input": "get orange\nexit\n",
-            "expected_output": "-1"
-        }
+        {"name": "Normal case", "input": "150 3\n", "expected_output": "Speed: 50.00 km/h"},
+        {"name": "Zero time", "input": "100 0\n", "expected_output": "Speed: 0.00 km/h"},
+        {"name": "Fractional values", "input": "123.4 2.5\n", "expected_output": "Speed: 49.36 km/h"},
+        {"name": "Zero distance", "input": "0 5\n", "expected_output": "Speed: 0.00 km/h"},
+        {"name": "Large values", "input": "1000000 250\n", "expected_output": "Speed: 4000.00 km/h"},
     ]
 
     for case in test_cases:
@@ -47,7 +36,7 @@ def run_tests(executable_path):
     print(f"Total: {len(test_cases)}")
     print(f"Passed: {len(test_cases) - len(failures)}")
     print(f"Failed: {len(failures)}")
-    
+
     if failures:
         print("\n--- FAILURES ---")
         for fail in failures:
@@ -55,9 +44,8 @@ def run_tests(executable_path):
     else:
         print("✅ All tests passed.")
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_xyz.py <path_to_executable>")
+        print("Usage: python test_motion_speed.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])

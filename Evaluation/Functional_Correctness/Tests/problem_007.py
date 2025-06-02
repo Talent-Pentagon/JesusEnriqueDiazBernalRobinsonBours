@@ -24,19 +24,29 @@ def run_tests(executable_path):
 
     test_cases = [
         {
-            "name": "Add + Get",
-            "input": "add apple 10\nget apple\nexit\n",
-            "expected_output": "10"
+            "name": "Initial Print",
+            "input": "print\nexit\n",
+            "expected_output": "Account #12345, Balance: 100.00"
         },
         {
-            "name": "Add + Restock + Get",
-            "input": "add banana 5\nrestock banana 3\nget banana\nexit\n",
-            "expected_output": "8"
+            "name": "Deposit and Print",
+            "input": "deposit 50\nprint\nexit\n",
+            "expected_output": "Account #12345, Balance: 150.00"
         },
         {
-            "name": "Get Missing Item",
-            "input": "get orange\nexit\n",
-            "expected_output": "-1"
+            "name": "Withdraw Success",
+            "input": "withdraw 30\nprint\nexit\n",
+            "expected_output": "Account #12345, Balance: 70.00"
+        },
+        {
+            "name": "Withdraw Fail",
+            "input": "withdraw 200\nexit\n",
+            "expected_output": "Insufficient funds."
+        },
+        {
+            "name": "Full Transaction",
+            "input": "deposit 20\nwithdraw 10\nprint\nexit\n",
+            "expected_output": "Account #12345, Balance: 110.00"
         }
     ]
 
@@ -58,6 +68,6 @@ def run_tests(executable_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_xyz.py <path_to_executable>")
+        print("Usage: python test_bank.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])

@@ -18,25 +18,24 @@ def run_test_case(executable_path, input_text, expected_output, test_name, failu
     except AssertionError as e:
         failures.append(f"[{test_name}] FAILED: {e}")
 
-
 def run_tests(executable_path):
     failures = []
 
     test_cases = [
         {
-            "name": "Add + Get",
-            "input": "add apple 10\nget apple\nexit\n",
-            "expected_output": "10"
+            "name": "Single Employee",
+            "input": "John 40 15.0\n",
+            "expected_output": "Pay for John: 600.00"
         },
         {
-            "name": "Add + Restock + Get",
-            "input": "add banana 5\nrestock banana 3\nget banana\nexit\n",
-            "expected_output": "8"
+            "name": "Multiple Employees",
+            "input": "Alice 35 20.0\nBob 50 18.5\n",
+            "expected_output": "Pay for Alice: 700.00\nPay for Bob: 925.00"
         },
         {
-            "name": "Get Missing Item",
-            "input": "get orange\nexit\n",
-            "expected_output": "-1"
+            "name": "Zero Hours",
+            "input": "Chris 0 25.0\n",
+            "expected_output": "Pay for Chris: 0.00"
         }
     ]
 
@@ -47,7 +46,7 @@ def run_tests(executable_path):
     print(f"Total: {len(test_cases)}")
     print(f"Passed: {len(test_cases) - len(failures)}")
     print(f"Failed: {len(failures)}")
-    
+
     if failures:
         print("\n--- FAILURES ---")
         for fail in failures:
@@ -55,9 +54,8 @@ def run_tests(executable_path):
     else:
         print("✅ All tests passed.")
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_xyz.py <path_to_executable>")
+        print("Usage: python test_employee.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])
