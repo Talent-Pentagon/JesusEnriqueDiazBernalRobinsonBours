@@ -1,7 +1,4 @@
 #include <iostream>
-#include <string>
-#include <memory>
-
 using namespace std;
 
 class Shape {
@@ -29,21 +26,11 @@ public:
 };
 
 int main() {
-    string command;
-    while (cin >> command) {
-        if (command == "rectangle") {
-            double w, h;
-            cin >> w >> h;
-            unique_ptr<Shape> rect = make_unique<Rectangle>(w, h);
-            cout << "Rectangle area: " << rect->area() << endl;
-        } else if (command == "circle") {
-            double r;
-            cin >> r;
-            unique_ptr<Shape> circ = make_unique<Circle>(r);
-            cout << "Circle area: " << circ->area() << endl;
-        } else if (command == "exit") {
-            break;
-        }
-    }
+    Shape* rect = new Rectangle(4.0, 5.0);
+    Shape* circ = new Circle(3.0);
+    cout << "Rectangle area: " << rect->area() << endl;
+    cout << "Circle area: " << circ->area() << endl;
+    delete rect;
+    delete circ;
     return 0;
 }

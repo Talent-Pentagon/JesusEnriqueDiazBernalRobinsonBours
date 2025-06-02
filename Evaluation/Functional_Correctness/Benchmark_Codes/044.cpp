@@ -1,8 +1,15 @@
-// Problem 044 - C++
-
 #include <iostream>
+using namespace std;
+
+class Calculator {
+public:
+    int sum(int a, int b) {
+        int result = a + b;
+        return result;
+    }
+};
 
 int main() {
-    // TODO: Implement problem 044
-    return 0;
+    Calculator c;
+    cout << c.sum(3, 4) << endl;
 }

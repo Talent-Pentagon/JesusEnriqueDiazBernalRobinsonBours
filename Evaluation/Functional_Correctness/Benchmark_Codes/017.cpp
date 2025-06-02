@@ -1,8 +1,12 @@
-// Problem 017 - C++
-
 #include <iostream>
+using namespace std;
+
+class Box {
+public:
+    int width = 10;
+};
 
 int main() {
-    // TODO: Implement problem 017
-    return 0;
+    Box b;
+    cout << b.width << endl;
 }

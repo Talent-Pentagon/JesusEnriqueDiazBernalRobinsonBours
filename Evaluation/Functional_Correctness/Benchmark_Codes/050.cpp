@@ -1,8 +1,22 @@
-// Problem 050 - C++
-
 #include <iostream>
+using namespace std;
+
+class Parent {
+public:
+    virtual void greet() {
+        cout << "Hello from Parent" << endl;
+    }
+};
+
+class Child : public Parent {
+public:
+    void greet() override {
+        cout << "Hello from Child" << endl;
+    }
+};
 
 int main() {
-    // TODO: Implement problem 050
-    return 0;
+    Parent* p = new Child();
+    p->greet();
+    delete p;
 }

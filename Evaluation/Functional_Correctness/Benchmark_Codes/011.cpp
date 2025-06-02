@@ -1,18 +1,18 @@
 #include <iostream>
 using namespace std;
 
-class Rectangle {
-private:
-    int width, height;
+class Person {
+    string name;
 public:
-    Rectangle(int w, int h) : width(w), height(h) {}
-    int area() { return width * height; }
+    Person(string n) {
+        name = n;
+    }
+    void sayName() {
+        cout << "Name is: " << name << endl;
+    }
 };
 
 int main() {
-    int w, h;
-    cin >> w >> h;
-    Rectangle rect(w, h);
-    cout << rect.area() << endl;
-    return 0;
+    Person p("Alice");
+    p.sayName();
 }

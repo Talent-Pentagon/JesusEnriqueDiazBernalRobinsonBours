@@ -2,10 +2,9 @@ import subprocess
 import os
 import sys
 
-def run_test_case(executable_path, input_text, expected_output, test_name, failures):
+def run_test_case(executable_path, expected_output, test_name, failures):
     result = subprocess.run(
         [os.path.abspath(executable_path)],
-        input=input_text,
         text=True,
         capture_output=True
     )
@@ -14,7 +13,7 @@ def run_test_case(executable_path, input_text, expected_output, test_name, failu
 
     try:
         assert actual_output == expected_output, \
-            f"Expected: '{expected_output}', Got: '{actual_output}'"
+            f"Expected:\n'{expected_output}'\nGot:\n'{actual_output}'"
     except AssertionError as e:
         failures.append(f"[{test_name}] FAILED: {e}")
 
@@ -23,24 +22,13 @@ def run_tests(executable_path):
 
     test_cases = [
         {
-            "name": "5x4 Rectangle",
-            "input": "5 4\n",
-            "expected_output": "20"
-        },
-        {
-            "name": "10x10 Rectangle",
-            "input": "10 10\n",
-            "expected_output": "100"
-        },
-        {
-            "name": "0x5 Rectangle",
-            "input": "0 5\n",
-            "expected_output": "0"
+            "name": "Default test",
+            "expected_output": "Name is: Alice"
         }
     ]
 
     for case in test_cases:
-        run_test_case(executable_path, case["input"], case["expected_output"], case["name"], failures)
+        run_test_case(executable_path, case["expected_output"], case["name"], failures)
 
     print("\n--- TEST RESULTS ---")
     print(f"Total: {len(test_cases)}")
@@ -56,6 +44,6 @@ def run_tests(executable_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python test_rectangle.py <path_to_executable>")
+        print("Usage: python test_person.py <path_to_executable>")
         sys.exit(1)
     run_tests(sys.argv[1])

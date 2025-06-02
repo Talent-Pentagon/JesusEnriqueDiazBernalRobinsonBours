@@ -1,8 +1,8 @@
-// Problem 002 - C++
-
-#include <iostream>
+#include <stdio.h>
 
 int main() {
-    // TODO: Implement problem 002
+    int a, b;
+    scanf("%d %d", &a, &b);
+    printf("%d\n", a + b);
     return 0;
 }

@@ -1,8 +1,13 @@
-// Problem 059 - C++
-
 #include <iostream>
+using namespace std;
+
+class Leak {
+public:
+    Leak() { cout << "Allocated" << endl; }
+    ~Leak() { cout << "Deallocated" << endl; }
+};
 
 int main() {
-    // TODO: Implement problem 059
-    return 0;
+    Leak* l = new Leak();
+    delete l;
 }

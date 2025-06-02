@@ -1,8 +1,14 @@
-// Problem 020 - C++
-
 #include <iostream>
+using namespace std;
+
+class Item {
+public:
+    ~Item() {
+        cout << "Item destroyed" << endl;
+    }
+};
 
 int main() {
-    // TODO: Implement problem 020
-    return 0;
+    Item i;
+    i.~Item();
 }

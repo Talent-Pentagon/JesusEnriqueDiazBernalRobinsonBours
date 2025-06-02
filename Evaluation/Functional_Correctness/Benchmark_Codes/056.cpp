@@ -1,8 +1,24 @@
-// Problem 056 - C++
-
 #include <iostream>
+using namespace std;
+
+class SelfCopy {
+public:
+    int value;
+
+    SelfCopy(int v) : value(v) {}
+
+    SelfCopy(const SelfCopy& other) {
+        value = other.value;
+    }
+
+    void print() {
+        cout << "Value: " << value << endl;
+    }
+};
 
 int main() {
-    // TODO: Implement problem 056
+    SelfCopy a(10);
+    SelfCopy b = a;
+    b.print();
     return 0;
 }

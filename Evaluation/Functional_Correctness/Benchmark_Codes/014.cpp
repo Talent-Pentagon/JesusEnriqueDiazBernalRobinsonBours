@@ -1,8 +1,16 @@
-// Problem 014 - C++
-
 #include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    Animal(int age) { cout << "Animal age: " << age << endl; }
+};
+
+class Dog : public Animal {
+public:
+    Dog(int a) : Animal(a) {}
+};
 
 int main() {
-    // TODO: Implement problem 014
-    return 0;
+    Dog d(5);
 }

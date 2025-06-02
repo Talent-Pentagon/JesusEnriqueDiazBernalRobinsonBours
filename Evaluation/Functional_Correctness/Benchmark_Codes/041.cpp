@@ -1,8 +1,16 @@
-// Problem 041 - C++
-
 #include <iostream>
+using namespace std;
+
+class Number {
+public:
+    int get() { return 42; }
+};
+
+void display(number n) { 
+    cout << "Value: " << n << endl;
+}
 
 int main() {
-    // TODO: Implement problem 041
-    return 0;
+    Number n;
+    display(n);
 }

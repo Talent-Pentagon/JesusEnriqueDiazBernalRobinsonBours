@@ -1,8 +1,14 @@
-// Problem 026 - C++
-
 #include <iostream>
+using namespace std;
+
+class Counter {
+public:
+    static int count;
+};
+
+int Counter::count = 10;
 
 int main() {
-    // TODO: Implement problem 026
-    return 0;
+    Counter c;
+    cout << c.count << endl;
 }

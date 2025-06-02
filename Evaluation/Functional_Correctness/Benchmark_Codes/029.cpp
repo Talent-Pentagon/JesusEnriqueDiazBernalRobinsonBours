@@ -1,8 +1,11 @@
-// Problem 029 - C++
-
 #include <iostream>
+using namespace std;
+
+class Interface {
+public:
+    virtual void execute() = 0;
+};
 
 int main() {
-    // TODO: Implement problem 029
-    return 0;
+    Interface* i = new Derived(); 
 }

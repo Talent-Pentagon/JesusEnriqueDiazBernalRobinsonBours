@@ -1,8 +1,18 @@
-// Problem 053 - C++
-
 #include <iostream>
+using namespace std;
+
+class Base {
+    virtual void show();
+};
+
+class Derived : public Base {
+public:
+    void show() override { 
+        cout << "Derived" << endl;
+    }
+};
 
 int main() {
-    // TODO: Implement problem 053
-    return 0;
+    Derived d;
+    d.show();
 }

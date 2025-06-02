@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Base "class"
 typedef struct Dinosaur {
     char name[50];
-    int age;          // in millions of years
-    double length;    // in meters
+    int age;          
+    double length;    
 
-    void (*roar)(struct Dinosaur*); // method pointer
+    void (*roar)(struct Dinosaur*); 
     void (*info)(struct Dinosaur*);
 } Dinosaur;
 
@@ -23,9 +22,8 @@ void Dinosaur_info(Dinosaur* dino) {
     printf("Length: %.2f meters\n", dino->length);
 }
 
-// Derived "class": T-Rex
 typedef struct TRex {
-    Dinosaur base;  // inherit Dinosaur fields and methods
+    Dinosaur base;  
 } TRex;
 
 void TRex_roar(Dinosaur* dino) {
@@ -38,17 +36,17 @@ void TRex_hunt(TRex* trex) {
 
 TRex* TRex_new(int age, double length) {
     TRex* trex = malloc(sizeof(TRex));
+    if (!trex) return NULL;
     strcpy(trex->base.name, "T-Rex");
     trex->base.age = age;
     trex->base.length = length;
 
     trex->base.roar = TRex_roar;
-    trex->base.info = Dinosaur_info; // reuse base info method
+    trex->base.info = Dinosaur_info; 
 
     return trex;
 }
 
-// Derived "class": Triceratops
 typedef struct Triceratops {
     Dinosaur base;
 } Triceratops;
@@ -63,6 +61,7 @@ void Triceratops_defend(Triceratops* tri) {
 
 Triceratops* Triceratops_new(int age, double length) {
     Triceratops* tri = malloc(sizeof(Triceratops));
+    if (!tri) return NULL;
     strcpy(tri->base.name, "Triceratops");
     tri->base.age = age;
     tri->base.length = length;
@@ -78,13 +77,19 @@ int main() {
     Dinosaur* dino1 = (Dinosaur*)TRex_new(68, 12.3);
     Dinosaur* dino2 = (Dinosaur*)Triceratops_new(68, 9.0);
 
+    if (!dino1 || !dino2) {
+        fprintf(stderr, "Memory allocation failed\n");
+        free(dino1);
+        free(dino2);
+        return 1;
+    }
+
     dino1->info(dino1);
     dino1->roar(dino1);
 
     dino2->info(dino2);
     dino2->roar(dino2);
 
-    // Cast back to derived types to access specific methods
     TRex* trex = (TRex*)dino1;
     TRex_hunt(trex);
 

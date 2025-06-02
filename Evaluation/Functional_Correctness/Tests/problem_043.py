@@ -37,8 +37,34 @@ def run_tests(executable_path):
             "name": "Get Missing Item",
             "input": "get orange\nexit\n",
             "expected_output": "-1"
+        },
+        {
+            "name": "Add Multiple Items + Get",
+            "input": "add mango 12\nadd grapes 20\nget grapes\nexit\n",
+            "expected_output": "20"
+        },
+        {
+            "name": "Restock Missing Item (should not add)",
+            "input": "restock kiwi 5\nget kiwi\nexit\n",
+            "expected_output": "-1"
+        },
+        {
+            "name": "Add Duplicate Item (should overwrite or handle error)",
+            "input": "add peach 7\nadd peach 3\nget peach\nexit\n",
+            "expected_output": "3"  # Or "10" if it accumulates; depends on implementation
+        },
+        {
+            "name": "Add + Get + Restock + Get",
+            "input": "add pear 4\nget pear\nrestock pear 6\nget pear\nexit\n",
+            "expected_output": "4\n10"
+        },
+        {
+            "name": "Add Large Quantity + Get",
+            "input": "add watermelon 100000\nget watermelon\nexit\n",
+            "expected_output": "100000"
         }
     ]
+
 
     for case in test_cases:
         run_test_case(executable_path, case["input"], case["expected_output"], case["name"], failures)
