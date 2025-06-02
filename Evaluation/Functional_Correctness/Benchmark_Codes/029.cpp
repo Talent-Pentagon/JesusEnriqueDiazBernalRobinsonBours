@@ -1,11 +1,21 @@
 #include <iostream>
 using namespace std;
 
-class Interface {
+class Box {
+private:
+    int length;
+    int width;
+
 public:
-    virtual void execute() = 0;
+    Box(int l, int w) : length(l), width(w) {}
+
+    int getArea() {
+        return length * width;
+    }
 };
 
 int main() {
-    Interface* i = new Derived(); 
+    Box b(4, 5);
+    cout << "Area: " << b.getArea() << endl;
+    return 0;
 }

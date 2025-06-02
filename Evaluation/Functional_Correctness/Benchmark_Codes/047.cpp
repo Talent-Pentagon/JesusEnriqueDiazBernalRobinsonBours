@@ -1,25 +1,20 @@
 #include <iostream>
 using namespace std;
 
-class Base {
+class Calculator {
 public:
-    virtual void speak() {
-        cout << "Base" << endl;
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    int multiply(int a, int b) {
+        return a * b;
     }
 };
-
-class Derived : public Base {
-public:
-    void speak() override {
-        cout << "Derived" << endl;
-    }
-};
-
-void announce(Bas&e b) {
-    b.speak(); 
-}
 
 int main() {
-    Derived d;
-    announce(d);
+    Calculator calc;
+    int result = calc.add(3, 4);
+    cout << "Result: " << result << endl;
+    return 0;
 }
