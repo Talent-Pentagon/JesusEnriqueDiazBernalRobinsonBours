@@ -15,6 +15,7 @@ void SEPSPRIME();
 void STATEMENTS();
 void STATEMENTSPRIME();
 void CONFIDENCE();
+void STUFF();
 
 // Variables globales
 char **tokens;
@@ -121,6 +122,29 @@ void STATEMENTS(){
     }
 }
 
+void STUFF(){
+    if(strcmp(current_token, "1") == 0){
+        Match("1"); // Match (
+        IDS(); // Clasificar identificadores
+        STUFF(); // Clasificar stuff
+        Match("2"); // Match )
+        STUFF(); // Clasificar stuff
+    }
+    else if(strcmp(current_token, "7") == 0 ){
+        IDS();
+        STUFF(); // Clasificar stuff
+    }
+    else if(strcmp(current_token, "7") == 0 || strcmp(current_token, "5") == 0 || strcmp(current_token, "6") == 0 
+    || strcmp(current_token, "3") == 0 || strcmp(current_token, "$") == 0 || strcmp(current_token, "4") == 0
+    || strcmp(current_token, "2") == 0 || strcmp(current_token, "1") == 0){
+        return; // EPSILON
+    }
+    else{
+        printf("Error: token '%s' no coincide con ninguna regla de stuff.\n", current_token);
+        CONFIDENCE(); // Error
+    }
+}
+
 // Funcion para clasificar separadores prime
 void SEPSPRIME(){
     if(strcmp(current_token, "3") == 0){
@@ -141,7 +165,7 @@ void SEPSPRIME(){
 void SEPS(){
     if(strcmp(current_token, "1") == 0){
         Match("1"); // Match (
-        IDS(); // Clasificar identificadores
+        STUFF();
         Match("2"); // Match )
         SEPSPRIME(); // Clasificar separadores prime
     }

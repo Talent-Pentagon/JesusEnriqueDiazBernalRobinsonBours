@@ -63,6 +63,7 @@ def enrich_dataset(dataset):
         sample["classification"] = classification
         sample["confiability"] = confiability
         new_samples.append(sample)
+        print(f"Classification: {classification}, Confiability: {confiability}")
     print(f"Classification counts: oop={oop}, hy={hy}, pro={pro}")
     print(f"Total samples processed: {len(new_samples)}")
     return Dataset.from_list(new_samples)
