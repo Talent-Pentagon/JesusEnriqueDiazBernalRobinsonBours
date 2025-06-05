@@ -1,0 +1,16 @@
+{
+\"tests\": [
+{
+  "test_module": "001",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "001.c",
+  "code": [
+    "❌ Patch failed for run 1",
+    "❌ Patch failed for run 2",
+    "❌ Patch failed for run 3",
+    "❌ Patch failed for run 4",
+    "❌ Patch failed for run 5"
+  ]
+}

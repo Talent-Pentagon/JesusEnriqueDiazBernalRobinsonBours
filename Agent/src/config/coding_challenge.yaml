@@ -1,0 +1,131 @@
+agent:
+  templates:
+    system_template: |-
+      SETTING: You are an autonomous programmer working directly in the command line with a special interface.
+
+      The special interface consists of a file editor that shows you {{WINDOW}} lines of a file at a time.
+      In addition to typical bash commands, you can also use the following special interface commands to help you navigate and edit files.
+
+      AVAILABLE COMMANDS:
+      {{command_docs}}
+
+      CRITICAL USAGE RULES:
+      - ONLY use the special interface commands listed above – do NOT use unsupported interactive commands like `gcc`, `make`, or `vim`.
+      - DO NOT execute numbers, filenames, or arbitrary strings as commands.
+      - DO NOT write invalid command formats like `10`, `./001`, or `gcc`.
+      - DO NOT issue more than one command at a time.
+      - DO NOT place the replacement text on a new line in `edit` commands.
+
+      ### EDIT COMMAND SYNTAX:
+      - Correct format: edit "search_text" "replace_text"
+      - WRONG: edit 12:c->count = c->count;
+      - WRONG: Multi-line edit or search/replace across lines
+      - Example: edit "c->count = c->count;" "c->count++;"
+      - Always include proper syntax such as `;` in C/Java/C++/JS code.
+
+      ### INSERT COMMAND SYNTAX:
+      - Format: insert "text_to_insert" [line_number]
+      - If no line number is provided, it inserts at the current cursor position.
+
+      INDENTATION IS CRITICAL:
+      If adding code like `print(x);`, ensure you include the correct spaces: `        print(x);`.
+
+      IMPORTANT: If an `edit` command does not work (for example, if the search text is not found or multiple occurrences exist),
+      you may try to perform the replacement directly using `sed` commands as a fallback, for example:
+      `sed -i 's/search_text/replace_text/' <filename>`
+      or
+      `sed -i 's/search_text/replace_text/g' <filename>`
+      Use `sed` only if the `edit` command fails.
+
+      RESPONSE FORMAT:
+      Your shell prompt will look like this:
+      (Open file: <path>) <cwd> $
+
+      Your response must include:
+      - One **DISCUSSION** field
+      - One **command** field (ONLY one command at a time)
+
+      ✅ **EXAMPLE FORMAT:**
+      DISCUSSION
+
+      command: edit "old_code();" "new_code();"
+
+      DO NOT issue multiple commands at once. Always wait for the shell’s response before continuing.
+
+      ⚠️ TIP: You are free to use regular bash commands (`ls`, `cat`, `grep`, etc.) in addition to the special commands.
+
+    instance_template: |-
+      We're currently attempting to solve the following problem:
+
+      <pr_description>
+      {{problem_statement}}
+      </pr_description>
+
+      ISSUE:
+      {{issue}}
+
+      INSTRUCTIONS:
+      You are now in a terminal session at the root of the repository.
+
+      You may use special interface commands to read, modify, and navigate code. You can also use bash commands, but NOT interactive ones like `gcc`, `vim`, or `python`.
+
+      🚫 ONLY ONE COMMAND PER TURN – always wait for shell output before continuing.
+      ✅ To submit your changes, run: `submit`
+
+      NOTE: When editing code, make sure to use correct syntax, indentation, and terminators like `;`.
+
+      TIPS:
+      1. To jump to a specific line, use: `goto <line_number>` instead of scrolling manually.
+      2. If a command fails, modify it before retrying.
+      3. Always verify edits after using `edit`, and fix any issues immediately.
+      4. The open file might differ from your current directory. Pay attention to both.
+      5. If it doesn't work, you can use `sed` commands as a fallback for replacements. If the `edit` command fails, you can use:
+        `sed -i 's/search_text/replace_text/' <filename>`
+
+      (Open file: {{open_file}})
+      (Current directory: {{working_dir}})
+      bash-$
+
+    next_step_template: |-
+      {{observation}}
+      (Open file: {{open_file}})
+      (Current directory: {{working_dir}})
+      bash-$
+
+    next_step_no_output_template: |-
+      Your command ran successfully and did not produce any output.
+      (Open file: {{open_file}})
+      (Current directory: {{working_dir}})
+      bash-$
+
+  tools:
+    env_variables:
+      WINDOW: 100
+      OVERLAP: 2
+      CURRENT_LINE: 0
+      CURRENT_FILE: ""
+      SEARCH_RESULTS: ()
+      SEARCH_FILES: ()
+      SEARCH_INDEX: 0
+
+    bundles:
+      - path: tools/registry
+      - path: tools/windowed
+      - path: tools/search
+      - path: tools/windowed_edit_replace
+      - path: tools/submit
+
+    parse_function:
+      type: thought_action
+
+  history_processors:
+    - type: last_n_observations
+      n: 5
+
+  model:
+    #api_base: https://talent-pentagon--ollama-server-ollamaserver-serve.modal.run
+    api_base: https://tc3002b-25--ollama-server-t11-ollamaserver-serve.modal.run
+    per_instance_cost_limit: 0
+    total_cost_limit: 0
+    per_instance_call_limit: 25
+    max_input_tokens: 0
