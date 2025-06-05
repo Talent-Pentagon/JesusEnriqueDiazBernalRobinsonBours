@@ -1,0 +1,8 @@
+{
+"model": "hf.co/GhostMopey115/model_16_final",
+  "temperature": 0.35,
+  "top_p": 1,
+  "coherence": 0.00,
+  "k": 3,
+  "time_elapsed": "10:25:17"
+}

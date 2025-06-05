@@ -1,0 +1,10 @@
+[    {
+        "model": "qwen3:14b",
+        "temperature": 0.35,
+        "top_p": 1,
+        "coherence": 0,
+        "k": 3,
+        "time_elapsed": "03:08:51",
+        "code": []
+    }
+]
