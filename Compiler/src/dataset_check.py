@@ -41,7 +41,7 @@ def run_analysis(code):
 
 def load_3k_with_tag(language):
     streamed = load_dataset("ObscuraCoder/ObscuraX", language, split="train", streaming=True)
-    samples = list(islice(streamed, 1000))
+    samples = list(islice(streamed, 15000))
     for s in samples:
         s["lang"] = language
     return Dataset.from_list(samples)
