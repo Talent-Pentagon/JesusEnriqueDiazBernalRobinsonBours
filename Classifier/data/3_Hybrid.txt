@@ -1,0 +1,19 @@
+class MiClase {
+    int atributo;
+
+    void mostrar() {
+        atributo = 10;
+    }
+};
+
+int global = 5;
+
+void utilidad() {
+    global = global + 1;
+}
+
+main() {
+    MiClase objeto;
+    objeto.mostrar();
+    utilidad();
+}

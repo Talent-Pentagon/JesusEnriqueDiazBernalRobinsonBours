@@ -1,0 +1,31 @@
+class A {
+    int a;
+};
+
+struct B {
+    int b;
+};
+
+class C {
+    int c;
+};
+
+struct D {
+    int d;
+};
+
+class E {
+    int e;
+};
+
+struct F {
+    int f;
+};
+
+struct G {
+    int g;
+};
+
+class H {
+    int h;
+}
