@@ -1,0 +1,1071 @@
+{
+\"tests\": [
+{
+  "test_module": "028",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "028.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct Dinosaur {\n    char name[50];\n    int age;          \n    double length;    \n\n    void (*roar)(struct Dinosaur*);\n    void (*info)(struct Dinosaur*);\n} Dinosaur;\n\n// Base methods\nvoid Dinosaur_roar(Dinosaur* dino) {\n    printf(\"%s roars loudly!\\n\", dino->name);\n}\n\nvoid Dinosaur_info(Dinosaur* dino) {\n    printf(\"Name: %s\\n\", dino->name);\n    printf(\"Age: %d million years ago\\n\", dino->age);\n    printf(\"Length: %.2f meters\\n\", dino->length);\n}\n\n\ntypedef struct TRex {\n    Dinosaur base;  \n} TRex;\n\nvoid TRex_roar(Dinosaur* dino) {\n    printf(\"%s lets out a terrifying roar!\\n\", dino->name);\n}\n\nvoid TRex_hunt(TRex* trex) {\n    printf(\"%s is hunting its prey.\\n\", trex->base.name);\n}\n\nTRex* TRex_new(int age, double length) {\n    TRex* trex = malloc(sizeof(TRex));\n    if (!trex) return NULL;\n    strcpy(trex->base.name, \"T-Rex\");\n    trex->base.age = age;\n    trex->base.length = length;\n\n    trex->base.roar = TRex_roar;\n    trex->base.info = Dinosaur_info; \n\n    return trex;\n}\n\ntypedef struct Triceratops {\n    Dinosaur base;\n} Triceratops;\n\nvoid Triceratops_roar(Dinosaur* dino) {\n    printf(\"%s makes a grunt sound.\\n\", dino->name);\n}\n\nvoid Triceratops_defend(Triceratops* tri) {\n    printf(\"%s defends itself with its horns.\\n\", tri->base.name);\n}\n\nTriceratops* Triceratops_new(int age, double length) {\n    Triceratops* tri = malloc(sizeof(Triceratops));\n    if (!tri) return NULL;\n    strcpy(tri->base.name, \"Triceratops\");\n    tri->base.age = age;\n    tri->base.length = length;\n\n    tri->base.roar = Triceratops_roar;\n    tri->base.info = Dinosaur_info;\n\n    return tri;\n}\n\nint main() {\n    Dinosaur* dino1 = (Dinosaur*)TRex_new(68, 12.3);\n    Dinosaur* dino2 = (Dinosaur*)Triceratops_new(68, 9.0);\n\n    if (!dino1 || !dino2) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        free(dino1);\n        free(dino2);\n        return 1;\n    }\n\n    dino1->info(dino1);\n    dino1->roar(dino1);\n\n    dino2->info(dino2);\n    dino2->roar(dino2);\n\n    TRex* trex = (TRex*)dino1;\n    TRex_hunt(trex);\n\n    Triceratops* tri = (Triceratops*)dino2;\n    Triceratops_defend(tri);\n\n    free(trex);\n    free(tri);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 158202,
+        "tokens_received": 8692,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct Dinosaur {\n    char name[50];\n    int age;          \n    double length;    \n\n    void (*roar)(struct Dinosaur*);\n    void (*info)(struct Dinosaur*);\n} Dinosaur;\n\n// Base methods\nvoid Dinosaur_roar(Dinosaur* dino) {\n    printf(\"%s roars loudly!\\n\", dino->name);\n}\n\nvoid Dinosaur_info(Dinosaur* dino) {\n    printf(\"Name: %s\\n\", dino->name);\n    printf(\"Age: %d million years ago\\n\", dino->age);\n    printf(\"Length: %.2f meters\\n\", dino->length);\n}\n\n\ntypedef struct TRex {\n    Dinosaur base;  \n} TRex;\n\nvoid TRex_roar(Dinosaur* dino) {\n    printf(\"%s lets out a terrifying roar!\\n\", dino->name);\n}\n\nvoid TRex_hunt(TRex* trex) {\n    printf(\"%s is hunting its prey.\\n\", trex->base.name);\n}\n\nTRex* TRex_new(int age, double length) {\n    TRex* trex = malloc(sizeof(TRex));\\n    if (trex == NULL) {\\n        fprintf(stderr, \"Memory allocation failed\\n\");\\n        return 1;\\n    }\n    if (!trex) return NULL;\n    strcpy(trex->base.name, \"T-Rex\");\n    trex->base.age = age;\n    trex->base.length = length;\n\n    trex->base.roar = TRex_roar;\n    trex->base.info = Dinosaur_info; \n\n    return trex;\n}\n\ntypedef struct Triceratops {\n    Dinosaur base;\n} Triceratops;\n\nvoid Triceratops_roar(Dinosaur* dino) {\n    printf(\"%s makes a grunt sound.\\n\", dino->name);\n}\n\nvoid Triceratops_defend(Triceratops* tri) {\n    printf(\"%s defends itself with its horns.\\n\", tri->base.name);\n}\n\nTriceratops* Triceratops_new(int age, double length) {\n    Triceratops* tri = malloc(sizeof(Triceratops));\n    if (!tri) return NULL;\n    strcpy(tri->base.name, \"Triceratops\");\n    tri->base.age = age;\n    tri->base.length = length;\n\n    tri->base.roar = Triceratops_roar;\n    tri->base.info = Dinosaur_info;\n\n    return tri;\n}\n\nint main() {\n    Dinosaur* dino1 = (Dinosaur*)TRex_new(68, 12.3);\n    Dinosaur* dino2 = (Dinosaur*)Triceratops_new(68, 9.0);\n\n    if (!dino1 || !dino2) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        free(dino1);\n        free(dino2);\n        return 1;\n    }\n\n    dino1->info(dino1);\n    dino1->roar(dino1);\n\n    dino2->info(dino2);\n    dino2->roar(dino2);\n\n    TRex* trex = (TRex*)dino1;\n    TRex_hunt(trex);\n\n    Triceratops* tri = (Triceratops*)dino2;\n    Triceratops_defend(tri);\n\n    free(trex);\n    free(tri);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 208347,
+        "tokens_received": 12519,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct Dinosaur {\n    char name[50];\n    int age;          \n    double length;    \n\n    void (*roar)(struct Dinosaur*);\n    void (*info)(struct Dinosaur*);\n} Dinosaur;\n\n// Base methods\nvoid Dinosaur_roar(Dinosaur* dino) {\n    printf(\"%s roars loudly!\\n\", dino->name);\n}\n\nvoid Dinosaur_info(Dinosaur* dino) {\n    printf(\"Name: %s\\n\", dino->name);\n    printf(\"Age: %d million years ago\\n\", dino->age);\n    printf(\"Length: %.2f meters\\n\", dino->length);\n}\n\n\ntypedef struct TRex {\n    Dinosaur base;  \n} TRex;\n\nvoid TRex_roar(Dinosaur* dino) {\n    printf(\"%s lets out a terrifying roar!\\n\", dino->name);\n}\n\nvoid TRex_hunt(TRex* trex) {\n    printf(\"%s is hunting its prey.\\n\", trex->base.name);\n}\n\nTRex* TRex_new(int age, double length) {\n    TRex* trex = malloc(sizeof(TRex));\\n    if (trex == NULL) {\\n        fprintf(stderr, \"Memory allocation failed\\n\");\\n        return 1;\\n    }\n    if (!trex) return NULL;\n    strcpy(trex->base.name, \"T-Rex\");\n    trex->base.age = age;\n    trex->base.length = length;\n\n    trex->base.roar = TRex_roar;\n    trex->base.info = Dinosaur_info; \n\n    return trex;\n}\n\ntypedef struct Triceratops {\n    Dinosaur base;\n} Triceratops;\n\nvoid Triceratops_roar(Dinosaur* dino) {\n    printf(\"%s makes a grunt sound.\\n\", dino->name);\n}\n\nvoid Triceratops_defend(Triceratops* tri) {\n    printf(\"%s defends itself with its horns.\\n\", tri->base.name);\n}\n\nTriceratops* Triceratops_new(int age, double length) {\n    Triceratops* tri = malloc(sizeof(Triceratops));\n    if (!tri) return NULL;\n    strcpy(tri->base.name, \"Triceratops\");\n    tri->base.age = age;\n    tri->base.length = length;\n\n    tri->base.roar = Triceratops_roar;\n    tri->base.info = Dinosaur_info;\n\n    return tri;\n}\n\nint main() {\n    Dinosaur* dino1 = (Dinosaur*)TRex_new(68, 12.3);\n    Dinosaur* dino2 = (Dinosaur*)Triceratops_new(68, 9.0);\n\n    if (!dino1 || !dino2) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        free(dino1);\n        free(dino2);\n        return 1;\n    }\n\n    dino1->info(dino1);\n    dino1->roar(dino1);\n\n    dino2->info(dino2);\n    dino2->roar(dino2);\n\n    TRex* trex = (TRex*)dino1;\n    TRex_hunt(trex);\n\n    Triceratops* tri = (Triceratops*)dino2;\n    Triceratops_defend(tri);\n\n    free(trex);\n    free(tri);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 205528,
+        "tokens_received": 22008,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "029",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "029.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Box { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; {\nprivate:\n    int length;\n    int width;\n\npublic:\n    Box(int l, int w) : length(l), width(w) {}\n\n    int getArea() {\n        return length * width;\n    }\n};\n\nint main() {\n    Box b(4, 5);\n    cout << \"Area: \" << b.length * b.width << endl;\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 184135,
+        "tokens_received": 11267,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Box { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; {\nprivate:\n    int length;\n    int width;\n\npublic:\n    Box(int l, int w) : length(l), width(w) {}\n\n    int getArea() {\n        return length * width;\n    }\n};\n\nint main() {\n    Box b(4, 5);\n    cout << \"Area: \" << b.length * b.width << endl;\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 92792,
+        "tokens_received": 3195,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Box { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; { virtual ~Box() = default; {\nprivate:\n    int length;\n    int width;\n\npublic:\n    Box(int l, int w) : length(l), width(w) {}\n\n    int getArea() {\n        return length * width;\n    }\n};\n\nint main() {\n    Box b(4, 5);\n    cout << \"Area: \" << b.length * b.width << endl;\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 371443,
+        "tokens_received": 13302,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "030",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "Firewall.java",
+  "code": [
+    {
+      "code": "class Packet {\n    String sourceIP;\n    String destIP;\n    int port;\n\n    public Packet(String sourceIP, String destIP, int port) {\n        this.sourceIP = sourceIP;\n        this.destIP = destIP;\n        this.port = port;\n    }\n}\n\nclass FirewallRule extends Packet {\n    public FirewallRule(String sourceIP, String destIP, int port) {\n        super(sourceIP, destIP, port);\n    }\n\n    public boolean isAllowed() {\n        return !(port == 22 && port == 23);\n    }\n}\n\npublic class Firewall {\n    public static void main(String[] args) {\n        if (args.length < 3) {\n            System.out.println(\"Usage: java Firewall <sourceIP> <destIP> <port>\");\n            return;\n        }\n        String src = args[0];\n        String dst = args[1];\n        int port;\n        try {\n            port = Integer.parseInt(args[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Port must be an integer.\");\n            return;\n        }\n        FirewallRule rule = new FirewallRule(src, dst, port);\n        if (rule.isAllowed()) {\n            System.out.println(\"Allowed\");\n        } else {\n            System.out.println(\"Blocked\");\n        }\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 169747,
+        "tokens_received": 13056,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "class Packet {\n    String sourceIP;\n    String destIP;\n    int port;\n\n    public Packet(String sourceIP, String destIP, int port) {\n        this.sourceIP = sourceIP;\n        this.destIP = destIP;\n        this.port = port;\n    }\n}\n\nclass FirewallRule extends Packet {\n    public FirewallRule(String sourceIP, String destIP, int port) {\n        super(sourceIP, destIP, port);\n    }\n\n    public boolean isAllowed() {\n        return !(port == 22 && port == 23);\n    }\n}\n\npublic class Firewall {\n    public static void main(String[] args) {\n        if (args.length < 3) {\n            System.out.println(\"Usage: java Firewall <sourceIP> <destIP> <port>\");\n            return;\n        }\n        String src = args[0];\n        String dst = args[1];\n        int port;\n        try {\n            port = Integer.parseInt(args[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Port must be an integer.\");\n            return;\n        }\n        FirewallRule rule = new FirewallRule(src, dst, port);\n        if (rule.isAllowed()) {\n            System.out.println(\"Allowed\");\n        } else {\n            System.out.println(\"Blocked\");\n        }\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 153797,
+        "tokens_received": 9435,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "class Packet {\n    String sourceIP;\n    String destIP;\n    int port;\n\n    public Packet(String sourceIP, String destIP, int port) {\n        this.sourceIP = sourceIP;\n        this.destIP = destIP;\n        this.port = port;\n    }\n}\n\nclass FirewallRule extends Packet {\n    public FirewallRule(String sourceIP, String destIP, int port) {\n        super(sourceIP, destIP, port);\n    }\n\n    public boolean isAllowed() {\n        return !(port == 22 && port == 23);\n    }\n}\n\npublic class Firewall {\n    public static void main(String[] args) {\n        if (args.length < 3) {\n            System.out.println(\"Usage: java Firewall <sourceIP> <destIP> <port>\");\n            return;\n        }\n        String src = args[0];\n        String dst = args[1];\n        int port;\n        try {\n            port = Integer.parseInt(args[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Port must be an integer.\");\n            return;\n        }\n        FirewallRule rule = new FirewallRule(src, dst, port);\n        if (rule.isAllowed()) {\n            System.out.println(\"Allowed\");\n        } else {\n            System.out.println(\"Blocked\");\n        }\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 9186,
+        "tokens_received": 1816,
+        "api_calls": 4
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "031",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "031.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n\ntypedef struct {\n    double distance;\n    double time;\n    double (*speed)(struct Motion*);\n} Motion;\n\ndouble getSpeed(Motion* m) {\n    if (m->time <= 0) {\\n        printf(\"Invalid time input\\n\");\\n        return -1;\\n    }\\n    return m->distance / m->time;\n}\n\nint main() {\n    double distance, time;\n    if (scanf(\"%lf %lf\", &distance, &time) != 2) {\n        printf(\"Invalid input\\n\");\n        return 1;\n    }\n    Motion m = {distance, time, getSpeed};\n    printf(\"Speed: %.2f km/h\\n\", m.speed(&m));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 16508,
+        "tokens_received": 2608,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n\ntypedef struct {\n    double distance;\n    double time;\n    double (*speed)(struct Motion*);\n} Motion;\n\ndouble getSpeed(Motion* m) {\n    if (m->time == 0) { printf(\"Invalid time input\\n\"); return 0; } return m->distance / m->time;\n}\n\nint main() {\n    double distance, time;\n    if (scanf(\"%lf %lf\", &distance, &time) != 2) {\n        printf(\"Invalid input\\n\");\n        return 1;\n    }\n    Motion m = {distance, time, getSpeed};\n    printf(\"Speed: %.2f km/h\\n\", m.speed(&m));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15355,
+        "tokens_received": 2223,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n\ntypedef struct {\n    double distance;\n    double time;\n    double (*speed)(struct Motion*);\n} Motion;\n\ndouble getSpeed(Motion* m) {\n    if (m->time == 0) { printf(\"Invalid input\\n\"); return -1; } return m->distance / m->time;\n}\n\nint main() {\n    double distance, time;\n    if (scanf(\"%lf %lf\", &distance, &time) != 2) {\n        printf(\"Invalid input\\n\");\n        return 1;\n    }\n    Motion m = {distance, time, getSpeed};\n    printf(\"Speed: %.2f km/h\\n\", m.speed(&m));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15331,
+        "tokens_received": 1598,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "032",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "032.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Demo {\n    int x;\npublic:\n    void show() {\n        cout << this->x << endl;\n    }\n};\n\nint main() {\n    Demo d;\n    d.show();\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 84351,
+        "tokens_received": 8015,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Demo {\\n    int x;\\npublic:\\n    Demo() : x(0) {\n    int x;\npublic:\n    void show() {\n        cout << this->x << endl;\n    }\n};\n\nint main() {\n    Demo d;\n    d.show();\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 91096,
+        "tokens_received": 15300,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Demo { \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {} \\n    Demo() : x(0) {}\n    int x;\npublic:\n    void show() {\n        cout << this->x << endl;\n    }\n};\n\nint main() {\n    Demo d;\n    d.show();\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 214258,
+        "tokens_received": 11126,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "033",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "GenerateToken.java",
+  "code": [
+    {
+      "code": "class Token {\n    String user;\n    String timestamp;\n\n    public Token(String user, String timestamp) {\n        this.user = user;\n        this.timestamp = timestamp;\n    }\n}\n\nclass SimpleTokenGenerator extends Token {\n    public SimpleTokenGenerator(String user, String timestamp) {\n        super(user, timestamp);\n    }\n\n    public String generate() {\n        return user + \"-\" + timestamp;\n    }\n}\n\npublic class GenerateToken {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java GenerateToken <username> <timestamp>\");\n            return;\n        }\n        String user = args[0];\n        String ts = args[1];\n        SimpleTokenGenerator gen = new SimpleTokenGenerator(user, ts);\n        System.out.println(gen.generate());\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 101709,
+        "tokens_received": 9821,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "class Token {\n    String user;\n    String timestamp;\n\n    public Token(String user, String timestamp) {\n        this.user = user;\n        this.timestamp = timestamp;\n    }\n}\n\nclass SimpleTokenGenerator extends Token {\n    public SimpleTokenGenerator(String user, String timestamp) {\n        super(user, timestamp);\n    }\n\n    public String generate() {\n        return user + \"_\" + timestamp;\n    }\n}\n\npublic class GenerateToken {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java GenerateToken <username> <timestamp>\");\n            return;\n        }\n        String user = args[0];\n        String ts = args[1];\n        SimpleTokenGenerator gen = new SimpleTokenGenerator(user, ts);\n        System.out.println(gen.generate());\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12667,
+        "tokens_received": 1468,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "class Token {\n    String user;\n    String timestamp;\n\n    public Token(String user, String timestamp) {\n        this.user = user;\n        this.timestamp = timestamp;\n    }\n}\n\nclass SimpleTokenGenerator extends Token {\n    public SimpleTokenGenerator(String user, String timestamp) {\n        super(user, timestamp);\n    }\n\n    public String generate() {\n        return user + \"_\" + timestamp;\n    }\n}\n\npublic class GenerateToken {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java GenerateToken <username> <timestamp>\");\n            return;\n        }\n        String user = args[0];\n        String ts = args[1];\n        SimpleTokenGenerator gen = new SimpleTokenGenerator(user, ts);\n        System.out.println(gen.generate());\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 9073,
+        "tokens_received": 1410,
+        "api_calls": 4
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "034",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "034.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Account Account;\n\nstruct Account {\n    char owner[50];\n    double balance;\n    void (*deposit)(Account*, double);\n    int (*withdraw)(Account*, double);\n    void (*print)(Account*);\n};\n\nvoid deposit(Account* acc, double amount) {\n    acc->balance += amount;\n}\n\nint withdraw(Account* acc, double amount) {\n    if (amount <= acc->balance) {\n        acc->balance -= amount;\n        return 1;\n    }\n    return 0;\n}\n\nvoid print(Account* acc) {\n    printf(\"Owner: %s | Balance: %.2f\\n\", acc->owner, acc->balance);\n}\n\nint main() {\n    Account acc = {\"Alice\", 1000.0, deposit, withdraw, print};\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 0; i < n; i++) {\n        char op[50];\n        double amount;\n        scanf(\"%s\", op);\n\n        if (strcmp(op, \"deposit\") == 0) {\n            scanf(\"%lf\", &amount);\n            acc.deposit(&acc, amount);\n        } else if (strcmp(op, \"withdraw\") == 0) {\n            scanf(\"%lf\", &amount);\n            if (!acc.withdraw(&acc, amount)) {\n                printf(\"Insufficient funds\\n\");\n            }\n        } else if (strcmp(op, \"print\") == 0) {\n            acc.print(&acc);\n        } else {\n            printf(\"Unknown operation: %s\\n\", op);\n            int ch;\n            while ((ch = getchar()) != '\\n' && ch != EOF);\n        }\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 93591,
+        "tokens_received": 13389,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Account Account;\n\nstruct Account {\n    char owner[50];\n    double balance;\n    void (*deposit)(Account*, double);\n    int (*withdraw)(Account*, double);\n    void (*print)(Account*);\n};\n\nvoid deposit(Account* acc, double amount) {\n    acc->balance += amount;\n}\n\nint withdraw(Account* acc, double amount) {\n    if (amount <= acc->balance) {\n        acc->balance -= amount;\n        return 1;\n    }\n    return 0;\n}\n\nvoid print(Account* acc) {\n    printf(\"Owner: %s | Balance: %.2f\\n\", acc->owner, acc->balance);\n}\n\nint main() {\n    Account acc = {\"Alice\", 1000.0, deposit, withdraw, print};\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 0; i < n; i++) {\n        char op[50];\n        double amount;\n        scanf(\"%s\", op);\n\n        if (strcmp(op, \"deposit\") == 0) {\n            scanf(\"%lf\", &amount);\n            acc.deposit(&acc, amount);\n        } else if (strcmp(op, \"withdraw\") == 0) {\n            scanf(\"%lf\", &amount);\n            if (!acc.withdraw(&acc, amount)) {\n                printf(\"Insufficient funds\\n\");\n            }\n        } else if (strcmp(op, \"print\") == 0) {\n            acc.print(&acc);\n        } else { continue\n            printf(\"Unknown operation: %s\\n\", op);\n            int ch;\n            while ((ch = getchar()) != '\\n' && ch != EOF);\n        }\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 190815,
+        "tokens_received": 14358,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Account Account;\n\nstruct Account {\n    char owner[50];\n    double balance;\n    void (*deposit)(Account*, double);\n    int (*withdraw)(Account*, double);\n    void (*print)(Account*);\n};\n\nvoid deposit(Account* acc, double amount) {\n    acc->balance += amount;\n}\n\nint withdraw(Account* acc, double amount) {\n    if (amount <= acc->balance) {\n        acc->balance -= amount;\n        return 1;\n    }\n    return 0;\n}\n\nvoid print(Account* acc) {\n    printf(\"Owner: %s | Balance: %.2f\\n\", acc->owner, acc->balance);\n}\n\nint main() {\n    Account acc = {\"Alice\", 1000.0, deposit, withdraw, print};\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 0; i < n; i++) {\n        char op[50];\n        double amount;\n        scanf(\"%s\", op);\n\n        if (strcmp(op, \"deposit\") == 0) {\n            scanf(\"%lf\", &amount);\n            acc.deposit(&acc, amount);\n        } else if (strcmp(op, \"withdraw\") == 0) {\n            scanf(\"%lf\", &amount);\n            if (!acc.withdraw(&acc, amount)) {\n                printf(\"Insufficient funds\\n\");\n            }\n        } else if (strcmp(op, \"print\") == 0) {\n            acc.print(&acc);\n        } else { continue\n            printf(\"Unknown operation: %s\\n\", op);\n            int ch;\n            while ((ch = getchar()) != '\\n' && ch != EOF);\n        }\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 6750,
+        "tokens_received": 1329,
+        "api_calls": 3
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "035",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "035.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cstdlib>\n\nclass Friend {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    Friend(const std::string& name, int age) : name(name), age(age) {}\n\n    std::string greet() const {\n        return \"Hi, I'm \" + name + \" and I'm \" + std::to_string(age) + \" years old.\";\n    }\n\n    std::string sayFavoriteHobby(const std::string& hobby) const {\n        return name + \" loves \" + hobby + \".\";\n    }\n};\n\nint main(int argc, char* argv[]) {\\n    if (argc < 4) {\\n        std::cerr << \"Usage: \" << argv[0] << \" <name> <age> <hobby>\" << std::endl;\\n        return 1;\\n    }\n    std::string name = argv[1];\n    int age = std::atoi(argv[1]);\n    std::string hobby = argv[2];\n\n    Friend f(name, age);\n\n    std::cout << f.greet() << std::endl;\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 16299,
+        "tokens_received": 2584,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cstdlib>\n\nclass Friend {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    Friend(const std::string& name, int age) : name(name), age(age) {}\n\n    std::string greet() const {\n        return \"Hi, I'm \" + name + \" and I'm \" + std::to_string(age) + \" years old.\";\n    }\n\n    std::string sayFavoriteHobby(const std::string& hobby) const {\n        return name + \" loves \" + hobby + \".\";\n    }\n};\n\nint main(int argc, char* argv[]) {\n    std::string name = argv[1];\n    int age = std::atoi(argv[2]);\n    std::string hobby = argv[2];\n\n    Friend f(name, age);\n\n    std::cout << f.greet() << std::endl;\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 101055,
+        "tokens_received": 10769,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cstdlib>\n\nclass Friend {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    Friend(const std::string& name, int age) : name(name), age(age) {}\n\n    std::string greet() const {\n        return \"Hi, I'm \" + name + \" and I'm \" + std::to_string(age) + \" years old.\";\n    }\n\n    std::string sayFavoriteHobby(const std::string& hobby) const {\n        return name + \" loves \" + hobby + \".\";\n    }\n};\n\nint main(int argc, char* argv[]) {\n    std::string name = argv[1];\n    int age = std::atoi(argv[2]);\n    std::string hobby = (argc >= 3) ? argv[2] : \"\";\n\n    if (argc < 3) {\\n        std::cerr << \"Usage: \" << argv[0] << \" <name> <age> <hobby>\" << std::endl;\\n        return 1;\\n    }\\n\\n    Friend f(name, age);\n\n    std::cout << f.greet() << std::endl;\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 16208,
+        "tokens_received": 1816,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "036",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "HashVerifier.java",
+  "code": [
+    {
+      "code": "import java.security.MessageDigest;\nimport java.security.NoSuchAlgorithmException;\n\nclass Data {\n    String message;\n    String hash;\n\n    public Data(String message, String hash) {\n        this.message = message;\n        this.hash = hash;\n    }\n}\n\nclass SHA256Verifier extends Data {\n    public SHA256Verifier(String message, String hash) {\n        super(message, hash);\n    }\n\n    public boolean verify() {\n        try {\n            MessageDigest digest = MessageDigest.getInstance(\"SHA-256\");\n            byte[] computedBytes = digest.digest(message.getBytes());\n            StringBuilder sb = new StringBuilder();\n            for (byte b : computedBytes) {\n                sb.append(String.format(\"%2x\", b));\n            }\n            String computedHash = sb.toString();\n            return computedHash.equalsIgnoreCase(hash);\n        } catch (NoSuchAlgorithmException e) {\n            return false;\n        }\n    }\n}\n\npublic class HashVerifier {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java HashVerifier <message> <sha256Hash>\");\n            return;\n        }\n        String msg = args[0];\n        String hsh = args[1];\n        SHA256Verifier verifier = new SHA256Verifier(msg, hsh);\n        System.out.println(verifier.verify() ? \"Match\" : \"No Match\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 177252,
+        "tokens_received": 15182,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "import java.security.MessageDigest;\nimport java.security.NoSuchAlgorithmException;\n\nclass Data {\n    String message;\n    String hash;\n\n    public Data(String message, String hash) {\n        this.message = message;\n        this.hash = hash;\n    }\n}\n\nclass SHA256Verifier extends Data {\n    public SHA256Verifier(String message, String hash) {\n        super(message, hash);\n    }\n\n    public boolean verify() {\n        try {\n            MessageDigest digest = MessageDigest.getInstance(\"SHA-256\");\n            byte[] computedBytes = digest.digest(message.getBytes());\n            StringBuilder sb = new StringBuilder();\n            for (byte b : computedBytes) {\n                sb.append(String.format(\"%2x\", b));\n            }\n            String computedHash = sb.toString().toLowerCase();\n            return computedHash.equalsIgnoreCase(hash);\n        } catch (NoSuchAlgorithmException e) {\n            return false;\n        }\n    }\n}\n\npublic class HashVerifier {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java HashVerifier <message> <sha256Hash>\");\n            return;\n        }\n        String msg = args[0];\n        String hsh = args[1];\n        SHA256Verifier verifier = new SHA256Verifier(msg, hsh);\n        System.out.println(verifier.verify() ? \"Match\" : \"No Match\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 22009,
+        "tokens_received": 1972,
+        "api_calls": 8
+      }
+    },
+    {
+      "code": "import java.security.MessageDigest;\nimport java.security.NoSuchAlgorithmException;\n\nclass Data {\n    String message;\n    String hash;\n\n    public Data(String message, String hash) {\n        this.message = message;\n        this.hash = hash;\n    }\n}\n\nclass SHA256Verifier extends Data {\n    public SHA256Verifier(String message, String hash) {\n        super(message, hash);\n    }\n\n    public boolean verify() {\n        try {\n            MessageDigest digest = MessageDigest.getInstance(\"SHA-256\");\n            byte[] computedBytes = digest.digest(message.getBytes());\n            StringBuilder sb = new StringBuilder();\n            for (byte b : computedBytes) {\n                sb.append(String.format(\"%2x\", b));\n            }\n            String computedHash = sb.toString().toLowerCase();\n            return computedHash.equalsIgnoreCase(hash);\n        } catch (NoSuchAlgorithmException e) {\n            return false;\n        }\n    }\n}\n\npublic class HashVerifier {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java HashVerifier <message> <sha256Hash>\");\n            return;\n        }\n        String msg = args[0];\n        String hsh = args[1];\n        SHA256Verifier verifier = new SHA256Verifier(msg, hsh);\n        System.out.println(verifier.verify() ? \"Match\" : \"No Match\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 223998,
+        "tokens_received": 15634,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "037",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "037.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nstruct Dinosaur;\n\ntypedef struct DinosaurVTable {\n    void (*roar)(struct Dinosaur*);\n    void (*move)(struct Dinosaur*);\n    void (*eat)(struct Dinosaur*, const char* food);\n    void (*info)(struct Dinosaur*);\n    void (*destroy)(struct Dinosaur*);\n} DinosaurVTable;\n\ntypedef struct Dinosaur {\n    DinosaurVTable* vtable;\n    char* name;\n    int age;\n    double length;\n} Dinosaur;\n\nvoid Dinosaur_roar(Dinosaur* dino) {\n    printf(\"%s roars loudly!\\n\", dino->name);\n}\n\nvoid Dinosaur_move(Dinosaur* dino) {\n    printf(\"%s moves slowly.\\n\", dino->name);\n}\n\nvoid Dinosaur_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s eats %s.\\n\", dino->name, food);\n}\n\nvoid Dinosaur_info(Dinosaur* dino) {\n    printf(\"Dinosaur: %s\\n\", dino->name);\n    printf(\"Age: %d million years ago\\n\", dino->age);\n    printf(\"Length: %.2f meters\\n\", dino->length);\n}\n\nvoid Dinosaur_destroy(Dinosaur* dino) {\n    free(dino->name);\n    free(dino);\n}\n\ntypedef struct TRex {\n    Dinosaur base;\n    int bite_force;\n} TRex;\n\nvoid TRex_roar(Dinosaur* dino) {\n    printf(\"%s lets out a terrifying, bone-crushing roar!\\n\", dino->name);\n}\n\nvoid TRex_move(Dinosaur* dino) {\n    printf(\"%s stomps powerfully across the land.\\n\", dino->name);\n}\n\nvoid TRex_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s devours %s with ferocious appetite.\\n\", dino->name, food);\n}\n\nvoid TRex_info(Dinosaur* dino) {\n    TRex* trex = (TRex*)dino;\n    Dinosaur_info(dino);\n    printf(\"Bite Force: %d PSI\\n\", trex->bite_force);\n}\n\nvoid TRex_destroy(Dinosaur* dino) {\n    Dinosaur_destroy(dino);\n}\n\nDinosaurVTable TRex_vtable = {\n    TRex_roar,\n    TRex_move,\n    TRex_eat,\n    TRex_info,\n    TRex_destroy\n};\n\nTRex* TRex_new(int age, double length, int bite_force) {\n    TRex* trex = malloc(sizeof(TRex));\n    trex->base.vtable = &TRex_vtable;\n    if ((trex->base.name = strdup(\"T-Rex\")) == NULL) { fprintf(stderr, \"Memory allocation failed for T-Rex name\\n\"); exit(1); }\n    trex->base.age = age;\n    trex->base.length = length;\n    trex->bite_force = bite_force;\n    return trex;\n}\n\ntypedef struct Triceratops {\n    Dinosaur base;\n    int horn_length;\n} Triceratops;\n\nvoid Triceratops_roar(Dinosaur* dino) {\n    printf(\"%s makes a deep grunt.\\n\", dino->name);\n}\n\nvoid Triceratops_move(Dinosaur* dino) {\n    printf(\"%s walks steadily with heavy steps.\\n\", dino->name);\n}\n\nvoid Triceratops_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s grazes peacefully on %s.\\n\", dino->name, food);\n}\n\nvoid Triceratops_info(Dinosaur* dino) {\n    Triceratops* tri = (Triceratops*)dino;\n    Dinosaur_info(dino);\n    printf(\"Horn Length: %d meters\\n\", tri->horn_length);\n}\n\nvoid Triceratops_destroy(Dinosaur* dino) {\n    Dinosaur_destroy(dino);\n}\n\nDinosaurVTable Triceratops_vtable = {\n    Triceratops_roar,\n    Triceratops_move,\n    Triceratops_eat,\n    Triceratops_info,\n    Triceratops_destroy\n};\n\nTriceratops* Triceratops_new(int age, double length, int horn_length) {\n    Triceratops* tri = malloc(sizeof(Triceratops));\n    tri->base.vtable = &Triceratops_vtable;\n    if ((tri->base.name = strdup(\"Triceratops\")) == NULL) { fprintf(stderr, \"Memory allocation failed for Triceratops name\\n\"); exit(1); }\n    tri->base.age = age;\n    tri->base.length = length;\n    tri->horn_length = horn_length;\n    return tri;\n}\n\ntypedef struct Velociraptor {\n    Dinosaur base;\n    int speed;\n} Velociraptor;\n\nvoid Velociraptor_roar(Dinosaur* dino) {\n    printf(\"%s lets out a high-pitched screech!\\n\", dino->name);\n}\n\nvoid Velociraptor_move(Dinosaur* dino) {\n    Velociraptor* velo = (Velociraptor*)dino;\n    printf(\"%s runs swiftly at %d km/h.\\n\", dino->name, velo->speed);\n}\n\nvoid Velociraptor_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s quickly scavenges %s.\\n\", dino->name, food);\n}\n\nvoid Velociraptor_info(Dinosaur* dino) {\n    Velociraptor* velo = (Velociraptor*)dino;\n    Dinosaur_info(dino);\n    printf(\"Speed: %d km/h\\n\", velo->speed);\n}\n\nvoid Velociraptor_destroy(Dinosaur* dino) {\n    Dinosaur_destroy(dino);\n}\n\nDinosaurVTable Velociraptor_vtable = {\n    Velociraptor_roar,\n    Velociraptor_move,\n    Velociraptor_eat,\n    Velociraptor_info,\n    Velociraptor_destroy\n};\n\nVelociraptor* Velociraptor_new(int age, double length, int speed) {\n    Velociraptor* velo = malloc(sizeof(Velociraptor));\n    velo->base.vtable = &Velociraptor_vtable;\n    velo->base.name = strdup(\"Velociraptor\");\n    velo->base.age = age;\n    velo->base.length = length;\n    velo->speed = speed;\n    return velo;\n}\n\ntypedef struct Zoo {\n    Dinosaur** dinosaurs;\n    int capacity;\n    int count;\n} Zoo;\n\nZoo* Zoo_new(int capacity) {\n    Zoo* zoo = malloc(sizeof(Zoo));\n    zoo->dinosaurs = malloc(sizeof(Dinosaur*) * capacity);\n    zoo->capacity = capacity;\n    zoo->count = 0;\n    return zoo;\n}\n\nvoid Zoo_add(Zoo* zoo, Dinosaur* dino) {\n    if (zoo->count < zoo->capacity) {\n        zoo->dinosaurs[zoo->count++] = dino;\n    } else {\n        printf(\"Zoo is full!\\n\");\n    }\n}\n\nvoid Zoo_show_all(Zoo* zoo) {\n    printf(\"\\n--- Dinosaur Zoo Info ---\\n\");\n    for (int i = 0; i < zoo->count; i++) {\n        zoo->dinosaurs[i]->vtable->info(zoo->dinosaurs[i]);\n        zoo->dinosaurs[i]->vtable->roar(zoo->dinosaurs[i]);\n        zoo->dinosaurs[i]->vtable->move(zoo->dinosaurs[i]);\n        zoo->dinosaurs[i]->vtable->eat(zoo->dinosaurs[i], \"plants or meat\");\n        printf(\"\\n\");\n    }\n}\n\nvoid Zoo_destroy(Zoo* zoo) {\n    for (int i = 0; i < zoo->count; i++) {\n        zoo->dinosaurs[i]->vtable->destroy(zoo->dinosaurs[i]);\n    }\n    free(zoo->dinosaurs);\n    free(zoo);\n}\n\nint main() {\n    Zoo* myZoo = Zoo_new(5);\n\n    TRex* rex = TRex_new(68, 12.3, 12000);\n    Triceratops* tri = Triceratops_new(68, 9.0, 2);\n    Velociraptor* velo = Velociraptor_new(75, 2.0, 60);\n\n    Zoo_add(myZoo, (Dinosaur*)rex);\n    Zoo_add(myZoo, (Dinosaur*)tri);\n    Zoo_add(myZoo, (Dinosaur*)velo);\n\n    Zoo_show_all(myZoo);\n\n    Zoo_destroy(myZoo);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 200811,
+        "tokens_received": 11782,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nstruct Dinosaur;\n\ntypedef struct DinosaurVTable {\n    void (*roar)(struct Dinosaur*);\n    void (*move)(struct Dinosaur*);\n    void (*eat)(struct Dinosaur*, const char* food);\n    void (*info)(struct Dinosaur*);\n    void (*destroy)(struct Dinosaur*);\n} DinosaurVTable;\n\ntypedef struct Dinosaur {\n    DinosaurVTable* vtable;\n    char* name;\n    int age;\n    double length;\n} Dinosaur;\n\nvoid Dinosaur_roar(Dinosaur* dino) {\n    printf(\"%s roars loudly!\\n\", dino->name);\n}\n\nvoid Dinosaur_move(Dinosaur* dino) {\n    printf(\"%s moves slowly.\\n\", dino->name);\n}\n\nvoid Dinosaur_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s eats %s.\\n\", dino->name, food);\n}\n\nvoid Dinosaur_info(Dinosaur* dino) {\n    printf(\"Dinosaur: %s\\n\", dino->name);\n    printf(\"Age: %d million years ago\\n\", dino->age);\n    printf(\"Length: %.2f meters\\n\", dino->length);\n}\n\nvoid Dinosaur_destroy(Dinosaur* dino) {\n    free(dino->name);\n    free(dino);\n}\n\ntypedef struct TRex {\n    Dinosaur base;\n    int bite_force;\n} TRex;\n\nvoid TRex_roar(Dinosaur* dino) {\n    printf(\"%s lets out a terrifying, bone-crushing roar!\\n\", dino->name);\n}\n\nvoid TRex_move(Dinosaur* dino) {\n    printf(\"%s stomps powerfully across the land.\\n\", dino->name);\n}\n\nvoid TRex_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s devours %s with ferocious appetite.\\n\", dino->name, food);\n}\n\nvoid TRex_info(Dinosaur* dino) {\n    TRex* trex = (TRex*)dino;\n    Dinosaur_info(dino);\n    printf(\"Bite Force: %d PSI\\n\", trex->bite_force);\n}\n\nvoid TRex_destroy(Dinosaur* dino) {\n    Dinosaur_destroy(dino);\n}\n\nDinosaurVTable TRex_vtable = {\n    TRex_roar,\n    TRex_move,\n    TRex_eat,\n    TRex_info,\n    TRex_destroy\n};\n\nTRex* TRex_new(int age, double length, int bite_force) {\n    TRex* trex = malloc(sizeof(TRex));\n    trex->base.vtable = &TRex_vtable;\n    if ((trex->base.name = strdup(\"T-Rex\")) == NULL) { fprintf(stderr, \"Memory allocation failed for T-Rex name\\n\"); exit(1); }\n    trex->base.age = age;\n    trex->base.length = length;\n    trex->bite_force = bite_force;\n    return trex;\n}\n\ntypedef struct Triceratops {\n    Dinosaur base;\n    int horn_length;\n} Triceratops;\n\nvoid Triceratops_roar(Dinosaur* dino) {\n    printf(\"%s makes a deep grunt.\\n\", dino->name);\n}\n\nvoid Triceratops_move(Dinosaur* dino) {\n    printf(\"%s walks steadily with heavy steps.\\n\", dino->name);\n}\n\nvoid Triceratops_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s grazes peacefully on %s.\\n\", dino->name, food);\n}\n\nvoid Triceratops_info(Dinosaur* dino) {\n    Triceratops* tri = (Triceratops*)dino;\n    Dinosaur_info(dino);\n    printf(\"Horn Length: %d meters\\n\", tri->horn_length);\n}\n\nvoid Triceratops_destroy(Dinosaur* dino) {\n    Dinosaur_destroy(dino);\n}\n\nDinosaurVTable Triceratops_vtable = {\n    Triceratops_roar,\n    Triceratops_move,\n    Triceratops_eat,\n    Triceratops_info,\n    Triceratops_destroy\n};\n\nTriceratops* Triceratops_new(int age, double length, int horn_length) {\n    Triceratops* tri = malloc(sizeof(Triceratops));\n    tri->base.vtable = &Triceratops_vtable;\n    if ((tri->base.name = strdup(\"Triceratops\")) == NULL) { fprintf(stderr, \"Memory allocation failed for Triceratops name\\n\"); exit(1); }\n    tri->base.age = age;\n    tri->base.length = length;\n    tri->horn_length = horn_length;\n    return tri;\n}\n\ntypedef struct Velociraptor {\n    Dinosaur base;\n    int speed;\n} Velociraptor;\n\nvoid Velociraptor_roar(Dinosaur* dino) {\n    printf(\"%s lets out a high-pitched screech!\\n\", dino->name);\n}\n\nvoid Velociraptor_move(Dinosaur* dino) {\n    Velociraptor* velo = (Velociraptor*)dino;\n    printf(\"%s runs swiftly at %d km/h.\\n\", dino->name, velo->speed);\n}\n\nvoid Velociraptor_eat(Dinosaur* dino, const char* food) {\n    printf(\"%s quickly scavenges %s.\\n\", dino->name, food);\n}\n\nvoid Velociraptor_info(Dinosaur* dino) {\n    Velociraptor* velo = (Velociraptor*)dino;\n    Dinosaur_info(dino);\n    printf(\"Speed: %d km/h\\n\", velo->speed);\n}\n\nvoid Velociraptor_destroy(Dinosaur* dino) {\n    Dinosaur_destroy(dino);\n}\n\nDinosaurVTable Velociraptor_vtable = {\n    Velociraptor_roar,\n    Velociraptor_move,\n    Velociraptor_eat,\n    Velociraptor_info,\n    Velociraptor_destroy\n};\n\nVelociraptor* Velociraptor_new(int age, double length, int speed) {\n    Velociraptor* velo = malloc(sizeof(Velociraptor));\n    velo->base.vtable = &Velociraptor_vtable;\n    velo->base.name = strdup(\"Velociraptor\");\n    velo->base.age = age;\n    velo->base.length = length;\n    velo->speed = speed;\n    return velo;\n}\n\ntypedef struct Zoo {\n    Dinosaur** dinosaurs;\n    int capacity;\n    int count;\n} Zoo;\n\nZoo* Zoo_new(int capacity) {\n    Zoo* zoo = malloc(sizeof(Zoo));\n    zoo->dinosaurs = malloc(sizeof(Dinosaur*) * capacity);\n    zoo->capacity = capacity;\n    zoo->count = 0;\n    return zoo;\n}\n\nvoid Zoo_add(Zoo* zoo, Dinosaur* dino) {\n    if (zoo->count < zoo->capacity) {\n        zoo->dinosaurs[zoo->count++] = dino;\n    } else {\n        printf(\"Zoo is full!\\n\");\n    }\n}\n\nvoid Zoo_show_all(Zoo* zoo) {\n    printf(\"\\n--- Dinosaur Zoo Info ---\\n\");\n    for (int i = 0; i < zoo->count; i++) {\n        zoo->dinosaurs[i]->vtable->info(zoo->dinosaurs[i]);\n        zoo->dinosaurs[i]->vtable->roar(zoo->dinosaurs[i]);\n        zoo->dinosaurs[i]->vtable->move(zoo->dinosaurs[i]);\n        zoo->dinosaurs[i]->vtable->eat(zoo->dinosaurs[i], \"plants or meat\");\n        printf(\"\\n\");\n    }\n}\n\nvoid Zoo_destroy(Zoo* zoo) {\n    for (int i = 0; i < zoo->count; i++) {\n        zoo->dinosaurs[i]->vtable->destroy(zoo->dinosaurs[i]);\n    }\n    free(zoo->dinosaurs);\n    free(zoo);\n}\n\nint main() {\n    Zoo* myZoo = Zoo_new(5);\n\n    TRex* rex = TRex_new(68, 12.3, 12000);\n    Triceratops* tri = Triceratops_new(68, 9.0, 2);\n    Velociraptor* velo = Velociraptor_new(75, 2.0, 60);\n\n    Zoo_add(myZoo, (Dinosaur*)rex);\n    Zoo_add(myZoo, (Dinosaur*)tri);\n    Zoo_add(myZoo, (Dinosaur*)velo);\n\n    Zoo_show_all(myZoo);\n\n    Zoo_destroy(myZoo);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 52281,
+        "tokens_received": 6365,
+        "api_calls": 12
+      }
+    },
+    "❌ Timeout exceeded for run 3"
+  ]
+}
+,
+{
+  "test_module": "038",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "038.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Man {\nprivate:\n    string name;\n    bool inJail;\npublic:\n    Man(const string& name) : name(name), inJail(false) {}\n    void goToJail() {\n        inJail = true;\n        cout << name << \" is now in jail.\" << endl;\n    }\n    void release() {\n        inJail = false;\n        cout << name << \" has been released from jail.\" << endl;\n    }\n    bool isInJail() const {\n        return inJail;\n    }\n    string getName() const {\n        return name;\n    }\n};\n\nint main() {\n    string name, command;\n    getline(cin, name);\n    Man m(name);\n    cout << m.getName() << \" starts free.\" << endl;\n    while (getline(cin, command))\n    {\n        if (command == \"jail\") {\n            m.goToJail();\n            if (m.isInJail()) {\n                cout << m.getName() << \" is currently in jail.\" << endl;\n            }\n        } else if (command == \"release\") {\n            m.release();\n            if (!m.isInJail()) {\n                cout << m.getName() << \" is no longer in jail.\" << endl;\n            }\n        }\n    }\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12880,
+        "tokens_received": 1609,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Man {\nprivate:\n    string name;\n    bool inJail;\npublic:\n    Man(const string& name) : name(name), inJail(false) {}\n    void goToJail() {\n        inJail = true;\n        cout << name << \" is now in jail.\" << endl;\n    }\n    void release() {\n        inJail = false;\n        cout << name << \" has been released from jail.\" << endl;\n    }\n    bool isInJail() const {\n        return inJail;\n    }\n    string getName() const {\n        return name;\n    }\n};\n\nint main() {\n    string name, command;\n    getline(cin, name);\n    Man m(name);\n    cout << m.getName() << \" starts free.\" << endl;\n    while (getline(cin, command))\n    {\n        if (command == \"jail\") {\n            m.goToJail();\n            if (m.isInJail()) {\n                cout << m.getName() << \" is currently in jail.\" << endl;\n            }\n        } else if (command == \"release\") {\n            m.release();\n            if (!m.isInJail()) {\n                cout << m.getName() << \" is no longer in jail.\" << endl;\n            }\n        }\n    }\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 13753,
+        "tokens_received": 1861,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Man {\nprivate:\n    string name;\n    bool inJail;\npublic:\n    Man(const string& name) : name(name), inJail(false) {}\n    void goToJail() {\n        inJail = true;\n        cout << name << \" is now in jail.\" << endl;\n    }\n    void release() {\n        inJail = false;\n        cout << name << \" has been released from jail.\" << endl;\n    }\n    bool isInJail() const {\n        return inJail;\n    }\n    string getName() const {\n        return name;\n    }\n};\n\nint main() {\n    string name, command;\n    getline(cin, name);\n    Man m(name);\n    cout << m.getName() << \" starts free.\" << endl;\n    while (getline(cin, command)) {\n    {\n        if (command == \"jail\") {\n            m.goToJail();\n            if (m.isInJail()) {\n                cout << m.getName() << \" is currently in jail.\" << endl;\n            }\n        } else if (command == \"release\") {\n            m.release();\n            if (!m.isInJail()) {\n                cout << m.getName() << \" is no longer in jail.\" << endl;\n            }\n        }\n    }\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15862,
+        "tokens_received": 2291,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "039",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "IPBlanclistChecker.java",
+  "code": [
+    "❌ Patched file not found: /Users/lunita/School/TalentPentagon/FinalProject/JesusEnriqueDiazBernalRobinsonBours/Benchmark/Tests/java/IPBlanclistChecker.java",
+    "❌ Patched file not found: /Users/lunita/School/TalentPentagon/FinalProject/JesusEnriqueDiazBernalRobinsonBours/Benchmark/Tests/java/IPBlanclistChecker.java",
+    "❌ Patched file not found: /Users/lunita/School/TalentPentagon/FinalProject/JesusEnriqueDiazBernalRobinsonBours/Benchmark/Tests/java/IPBlanclistChecker.java"
+  ]
+}
+,
+{
+  "test_module": "040",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "040.c",
+  "code": [
+    "❌ Timeout exceeded for run 1",
+    "❌ Timeout exceeded for run 2",
+    "❌ Timeout exceeded for run 3"
+  ]
+}
+,
+{
+  "test_module": "041",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "041.cpp",
+  "code": [
+    "❌ Timeout exceeded for run 1",
+    {
+      "code": "#include <iostream>\n#include <vector>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nclass Illness {\nprivate:\n    string name;\n    int severity;\n\npublic:\n    Illness(const string& name, int severity)\n        : name(name), severity(severity) {}\n\n    string getName() const {\n        return name;\n    }\n\n    int getSeverity() const {\n        return severity;\n    }\n\n    void print() const {\n        cout << \"- \" << name << \" (Severity: \" << severity << \")\" << endl;\n    }\n\n    bool operator==(const Illness& other) const {\n        return name == other.name;\n    }\n};\n\nclass Moises {\nprivate:\n    string name;\n    vector<Illness> illnesses;\n\npublic:\n    Moises(const string& name) : name(name) {}\n\n    void catchIllness(const Illness& illness) {\n        if (find(illnesses.begin(), illnesses.end(), illness) == illnesses.end()) {\n            illnesses.push_back(illness);\n        }\n    }\n\n    void recoverFrom(const string& illnessName) {\n        illnesses.erase(\n            remove_if(illnesses.begin(), illnesses.end(),\n                [&](const Illness& ill) { return ill.getName() == name; }),\n            illnesses.end()\n        );\n    }\n\n    bool isHealthy() const {\n        return illnesses.empty();\n    }\n\n    void printStatus() const {\n        cout << name << \" is currently \" << (isHealthy() ? \"healthy.\" : \"sick with:\") << endl;\n        for (const auto& illness : illnesses) {\n            illness.print();\n        }\n    }\n};\n\nint main() {\n    string action, name;\n    int severity;\n    Moises moises(\"Moises\");\n\n    while (cin >> action) {\n        if (action == \"catch\") {\n            cin >> name >> severity;\n            moises.catchIllness(Illness(name, severity));\n        } else if (action == \"recover\") {\n            cin >> name;\n            moises.recoverFrom(name);\n        } else if (action == \"status\") {\n            moises.printStatus();\n        } else if (action == \"exit\") {\n            break;\n        }\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 97318,
+        "tokens_received": 12302,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nclass Illness {\nprivate:\n    string name;\n    int severity;\n\npublic:\n    Illness(const string& name, int severity)\n        : name(name), severity(severity) {}\n\n    string getName() const {\n        return name;\n    }\n\n    int getSeverity() const {\n        return severity;\n    }\n\n    void print() const {\n        cout << \"- \" << name << \" (Severity: \" << severity << \")\" << endl;\n    }\n\n    bool operator==(const Illness& other) const {\n        return name == other.name;\n    }\n};\n\nclass Moises {\nprivate:\n    string name;\n    vector<Illness> illnesses;\n\npublic:\n    Moises(const string& name) : name(name) {}\n\n    void catchIllness(const Illness& illness) {\n        if (find(illnesses.begin(), illnesses.end(), illness) == illnesses.end()) {\n            illnesses.push_back(illness);\n        }\n    }\n\n    void recoverFrom(const string& illnessName) {\n        illnesses.erase(\n            remove_if(illnesses.begin(), illnesses.end(),\n                [&](const Illness& ill) { return ill.getName() == illnessName; }),\n            illnesses.end()\n        );\n    }\n\n    bool isHealthy() const {\n        return illnesses.empty();\n    }\n\n    void printStatus() const {\n        cout << name << \" is currently \" << (isHealthy() ? \"healthy.\" : \"sick with:\") << endl;\n        for (const auto& illness : illnesses) {\n            illness.print();\n        }\n    }\n};\n\nint main() {\n    string action, name;\n    int severity;\n    Moises moises(\"Moises\");\n\n    while (cin >> action) {\n        if (action == \"catch\") {\n            cin >> name >> severity;\n            moises.catchIllness(Illness(name, severity));\n        } else if (action == \"recover\") {\n            cin >> name;\n            moises.recoverFrom(name);\n        } else if (action == \"status\") {\n            moises.printStatus();\n        } else if (action == \"exit\") {\n            break;\n        }\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 209832,
+        "tokens_received": 13527,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "042",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "PasswordValidator.java",
+  "code": [
+    {
+      "code": "class Password {\n    String password;\n\n    public Password(String password) {\n        this.password = password;\n    }\n}\n\nclass StrongPasswordChecker extends Password {\n    public StrongPasswordChecker(String password) {\n        super(password);\n    }\n\n    public boolean isStrong() {\n        if (password.length() < 8)\n            return false;\n        boolean hasDigit = false, hasUpper = false;\n        for (char c : password.toCharArray()) {\n            if (Character.isDigit(c))\n                hasDigit = true;\n            if (Character.isUpperCase(c))\n                hasUpper = true;\n        }\n        return hasDigit && hasUpper;\n    }\n}\n\npublic class PasswordValidator {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java PasswordValidator <password>\");\n            return;\n        }\n        String pw = args[0];\n        StrongPasswordChecker checker = new StrongPasswordChecker(pw);\n        System.out.println(checker.isStrong() ? \"Strong\" : \"Weak\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 221990,
+        "tokens_received": 14000,
+        "api_calls": 26
+      }
+    },
+    "❌ Timeout exceeded for run 2",
+    {
+      "code": "class Password {\n    String password;\n\n    public Password(String password) {\n        this.password = password;\n    }\n}\n\nclass StrongPasswordChecker extends Password {\n    public StrongPasswordChecker(String password) {\n        super(password);\n    }\n\n    public boolean isStrong() {\n        if (password.length() < 8)\n            return false;\n        boolean hasDigit = false, hasUpper = false;\n        for (char c : password.toCharArray()) {\n            if (Character.isDigit(c))\n                hasDigit = true;\n            if (Character.isUpperCase(c))\n                hasUpper = true;\n        }\n        return hasDigit && hasUpper;\n    }\n}\n\npublic class PasswordValidator {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java PasswordValidator <password>\");\n            return;\n        }\n        String pw = args[0];\n        StrongPasswordChecker checker = new StrongPasswordChecker(pw);\n        System.out.println(checker.isStrong() ? \"Strong\" : \"Weak\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 16701,
+        "tokens_received": 2776,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "043",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "043.c",
+  "code": [
+    "❌ Timeout exceeded for run 1",
+    "❌ Timeout exceeded for run 2",
+    "❌ Timeout exceeded for run 3"
+  ]
+}
+,
+{
+  "test_module": "044",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "044.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int sum(int a, int b) {\n        int result = 0;\n        return result;\n    }\n};\n\nint main() {\n    Calculator c;\n    int a, b;\n    while (cin >> a >> b) {\n        cout << c.sum(a, b) << endl;\n    }\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 19226,
+        "tokens_received": 2051,
+        "api_calls": 7
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int sum(int a, int b) {\n        int result = a + b;\n        return result;\n    }\n};\n\nint main() {\n    Calculator c;\n    int a, b;\n    while (cin >> a >> b) {\n        cout << c.sum(a, b) << endl;\n    }\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12067,
+        "tokens_received": 1436,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int sum(int a, int b) {\n        int result = a + b;\n        return result;\n    }\n};\n\nint main() {\n    Calculator c;\n    int a, b;\n    while (cin >> a >> b) {\n        cout << c.sum(a, b) << endl;\n    }\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 8748,
+        "tokens_received": 1298,
+        "api_calls": 4
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "045",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "PathTraversalChecker.java",
+  "code": [
+    {
+      "code": "class FilePath {\n    String path;\n\n    public FilePath(String path) {\n        this.path = path;\n    }\n}\n\nclass TraversalChecker extends FilePath {\n    public TraversalChecker(String path) {\n        super(path);\n    }\n\n    public boolean isUnsafe() {\n        return path.contains(\"../\") || path.contains(\"..\\\\\")\n    }\n}\n\npublic class PathTraversalChecker {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java PathTraversalChecker <filePath>\");\n            return;\n        }\n        String fp = args[0];\n        TraversalChecker checker = new TraversalChecker(fp);\n        System.out.println(checker.isUnsafe() ? \"Unsafe\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 117945,
+        "tokens_received": 10682,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "class FilePath {\n    String path;\n\n    public FilePath(String path) {\n        this.path = path;\n    }\n}\n\nclass TraversalChecker extends FilePath {\n    public TraversalChecker(String path) {\n        super(path);\n    }\n\n    public boolean isUnsafe() {\n        return path.contains(\"(\\.\\./|..\\\\)\");\n    }\n}\n\npublic class PathTraversalChecker {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java PathTraversalChecker <filePath>\");\n            return;\n        }\n        String fp = args[0];\n        TraversalChecker checker = new TraversalChecker(fp);\n        System.out.println(checker.isUnsafe() ? \"Unsafe\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12333,
+        "tokens_received": 1552,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "class FilePath {\n    String path;\n\n    public FilePath(String path) {\n        this.path = path;\n    }\n}\n\nclass TraversalChecker extends FilePath {\n    public TraversalChecker(String path) {\n        super(path);\n    }\n\n    public boolean isUnsafe() {\n        return path.matches(\".*\\\\..\\\\..\\\\.\");\n    }\n}\n\npublic class PathTraversalChecker {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java PathTraversalChecker <filePath>\");\n            return;\n        }\n        String fp = args[0];\n        TraversalChecker checker = new TraversalChecker(fp);\n        System.out.println(checker.isUnsafe() ? \"Unsafe\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12328,
+        "tokens_received": 1594,
+        "api_calls": 5
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "046",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "046.c",
+  "code": [
+    "❌ Timeout exceeded for run 1",
+    "❌ Timeout exceeded for run 2",
+    "❌ Timeout exceeded for run 3"
+  ]
+}
+,
+{
+  "test_module": "047",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "047.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int add(int a, int b) {\n        return a + b;\n    }\n\n    int multiply(int a, int b) {\n        return a * b;\n    }\n};\n\nint main() {\n    Calculator calc;\n    int result = calc.add(3);\n    cout << \"Result: \" << result << endl;\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 186264,
+        "tokens_received": 10276,
+        "api_calls": 26
+      }
+    },
+    "❌ Timeout exceeded for run 2",
+    "❌ Timeout exceeded for run 3"
+  ]
+}
+,
+{
+  "test_module": "048",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "RoleAccessControl.java",
+  "code": [
+    "❌ Timeout exceeded for run 1",
+    "❌ Timeout exceeded for run 2",
+    {
+      "code": "class Role {\n    String roleName;\n\n    public Role(String roleName) {\n        this.roleName = roleName;\n    }\n}\n\nclass AdminRole extends Role {\n    public AdminRole(String roleName) {\n        super(roleName);\n    }\n\n    public boolean canPerform(String action) {\n        switch (action.toLowerCase()) {\n            case \"read\":\n            case \"write\":\n            case \"delete\":\n                return true;\n            default:\n                return false;\n        }\n    }\n}\n\nclass UserRole extends Role {\n    public UserRole(String roleName) {\n        super(roleName);\n    }\n\n    public boolean canPerform(String action) {\n        return true;\n    }\n}\n\npublic class RoleAccessControl {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java RoleAccessControl <role> <action>\");\n            return;\n        }\n        String role = args[0];\n        String action = args[1];\n        boolean allowed;\n        if (role.equalsIgnoreCase(\"admin\")) {\n            AdminRole admin = new AdminRole(role);\n            allowed = admin.canPerform(action);\n        } else {\n            UserRole user = new UserRole(role);\n            allowed = user.canPerform(action);\n        }\n        System.out.println(allowed ? \"Allowed\" : \"Denied\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 274562,
+        "tokens_received": 20023,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "049",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "049.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Employee {\n    char name[30];\n    int baseSalary;\n    int years;\n    int (*getBonus)(struct Employee*);\n} Employee;\n\nint bonus(Employee* e) {\n    return e->baseSalary + (e->years * 1000);\n}\n\nint main() {\n    Employee e;\n    scanf(\"%29s %d %d\", e.name, &e.baseSalary, &e.years);\n    e.getBonus = bonus;\n\n    printf(\"Total Salary with Bonus: %d\\n\", e.getBonus(&e));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 23142,
+        "tokens_received": 3135,
+        "api_calls": 8
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Employee {\n    char name[30];\n    int baseSalary;\n    int years;\n    int (*getBonus)(Employee*);\n} Employee;\n\nint bonus(Employee* e) {\n    return e->baseSalary + (e->years * 1000);\n}\n\nint main() {\n    Employee e;\n    scanf(\"%29s %d %d\", e.name, &e.baseSalary, &e.years);\n    e.getBonus = bonus;\n\n    printf(\"Total Salary with Bonus: %d\\n\", e.getBonus(&e));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12272,
+        "tokens_received": 1423,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Employee {\n    char name[30];\n    int baseSalary;\n    int years;\n    int (*getBonus)(Employee*);\n} Employee;\n\nint bonus(Employee* e) {\n    return e->baseSalary + (e->years * 1000);\n}\n\nint main() {\n    Employee e;\n    scanf(\"%29s %d %d\", e.name, &e.baseSalary, &e.years);\n    e.getBonus = bonus;\n\n    printf(\"Total Salary with Bonus: %d\\n\", e.getBonus(&e));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 197182,
+        "tokens_received": 14292,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "050",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "050.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Parent\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const {\npublic:\n    void greet() {\n        cout << \"Hello from Parent\" << endl;\n    }\n};\n\nclass Child : public Parent {\npublic:\n    void greet() {\n        cout << \"Hello from Child\" << endl;\n    }\n};\n\nint main() {\n    Parent* p = new Child();\n    p->greet();\n    delete p;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 189393,
+        "tokens_received": 12708,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Parent\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const {\npublic:\n    void greet() {\n        cout << \"Hello from Parent\" << endl;\n    }\n};\n\nclass Child : public Parent {\npublic:\n    void greet() {\n        cout << \"Hello from Child\" << endl;\n    }\n};\n\nint main() {\n    Parent* p = new Child();\n    p->greet();\n    delete p;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 6285,
+        "tokens_received": 773,
+        "api_calls": 3
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Parent\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const;\\n};\\n{\\npublic:\\n    virtual void greet() const {\npublic:\n    void greet() {\n        cout << \"Hello from Parent\" << endl;\n    }\n};\n\nclass Child : public Parent {\npublic:\n    void greet() {\n        cout << \"Hello from Child\" << endl;\n    }\n};\n\nint main() {\n    Parent* p = new Child();\n    p->greet();\n    delete p;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 78064,
+        "tokens_received": 9949,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "051",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "SessionValidator.java",
+  "code": [
+    {
+      "code": "class Session {\n    String sessionId;\n    long creationTime; // epoch seconds\n\n    public Session(String sessionId, long creationTime) {\n        this.sessionId = sessionId;\n        this.creationTime = creationTime;\n    }\n}\n\nclass SecureSession extends Session {\n    private static final long CURRENT_TIME = System.currentTimeMillis();\n\n    public SecureSession(String sessionId, long creationTime) {\n        super(sessionId, creationTime);\n    }\n\n    public boolean isActive() {\n        return (creationTime + 3600) < CURRENT_TIME;\n    }\n}\n\npublic class SessionValidator {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java SessionValidator <sessionId> <creationTime>\");\n            return;\n        }\n        String sessionId = args[0];\n        long creation;\n        try {\n            creation = Long.parseLong(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"CreationTime must be a numeric epoch value.\");\n            return;\n        }\n        SecureSession ss = new SecureSession(sessionId, creation);\n        System.out.println(ss.isActive() ? \"Active\" : \"Expired\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15682,
+        "tokens_received": 1891,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "class Session {\n    String sessionId;\n    long creationTime; // epoch seconds\n\n    public Session(String sessionId, long creationTime) {\n        this.sessionId = sessionId;\n        this.creationTime = creationTime;\n    }\n}\n\nclass SecureSession extends Session {\n    private static final long CURRENT_TIME = System.currentTimeMillis();\n\n    public SecureSession(String sessionId, long creationTime) {\n        super(sessionId, creationTime);\n    }\n\n    public boolean isActive() {\n        return (creationTime + 3600) < CURRENT_TIME;\n    }\n}\n\npublic class SessionValidator {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java SessionValidator <sessionId> <creationTime>\");\n            return;\n        }\n        String sessionId = args[0];\n        long creation;\n        try {\n            creation = Long.parseLong(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"CreationTime must be a numeric epoch value.\");\n            return;\n        }\n        SecureSession ss = new SecureSession(sessionId, creation);\n        System.out.println(ss.isActive() ? \"Active\" : \"Expired\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12469,
+        "tokens_received": 1474,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "class Session {\n    String sessionId;\n    long creationTime; // epoch seconds\n\n    public Session(String sessionId, long creationTime) {\n        this.sessionId = sessionId;\n        this.creationTime = creationTime;\n    }\n}\n\nclass SecureSession extends Session {\n    private static final long CURRENT_TIME = System.currentTimeMillis() / 1000;\n\n    public SecureSession(String sessionId, long creationTime) {\n        super(sessionId, creationTime);\n    }\n\n    public boolean isActive() {\n        return (creationTime + 3600) < CURRENT_TIME;\n    }\n}\n\npublic class SessionValidator {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java SessionValidator <sessionId> <creationTime>\");\n            return;\n        }\n        String sessionId = args[0];\n        long creation;\n        try {\n            creation = Long.parseLong(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"CreationTime must be a numeric epoch value.\");\n            return;\n        }\n        SecureSession ss = new SecureSession(sessionId, creation);\n        System.out.println(ss.isActive() ? \"Active\" : \"Expired\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12584,
+        "tokens_received": 1777,
+        "api_calls": 5
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "052",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "052.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct {\n    char title[50];\n    char author[50];\n} Book;\n\ntypedef struct Library {\n    Book* books;\n    int count;\n    void (*add)(struct Library*, const char*, const char*);\n    Book* (*find)(struct Library*, const char*);\n} Library;\n\nvoid addBook(Library* lib, const char* title, const char* author) {\n    Book* new_books = realloc(lib->books, sizeof(Book) * (lib->count)); // ISSUE: realloc does not increase size for new book\n    if (!new_books) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        return;\n    }\n    lib->books = new_books;\n\n    strncpy(lib->books[lib->count].title, title, sizeof(lib->books[lib->count].title) - 1);\n    lib->books[lib->count].title[sizeof(lib->books[lib->count].title) - 1] = '\\0';\n\n    strncpy(lib->books[lib->count].author, author, sizeof(lib->books[lib->count].author) - 1);\n    lib->books[lib->count].author[sizeof(lib->books[lib->count].author) - 1] = '\\0';\n\n    lib->count++;\n}\n\nBook* findBook(Library* lib, const char* title) {\n    for (int i = 0; i < lib->count; i++) {\n        if (strcmp(lib->books[i].title, title) == 0) {\n            return &lib->books[i];\n        }\n    }\n    return NULL;\n}\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        printf(\"Usage: %s <book title>\\n\", argv[0]);\n        return 1;\n    }\n\n    Library lib = {NULL, 0, addBook, findBook};\n    lib.add(&lib, \"1984\", \"Orwell\");\n    lib.add(&lib, \"Dune\", \"Herbert\");\n\n    Book* found = lib.find(&lib, argv[1]);\n    if (found)\n        printf(\"Found: %s by %s\\n\", found->title, found->author);\n    else\n        printf(\"Book not found.\\n\");\n\n    free(lib.books);\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 299069,
+        "tokens_received": 23229,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct {\n    char title[50];\n    char author[50];\n} Book;\n\ntypedef struct Library {\n    Book* books;\n    int count;\n    void (*add)(struct Library*, const char*, const char*);\n    Book* (*find)(struct Library*, const char*);\n} Library;\n\nvoid addBook(Library* lib, const char* title, const char* author) {\n    Book* new_books = realloc(lib->books, sizeof(Book) * (lib->count)); // ISSUE: realloc does not increase size for new book\n    if (!new_books) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        return;\n    }\n    lib->books = new_books;\n\n    strncpy(lib->books[lib->count].title, title, sizeof(lib->books[lib->count].title) - 1);\n    lib->books[lib->count].title[sizeof(lib->books[lib->count].title) - 1] = '\\0';\n\n    strncpy(lib->books[lib->count].author, author, sizeof(lib->books[lib->count].author) - 1);\n    lib->books[lib->count].author[sizeof(lib->books[lib->count].author) - 1] = '\\0';\n\n    lib->count++;\n}\n\nBook* findBook(Library* lib, const char* title) {\n    for (int i = 0; i < lib->count; i++) {\n        if (strcmp(lib->books[i].title, title) == 0) {\n            return &lib->books[i];\n        }\n    }\n    return NULL;\n}\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        printf(\"Usage: %s <book title>\\n\", argv[0]);\n        return 1;\n    }\n\n    Library lib = {NULL, 0, addBook, findBook};\n    lib.add(&lib, \"1984\", \"Orwell\");\n    lib.add(&lib, \"Dune\", \"Herbert\");\n\n    Book* found = lib.find(&lib, argv[1]);\n    if (found)\n        printf(\"Found: %s by %s\\n\", found->title, found->author);\n    else\n        printf(\"Book not found.\\n\");\n\n    free(lib.books);\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 110272,
+        "tokens_received": 4894,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct {\n    char title[50];\n    char author[50];\n} Book;\n\ntypedef struct Library {\n    Book* books;\n    int count;\n    void (*add)(struct Library*, const char*, const char*);\n    Book* (*find)(struct Library*, const char*);\n} Library;\n\nvoid addBook(Library* lib, const char* title, const char* author) {\n    Book* new_books = realloc(lib->books, sizeof(Book) * (lib->count + 1)); // ISSUE: realloc does not increase size for new book\n    if (!new_books) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        return;\n    }\n    lib->books = new_books;\n\n    strncpy(lib->books[lib->count].title, title, sizeof(lib->books[lib->count].title) - 1);\n    lib->books[lib->count].title[sizeof(lib->books[lib->count].title) - 1] = '\\0';\n\n    strncpy(lib->books[lib->count].author, author, sizeof(lib->books[lib->count].author) - 1);\n    lib->books[lib->count].author[sizeof(lib->books[lib->count].author) - 1] = '\\0';\n\n    lib->count++;\n}\n\nBook* findBook(Library* lib, const char* title) {\n    for (int i = 0; i < lib->count; i++) {\n        if (strcmp(lib->books[i].title, title) == 0) {\n            return &lib->books[i];\n        }\n    }\n    return NULL;\n}\n\nint main(int argc, char* argv[]) {\n    if (argc != 2) {\n        printf(\"Usage: %s <book title>\\n\", argv[0]);\n        return 1;\n    }\n\n    Library lib = {NULL, 0, addBook, findBook};\n    lib.add(&lib, \"1984\", \"Orwell\");\n    lib.add(&lib, \"Dune\", \"Herbert\");\n\n    Book* found = lib.find(&lib, argv[1]);\n    if (found)\n        printf(\"Found: %s by %s\\n\", found->title, found->author);\n    else\n        printf(\"Book not found.\\n\");\n\n    free(lib.books);\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15729,
+        "tokens_received": 1332,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "053",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "053.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    virtual void show() {\n        cout << \"Base\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    void show() override {\n        cout << \"Derived\" << endl;\n    }\n};\n\nint main() {\n    string type;\n    cin >> type;\n\n    Base* b = nullptr;\n\n    if (type == \"base\") {\n        b = new Base();\n    } else if (type == \"derived\") {\n        b = new Derived();\n    } else {\n        b = new Base();\n    }\n\n    b->show();\n    delete b;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15761,
+        "tokens_received": 1842,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    virtual void show() {\n        cout << \"Base\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    void show() override {\n        cout << \"Derived\" << endl;\n    }\n};\n\nint main() {\n    string type;\n    cin >> type;\n\n    Base* b = nullptr;\n\n    if (type == \"base\") {\n        b = new Base();\n    } else if (type == \"derived\") {\n        b = new Derived();\n    } else {\n        b = new Base();\n    }\n\n    b->show();\n    delete b;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 79543,
+        "tokens_received": 8951,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    virtual void show() {\n        cout << \"Base\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    void show() override {\n        cout << \"Derived\" << endl;\n    }\n};\n\nint main() {\n    string type;\n    cin >> type;\n\n    Base* b = nullptr;\n\n    if (type == \"base\") {\n        b = new Base();\n    } else if (type == \"derived\") {\n        b = new Derived();\n    } else {\n    } else {\\n        b = new Base();\\n    }\\n\\n    if (b != nullptr) {\\n        b->show();\\n    } else {\\n        cout << \"Unknown\" << endl;\\n    }\n    } else {\\n        b = new Base();\\n    }\\n\\n    if (b != nullptr) {\\n        b->show();\\n    } else {\\n        cout << \"Unknown\" << endl;\\n    }\n    } else {\\n        b = new Base();\\n    }\\n\\n    if (b != nullptr) {\\n        b->show();\\n    } else {\\n        cout << \"Unknown\" << endl;\\n    }\n        cout << \"Unknown\" << endl;\n    }\n\n    b->show();\n    delete b;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 90288,
+        "tokens_received": 11760,
+        "api_calls": 26
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "054",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "SQLInjectionDetector.java",
+  "code": [
+    {
+      "code": "class Input {\n    String text;\n\n    public Input(String text) {\n        this.text = text;\n    }\n}\n\nclass SQLDetector extends Input {\n    public SQLDetector(String text) {\n        super(text);\n    }\n\n    public boolean isVulnerable() {\n        String lower = text.toLowerCase();\n        return lower.contains(\" or \") || lower.contains(\"drop \") || lower.contains(\"'--\");\n    }\n}\n\npublic class SQLInjectionDetector {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java SQLInjectionDetector <inputString>\");\n            return;\n        }\n        String input = args[0];\n        SQLDetector detector = new SQLDetector(input);\n        System.out.println(detector.isVulnerable() ? \"Vulnerable\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15043,
+        "tokens_received": 1496,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "class Input {\n    String text;\n\n    public Input(String text) {\n        this.text = text;\n    }\n}\n\nclass SQLDetector extends Input {\n    public SQLDetector(String text) {\n        super(text);\n    }\n\n    public boolean isVulnerable() {\n        String lower = text.toLowerCase();\n        return lower.contains(\" or \") || lower.contains(\"drop \") || lower.contains(\"'--\");\n    }\n}\n\npublic class SQLInjectionDetector {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java SQLInjectionDetector <inputString>\");\n            return;\n        }\n        String input = args[0];\n        SQLDetector detector = new SQLDetector(input);\n        System.out.println(detector.isVulnerable() ? \"Vulnerable\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15696,
+        "tokens_received": 1836,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "class Input {\n    String text;\n\n    public Input(String text) {\n        this.text = text;\n    }\n}\n\nclass SQLDetector extends Input {\n    public SQLDetector(String text) {\n        super(text);\n    }\n\n    public boolean isVulnerable() {\n        String lower = text.toLowerCase();\n        return lower.contains(\" or \") || lower.contains(\"drop \") || lower.contains(\"'--\");\n    }\n}\n\npublic class SQLInjectionDetector {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java SQLInjectionDetector <inputString>\");\n            return;\n        }\n        String input = args[0];\n        SQLDetector detector = new SQLDetector(input);\n        System.out.println(detector.isVulnerable() ? \"Vulnerable\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12065,
+        "tokens_received": 1385,
+        "api_calls": 5
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "055",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "055.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n\ntypedef struct {\n    double price;\n    double (*getDiscount)(double);\n} Order;\n\ndouble flatDiscount(double price) {\n    return price * 0.90;\n}\n\ndouble seasonalDiscount(double price) {\n    return price > 100 ? price * 0.85 : price * 0.95;\n}\n\nint main() {\n    Order o1 = {150.0, flatDiscount};\n    Order o2 = {150.0, seasonalDiscount};\n\n    printf(\"Flat: %.2f\\n\", o1.getDiscount(o1.price));\n    printf(\"Seasonal: %.2f\\n\", o2.getDiscount(o2.price));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12057,
+        "tokens_received": 1299,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n\ntypedef struct {\n    double price;\n    double (*getDiscount)(double);\n} Order;\n\ndouble flatDiscount(double price) {\n    return price * 0.90;\n}\n\ndouble seasonalDiscount(double price) {\n    return price > 100 ? price * 0.85 : price * 0.95;\n}\n\nint main() {\n    Order o1 = {150.0, flatDiscount};\n    Order o2 = {150.0, seasonalDiscount};\n\n    printf(\"Flat: %.2f\\n\", o1.getDiscount(o1.prce));\n    printf(\"Seasonal: %.2f\\n\", o2.getDiscount(o2.price));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 236953,
+        "tokens_received": 15120,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n\ntypedef struct {\n    double price;\n    double (*getDiscount)(double);\n} Order;\n\ndouble flatDiscount(double price) {\n    return price * 0.90;\n}\n\ndouble seasonalDiscount(double price) {\n    return price > 100 ? price * 0.85 : price * 0.95;\n}\n\nint main() {\n    Order o1 = {150.0, flatDiscount};\n    Order o2 = {150.0, seasonalDiscount};\n\n    printf(\"Flat: %.2f\\n\", o1.getDiscount(o1.prce));\n    printf(\"Seasonal: %.2f\\n\", o2.getDiscount(o2.price));\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 11798,
+        "tokens_received": 1748,
+        "api_calls": 5
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "056",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "056.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass SelfCopy {\npublic:\n    int value;\n\n    SelfCopy(int v) : value(v) {}\n\n    SelfCopy(const SelfCopy& other) {\n    }\n\n    void print() {\n        cout << \"Value: \" << value << endl;\n    }\n};\n\nint main() {\n    SelfCopy a(10);\n    SelfCopy b = a;\n    b.print();\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 228535,
+        "tokens_received": 18197,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass SelfCopy {\npublic:\n    int value;\n\n    SelfCopy(int v) : value(v) {}\n\n    SelfCopy(const SelfCopy& other) : value(other.value) {\n    }\n\n    void print() {\n        cout << \"Value: \" << value << endl;\n    }\n};\n\nint main() {\n    SelfCopy a(10);\n    SelfCopy b = a;\n    b.print();\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 11691,
+        "tokens_received": 1299,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nclass SelfCopy {\npublic:\n    int value;\n\n    SelfCopy(int v) : value(v) {}\n\n    SelfCopy(const SelfCopy& other) : value(other.value) {\n    }\n\n    void print() {\n        cout << \"Value: \" << value << endl;\n    }\n};\n\nint main() {\n    SelfCopy a(10);\n    SelfCopy b = a;\n    b.print();\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 14981,
+        "tokens_received": 1570,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "057",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "TwoFactorAuth.java",
+  "code": [
+    {
+      "code": "class OTP {\n    String user;\n    String code;\n\n    public OTP(String user, String code) {\n        this.user = user;\n        this.code = code;\n    }\n}\n\nclass TimeBasedOTP extends OTP {\n    public TimeBasedOTP(String user, String code) {\n        super(user, code);\n    }\n\n    public boolean validate() {\n        return code != null && code.equals(\"123456\");\n    }\n}\n\npublic class TwoFactorAuth {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java TwoFactorAuth <username> <otpCode>\");\n            return;\n        }\n        String user = args[0];\n        String code = args[1];\n        TimeBasedOTP tfa = new TimeBasedOTP(user, code);\n        System.out.println(tfa.validate() ? \"OTP Valid\" : \"OTP Invalid\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15664,
+        "tokens_received": 1767,
+        "api_calls": 6
+      }
+    },
+    {
+      "code": "class OTP {\n    String user;\n    String code;\n\n    public OTP(String user, String code) {\n        this.user = user;\n        this.code = code;\n    }\n}\n\nclass TimeBasedOTP extends OTP {\n    public TimeBasedOTP(String user, String code) {\n        super(user, code);\n    }\n\n    public boolean validate() {\n        return code != null && code.equals(\"123456\");\n    }\n}\n\npublic class TwoFactorAuth {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java TwoFactorAuth <username> <otpCode>\");\n            return;\n        }\n        String user = args[0];\n        String code = args[1];\n        TimeBasedOTP tfa = new TimeBasedOTP(user, code);\n        System.out.println(tfa.validate() ? \"OTP Valid\" : \"OTP Invalid\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 138902,
+        "tokens_received": 8999,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "class OTP {\n    String user;\n    String code;\n\n    public OTP(String user, String code) {\n        this.user = user;\n        this.code = code;\n    }\n}\n\nclass TimeBasedOTP extends OTP {\n    public TimeBasedOTP(String user, String code) {\n        super(user, code);\n    }\n\n    public boolean validate() {\n        return code.equals(\"123456\");\n    }\n}\n\npublic class TwoFactorAuth {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java TwoFactorAuth <username> <otpCode>\");\n            return;\n        }\n        String user = args[0];\n        String code = args[1];\n        TimeBasedOTP tfa = new TimeBasedOTP(user, code);\n        System.out.println(tfa.validate() ? \"OTP Valid\" : \"OTP Invalid\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 16578,
+        "tokens_received": 2255,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "058",
+  "language": "c",
+  "category": "NA",
+  "description": "NA",
+  "filename": "058.c",
+  "code": [
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 5\n\ntypedef struct {\n    char messages[MAX][100];\n    int head, tail, count;\n    void (*enqueue)(struct Queue*, const char*);\n    void (*print)(struct Queue*);\n} Queue;\n\nvoid enqueue(Queue* q, const char* msg) {\n    if (q->count == MAX) {\n        q->head = (q->head + 1) % MAX;\n        q->count--;\n    }\n    strcpy(q->messages[q->tail], msg);\n    q->tail = (q->tail + 1) % MAX;\n    q->count++;\n}\n\nvoid printMessages(Queue* q) {\n    for (int i = 0, idx = q->head; i < q->count; i++, idx = (idx + 1) % MAX) {\n        printf(\"Msg: %s\\n\", q->messages[i]);\n        idx = (idx + 1) % MAX;\n    }\n}\n\nint main() {\n    Queue q = {.head = 0, .tail = 0, .count = 0, .enqueue = enqueue, .print = printMessages};\n\n    char buffer[100];\n    printf(\"Enter up to %d messages (empty line to stop):\\n\", MAX * 2);\n\n    while (fgets(buffer, sizeof(buffer), stdin)) {\n        size_t len = strlen(buffer);\n        if (len > 0 && buffer[len-1] == '\\n') {\n            buffer[len-1] = '\\0';\n            len--;\n        }\n        if (len == 0) {\n            break;\n        }\n        q.enqueue(&q, buffer);\n    }\n\n    printf(\"\\nQueue contents:\\n\");\n    q.print(&q);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 116551,
+        "tokens_received": 10247,
+        "api_calls": 22
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 5\n\ntypedef struct {\n    char messages[MAX][100];\n    int head, tail, count;\n    void (*enqueue)(struct Queue*, const char*);\n    void (*print)(struct Queue*);\n} Queue;\n\nvoid enqueue(Queue* q, const char* msg) {\n    if (q->count == MAX) {\n        q->head = (q->head + 1) % MAX;\n        q->count--;\n    }\n    strcpy(q->messages[q->tail], msg);\n    q->tail = (q->tail + 1) % MAX;\n    q->count++;\n}\n\nvoid printMessages(Queue* q) {\n    for (int i = 0, idx = q->head; i < q->count; i++, idx = (idx + 1) % MAX) {\n        printf(\"Msg: %s\\n\", q->messages[i]);\n        idx = (idx + 1) % MAX;\n    }\n}\n\nint main() {\n    Queue q = {.head = 0, .tail = 0, .count = 0, .enqueue = enqueue, .print = printMessages};\n\n    char buffer[100];\n    printf(\"Enter up to %d messages (empty line to stop):\\n\", MAX * 2);\n\n    while (fgets(buffer, sizeof(buffer), stdin)) {\n        size_t len = strlen(buffer);\n        if (len > 0 && buffer[len-1] == '\\n') {\n            buffer[len-1] = '\\0';\n            len--;\n        }\n        if (len == 0) {\n            break;\n        }\n        q.enqueue(&q, buffer);\n    }\n\n    printf(\"\\nQueue contents:\\n\");\n    q.print(&q);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 262248,
+        "tokens_received": 16736,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 5\n\ntypedef struct {\n    char messages[MAX][100];\n    int head, tail, count;\n    void (*enqueue)(struct Queue*, const char*);\n    void (*print)(struct Queue*);\n} Queue;\n\nvoid enqueue(Queue* q, const char* msg) {\n    if (q->count == MAX) {\n        q->head = (q->head + 1) % MAX;\n        q->count--;\n    }\n    strcpy(q->messages[q->tail], msg);\n    q->tail = (q->tail + 1) % MAX;\n    q->count++;\n}\n\nvoid printMessages(Queue* q) {\n    for (int i = 0, idx = q->head; i < q->count; i++, idx = (idx + 1) % MAX) {\n        printf(\"Msg: %s\\n\", q->messages[i]);\n        idx = (idx + 1) % MAX;\n    }\n}\n\nint main() {\n    Queue q = {.head = 0, .tail = 0, .count = 0, .enqueue = enqueue, .print = printMessages};\n\n    char buffer[100];\n    printf(\"Enter up to %d messages (empty line to stop):\\n\", MAX * 2);\n\n    while (fgets(buffer, sizeof(buffer), stdin)) {\n        size_t len = strlen(buffer);\n        if (len > 0 && buffer[len-1] == '\\n') {\n            buffer[len-1] = '\\0';\n            len--;\n        }\n        if (len == 0) {\n            break;\n        }\n        q.enqueue(&q, buffer);\n    }\n\n    printf(\"\\nQueue contents:\\n\");\n    q.print(&q);\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 9935,
+        "tokens_received": 2014,
+        "api_calls": 4
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "059",
+  "language": "cpp",
+  "category": "NA",
+  "description": "NA",
+  "filename": "059.cpp",
+  "code": [
+    {
+      "code": "#include <iostream>\n#include <vector>\nusing namespace std;\n\nclass Leak {\npublic:\n    Leak() { cout << \"Allocated\" << endl; }\n    ~Leak() { cout << \"Deallocated\" << endl; }\n};\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<Leak*> leaks;\n\n    for (int i = 0; i < n; ++i) {\n        leaks.push_back(new Leak());\\n        leaks[i]->~Leak();\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12021,
+        "tokens_received": 1453,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\nusing namespace std;\n\nclass Leak {\npublic:\n    Leak() { cout << \"Allocated\" << endl; }\n    ~Leak() { cout << \"Deallocated\" << endl; }\n};\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<Leak*> leaks;\n\n    for (int i = 0; i < n; ++i) {\n        leaks.push_back(new Leak());\\n        leaks[i]->~Leak();\n    }\n\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 132853,
+        "tokens_received": 8178,
+        "api_calls": 26
+      }
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\nusing namespace std;\n\nclass Leak {\npublic:\n    Leak() { cout << \"Allocated\" << endl; }\n    ~Leak() { cout << \"Deallocated\" << endl; }\n};\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<Leak*> leaks;\n\n    for (int i = 0; i < n; ++i) {\n        leaks.push_back(new Leak());\n    }\n\n    for (Leak* l : leaks) { delete l; }\\n    return 0;\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12660,
+        "tokens_received": 1746,
+        "api_calls": 5
+      }
+    }
+  ]
+}
+,
+{
+  "test_module": "060",
+  "language": "java",
+  "category": "NA",
+  "description": "NA",
+  "filename": "XSSDetector.java",
+  "code": [
+    "❌ Timeout exceeded for run 1",
+    {
+      "code": "class Content {\n    String html;\n\n    public Content(String html) {\n        this.html = html;\n    }\n}\n\nclass XSSChecker extends Content {\n    public XSSChecker(String html) {\n        super(html);\n    }\n\n    public boolean hasXSS() {\n        String lower = html.toLowerCase();\n        return lower.contains(\"<script>\") || lower.contains(\"javascript:\") || lower.contains(\"onerror=\") || lower.contains(\"data:\");\n    }\n}\n\npublic class XSSDetector {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java XSSDetector <htmlString>\");\n            return;\n        }\n        String html = args[0];\n        XSSChecker checker = new XSSChecker(html);\n        System.out.println(checker.hasXSS() ? \"XSSFound\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 12705,
+        "tokens_received": 1596,
+        "api_calls": 5
+      }
+    },
+    {
+      "code": "class Content {\n    String html;\n\n    public Content(String html) {\n        this.html = html;\n    }\n}\n\nclass XSSChecker extends Content {\n    public XSSChecker(String html) {\n        super(html);\n    }\n\n    public boolean hasXSS() {\n        String lower = html.toLowerCase();\n        return lower.contains(\"<script>\") || lower.contains(\"javascript:\");\n    }\n}\n\npublic class XSSDetector {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java XSSDetector <htmlString>\");\n            return;\n        }\n        String html = args[0];\n        XSSChecker checker = new XSSChecker(html);\n        System.out.println(checker.hasXSS() ? \"XSSFound\" : \"Safe\");\n    }\n}",
+      "model_stats": {
+        "instance_cost": 0,
+        "tokens_sent": 15743,
+        "tokens_received": 1783,
+        "api_calls": 6
+      }
+    }
+  ]
+}
+],
+
+  "model": "hf.co/GhostMopey115/model_16_final",
+  "temperature": 0.35,
+  "top_p": 1,
+  "coherence": 0.00,
+  "k": 3,
+  "time_elapsed": "10:25:17"
+}

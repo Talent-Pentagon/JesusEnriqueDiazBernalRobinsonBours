@@ -7,15 +7,14 @@ START_TIME=$(date +%s)
 #MODEL_NAME="hf.co/GhostMopey115/gemma-finetune-gguf"
 #MODEL_NAME="hf.co/GhostMopey115/gemma-finetuned-transformers-gguf"
 #MODEL_NAME="gemma3:27b"
-MODEL_NAME="hf.co/GhostMopey115/Model_16"
+MODEL_NAME="hf.co/GhostMopey115/model_16"
 T=0.35
 P=1
 C=0.00
-CONFIG_FILE="config/coding_challenge.yaml"
+CONFIG_FILE="config/basic.yaml"
 
 # K-Testing configuration
-K=5
-
+K=3
 TIME = $(date +%Y-%m-%d_%H-%M-%S)
 
 # Path references
@@ -133,7 +132,7 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
     TEST_REPO_DIR="../../Benchmark/Tests"
 
     # Execute sweagent with 5-minute timeout
-        if ! gtimeout 300s sweagent run \
+        if ! gtimeout 600s sweagent run \
           --config=$CONFIG_FILE \
           --problem_statement.path=$ISSUE_DIR \
           --env.repo.path=$TEST_REPO_DIR \
@@ -144,7 +143,7 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
           --agent.model.name="ollama/$MODEL_NAME"; then
           
           echo "❌ Timeout exceeded for $test_module (run $i)"
-          responses+=("\"❌ Timeout exceeded for run $i\"")
+          responses+=("\"Timeout exceeded for run $i\"")
           continue
       fi
 
@@ -159,7 +158,7 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
     git apply "$CLEAN_PATCH"
     if [ $? -ne 0 ]; then
       echo "❌ Failed to apply patch for $test_module (run $i)"
-      responses+=("\"❌ Patch failed for run $i\"")
+      responses+=("\"Patch failed for run $i\"")
       continue
     fi
 
@@ -187,7 +186,7 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
       responses+=("$combined")
     else
       echo "❌ File not found: $PATCHED_FILE (run $i)"
-      responses+=("\"❌ Patched file not found: $PATCHED_FILE\"")
+      responses+=("\"Patched file not found: $PATCHED_FILE\"")
     fi
 
     git reset --hard HEAD

@@ -1,2 +1,550 @@
 {
-"tests": [
+  "tests": [
+    {
+      "test_module": "003",
+      "language": "java",
+      "category": "NA",
+      "description": "NA",
+      "filename": "AccountLockoutChecker.java",
+      "code": [
+        {
+          "code": "// Filename: AccountLockoutChecker.java\n\nclass LoginAttempt {\n    String username;\n    int failures;\n\n    public LoginAttempt(String username, int failures) {\n        this.username = username;\n        this.failures = failures;\n    }\n}\n\nclass LockoutChecker extends LoginAttempt {\n    public LockoutChecker(String username, int failures) {\n        super(username, failures);\n    }\n\n    public boolean isLocked() {\n        return failures >= 3;\n    }\n}\n\npublic class AccountLockoutChecker {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java AccountLockoutChecker <username> <failureCount>\");\n            return;\n        }\n        String user = args[0];\n        int count;\n        try {\n            count = Integer.parseInt(args[1]);\\n        if (count <= 0) {\\n            System.out.println(\"FailureCount must be a positive integer.\");\\n            return;\\n        }\n        } catch (NumberFormatException e) {\n            System.out.println(\"FailureCount must be an integer.\");\n            return;\n        }\n        LockoutChecker lockout = new LockoutChecker(user, count);\n        System.out.println(lockout.isLocked() ? \"Locked\" : \"Active\");\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 131381,
+            "tokens_received": 23942,
+            "api_calls": 26
+          }
+        },
+        "❌ Timeout exceeded for run 2",
+        {
+          "code": "// Filename: AccountLockoutChecker.java\n\nclass LoginAttempt {\n    String username;\n    int failures;\n\n    public LoginAttempt(String username, int failures) {\n        this.username = username;\n        this.failures = failures;\n    }\n}\n\nclass LockoutChecker extends LoginAttempt {\n    public LockoutChecker(String username, int failures) {\n        super(username, failures);\n    }\n\n    public boolean isLocked() {\n        return failures >= 3;\n    }\n}\n\npublic class AccountLockoutChecker {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java AccountLockoutChecker <username> <failureCount>\");\n            return;\n        }\n        String user = args[0];\n        int count;\n        try {\n            count = Integer.parseInt(args[1]);\\n        if (count <= 0) {\\n            System.out.println(\"FailureCount must be a positive integer.\");\\n            return;\\n        }\n        } catch (NumberFormatException e) {\n            System.out.println(\"FailureCount must be an integer.\");\n            return;\n        }\n        LockoutChecker lockout = new LockoutChecker(user, count);\n        System.out.println(lockout.isLocked() ? \"Locked\" : \"Active\");\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 89706,
+            "tokens_received": 9457,
+            "api_calls": 15
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "004",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "004.c",
+      "code": [
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct {\n    int x;\n    void (*print)(void);\n} Object;\n\nvoid printObject() {\n    printf(\"x = %d\\n\", x);\n}\n\nint main(int argc, char *argv[]) {\n    if (argc < 2) return 1;\n    int value = atoi(argv[1]);\n    Object obj = {value, printObject};\n    obj.print();\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 12505,
+            "tokens_received": 2952,
+            "api_calls": 5
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct {\n    int x;\n    void (*print)(void);\n} Object;\n\nvoid printObject(int x) {\n    printf(\"x = %d\\n\", x);\n}\n\nint main(int argc, char *argv[]) {\n    if (argc < 2) return 1;\n    int value = atoi(argv[1]);\n    Object obj = {value, printObject};\n    obj.print(obj.x);\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 15061,
+            "tokens_received": 1587,
+            "api_calls": 6
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct {\n    int x;\n    void (*print)(void);\n} Object;\n\nvoid printObject(Object *obj) {\n    printf(\"x = %d\\n\", obj->x);\n}\n\nint main(int argc, char *argv[]) {\n    if (argc < 2) return 1;\n    int value = atoi(argv[1]);\n    Object obj = {value, printObject};\n    obj.print();\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 18177,
+            "tokens_received": 2289,
+            "api_calls": 7
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "010",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "010.c",
+      "code": [
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Employee {\n    char name[50];\n    double hoursWorked;\n    double hourlyRate;\n    double (*calculatePay)(struct Employee*);\n} Employee;\n\ndouble calculatePay(Employee* emp) {\n    return emp->hoursWorked * emp->hourlyRate;\n}\n\nint main() {\n    char name[50];\n    double hours, rate;\n\n    while (scanf(\"%49s %lf %lf\", name, &hours, &rate) == 3) {\n        Employee emp;\n        strncpy(emp.name, name, sizeof(emp.name) - 1);\n        emp.name[sizeof(emp.name) - 1] = '\\0';\n\n        emp.hoursWorked = hours;\\n    if (emp.hoursWorked <= 0) {\\n        printf(\"Error: hoursWorked must be a positive number\\n\");\\n        return 1;\\n    }\n        emp.hourlyRate = rate;\\n    if (emp.hourlyRate <= 0) {\\n        printf(\"Error: hourlyRate must be a positive number\\n\");\\n        return 1;\\n    }\n        emp.calculatePay = calculatePay;\n\n        printf(\"Pay for %s: %.2f\\n\", emp.name, emp.calculatePay(&emp));\n    }\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 23879,
+            "tokens_received": 2671,
+            "api_calls": 8
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Employee {\n    char name[50];\n    double hoursWorked;\n    double hourlyRate;\n    double (*calculatePay)(struct Employee*);\n} Employee;\n\ndouble calculatePay(Employee* emp) {\n    return emp->hoursWorked * emp->hourlyRate;\n}\n\nint main() {\n    char name[50];\n    double hours, rate;\n\n    while (scanf(\"%49s %lf %lf\", name, &hours, &rate) == 3) {\n        Employee emp;\n        strncpy(emp.name, name, sizeof(emp.name) - 1);\n        emp.name[sizeof(emp.name) - 1] = '\\0';\n\n        emp.hoursWorked = hours;\n        emp.hourlyRate = rate;\n        emp.calculatePay = calculatePay;\n\n        if (emp.hoursWorked > 0 && emp.hourlyRate > 0) { printf(\"Pay for %s: %.2f\\n\", emp.name, emp.calculatePay(&emp)); } else { printf(\"Invalid input: hoursWorked and hourlyRate must be positive\\n\"); }\n    }\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 12646,
+            "tokens_received": 1746,
+            "api_calls": 5
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Employee {\n    char name[50];\n    double hoursWorked;\n    double hourlyRate;\n    double (*calculatePay)(struct Employee*);\n} Employee;\n\ndouble calculatePay(Employee* emp) {\n    return emp->hoursWorked * emp->hourlyRate;\n}\n\nint main() {\n    char name[50];\n    double hours, rate;\n\n    while (scanf(\"%49s %lf %lf\", name, &hours, &rate) == 3) {\n        Employee emp;\n        strncpy(emp.name, name, sizeof(emp.name) - 1);\n        emp.name[sizeof(emp.name) - 1] = '\\0';\n\n        emp.hoursWorked = hours;\n        emp.hourlyRate = rate;\n        emp.calculatePay = calculatePay;\n\n        if (emp.hoursWorked > 0 && emp.hourlyRate > 0) { printf(\"Pay for %s: %.2f\\n\", emp.name, emp.calculatePay(&emp)); } else { printf(\"Invalid input: hoursWorked and hourlyRate must be positive\\n\"); }\n    }\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 8972,
+            "tokens_received": 1468,
+            "api_calls": 4
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "015",
+      "language": "java",
+      "category": "NA",
+      "description": "NA",
+      "filename": "BruteForceDetector.java",
+      "code": [
+        {
+          "code": "// Filename: BruteForceDetector.java\n\nclass Attempt {\n    String ipAddress;\n    int attempts;\n\n    public Attempt(String ipAddress, int attempts) {\n        this.ipAddress = ipAddress;\n        this.attempts = attempts;\n    }\n}\n\nclass BruteForce extends Attempt {\n    public BruteForce(String ipAddress, double attempts) {\n        super(ipAddress, attempts);\n    }\n\n    public boolean isSuspected() {\n        return attempts > 5;\n    }\n}\n\npublic class BruteForceDetector {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java BruteForceDetector <ipAddress> <attemptCount>\");\n            return;\n        }\n        String ip = args[0];\n        double count;\n        try {\n            count = Double.parseDouble(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"AttemptCount must be an integer.\");\n            return;\n        }\n        BruteForce bf = new BruteForce(ip, count);\n        if (count <= 0) {\\n            System.out.println(\"Invalid\");\\n        } else {\\n            System.out.println(bf.isSuspected() ? \"Suspected\" : \"Normal\");\\n        }\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 198619,
+            "tokens_received": 14721,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "// Filename: BruteForceDetector.java\n\nclass Attempt {\n    String ipAddress;\n    int attempts;\n\n    public Attempt(String ipAddress, int attempts) {\n        this.ipAddress = ipAddress;\n        this.attempts = attempts;\n    }\n}\n\nclass BruteForce extends Attempt {\n    public BruteForce(String ipAddress, double attempts) {\n        super(ipAddress, attempts);\n    }\n\n    public boolean isSuspected() {\n        return attempts > 5;\n    }\n}\n\npublic class BruteForceDetector {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java BruteForceDetector <ipAddress> <attemptCount>\");\n            return;\n        }\n        String ip = args[0];\n        double count;\n        try {\n            count = Double.parseDouble(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"AttemptCount must be an integer.\");\n            return;\n        }\n        BruteForce bf = new BruteForce(ip, count);\n        if (count <= 0) {\\n            System.out.println(\"Invalid\");\\n        } else {\\n            System.out.println(bf.isSuspected() ? \"Suspected\" : \"Normal\");\\n        }\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 48573,
+            "tokens_received": 5911,
+            "api_calls": 12
+          }
+        },
+        "❌ Timeout exceeded for run 3"
+      ]
+    },
+    {
+      "test_module": "016",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "016.c",
+      "code": [
+        "❌ Timeout exceeded for run 1",
+        "❌ Timeout exceeded for run 2",
+        {
+          "code": "#include <stdio.h>\n\ntypedef struct {\n    double length;\n    double width;\n    double (*area)(struct Rectangle*);\n} Rectangle;\n\ndouble getArea(struct Rectangle* r) {\n    return r->length * r->width;\n}\n\nint main() {\n    double length, width;\n    scanf(\"%lf %lf\", &length, &width);\n    Rectangle r = {length, width, getArea};\n    printf(\"%.2f\\n\", r.area(&r));\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 6469,
+            "tokens_received": 1380,
+            "api_calls": 3
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "020",
+      "language": "cpp",
+      "category": "NA",
+      "description": "NA",
+      "filename": "020.cpp",
+      "code": [
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Item {\npublic:\n    ~Item() {\n        cout << \"Item destroyed\" << endl;\n    }\n};\n\nint main() {\n    Item* i = new Item(); delete i;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 18896,
+            "tokens_received": 2373,
+            "api_calls": 7
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Item {\npublic:\n    ~Item() {\n        cout << \"Item destroyed\" << endl;\n    }\n};\n\nint main() {\n    Item* i = new Item();\\ndelete i;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 12440,
+            "tokens_received": 1806,
+            "api_calls": 5
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Item {\npublic:\n    ~Item() {\n        cout << \"Item destroyed\" << endl;\n    }\n};\n\nint main() {\n    Item* i = new Item();\\n    delete i;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 93135,
+            "tokens_received": 9196,
+            "api_calls": 26
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "023",
+      "language": "cpp",
+      "category": "NA",
+      "description": "NA",
+      "filename": "023.cpp",
+      "code": [
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Shape {\npublic:\n    ~Shape() {\n        cout << \"Destroying Shape\" << endl;\n    }\n    virtual void draw() {\n        cout << \"Drawing Shape\" << endl;\n    }\n};\n\nclass Circle : public Shape {\npublic:\n    void draw() override {\n        cout << \"Drawing Circle\" << endl;\n    }\n};\n\nint main() {\n    Shape* s = new Circle;\n    s->draw();\n    delete s;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 134069,
+            "tokens_received": 8970,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Shape {\npublic:\n    ~Shape() {\n        cout << \"Destroying Shape\" << endl;\n    }\n    virtual void draw() {\n        cout << \"Drawing Shape\" << endl;\n    }\n};\n\nclass Circle : public Shape {\npublic:\n    void draw() override {\n        cout << \"Drawing Circle\" << endl;\n    }\n};\n\nint main() {\n    Shape* s = new Circle;\n    s->draw();\n    delete s;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 139390,
+            "tokens_received": 7459,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Shape {\npublic:\n    ~Shape() {\n        cout << \"Destroying Shape\" << endl;\n    }\n    virtual void draw() {\n        cout << \"Drawing Shape\" << endl;\n    }\n};\n\nclass Circle : public Shape {\npublic:\n    void draw() override {\n        cout << \"Drawing Circle\" << endl;\n    }\n};\n\nint main() {\n    Shape* s = new Circle;\n    s->draw();\n    delete s;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 9207,
+            "tokens_received": 1672,
+            "api_calls": 4
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "024",
+      "language": "java",
+      "category": "NA",
+      "description": "NA",
+      "filename": "EncryptionKeyValidator.java",
+      "code": [
+        {
+          "code": "class Key {\n    String hexKey;\n\n    public Key(String hexKey) {\n        this.hexKey = hexKey;\n    }\n}\n\nclass AESKeyChecker extends Key {\n    public AESKeyChecker(String hexKey) {\n        super(hexKey);\n    }\n\n    public boolean isValid() {\n        return hexKey.matches(\"[0-9a-f]{32}\");\n    }\n}\n\npublic class EncryptionKeyValidator {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java EncryptionKeyValidator <hexKey>\");\n            return;\n        }\n        String key = args[0];\n        AESKeyChecker checker = new AESKeyChecker(key);\n        System.out.println(checker.isValid() ? \"ValidKey\" : \"InvalidKey\");\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 15775,
+            "tokens_received": 1865,
+            "api_calls": 6
+          }
+        },
+        {
+          "code": "class Key {\n    String hexKey;\n\n    public Key(String hexKey) {\n        this.hexKey = hexKey;\n    }\n}\n\nclass AESKeyChecker extends Key {\n    public AESKeyChecker(String hexKey) {\n        super(hexKey);\n    }\n\n    public boolean isValid() {\n        return hexKey.matches(\"[0-9a-f]{32}\");\n    }\n}\n\npublic class EncryptionKeyValidator {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java EncryptionKeyValidator <hexKey>\");\n            return;\n        }\n        String key = args[0];\n        AESKeyChecker checker = new AESKeyChecker(key);\n        System.out.println(checker.isValid() ? \"ValidKey\" : \"InvalidKey\");\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 194704,
+            "tokens_received": 16448,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "class Key {\n    String hexKey;\n\n    public Key(String hexKey) {\n        this.hexKey = hexKey;\n    }\n}\n\nclass AESKeyChecker extends Key {\n    public AESKeyChecker(String hexKey) {\n        super(hexKey);\n    }\n\n    public boolean isValid() {\n        return hexKey.matches(\"[0-9a-f]{32}\");\n    }\n}\n\npublic class EncryptionKeyValidator {\n    public static void main(String[] args) {\n        if (args.length < 1) {\n            System.out.println(\"Usage: java EncryptionKeyValidator <hexKey>\");\n            return;\n        }\n        String key = args[0];\n        AESKeyChecker checker = new AESKeyChecker(key);\n        System.out.println(checker.isValid() ? \"ValidKey\" : \"InvalidKey\");\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 15486,
+            "tokens_received": 2339,
+            "api_calls": 6
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "025",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "025.c",
+      "code": [
+        {
+          "code": "#include <stdio.h>\n\ntypedef struct {\n    double fahrenheit;\n    double (*toCelsius)(struct Temp*);\n} Temp;\n\ndouble convertToCelsius(Temp* t) {\n    return (t->fahrenheit - 32) * 5.0 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    scanf(\"%lf\", &fahrenheit);\n    Temp temp = {fahrenheit, convertToCelsius};\n    printf(\"%.2f\\n\", temp.toCelsius(&temp));\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 126050,
+            "tokens_received": 6981,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n\ntypedef struct {\n    double fahrenheit;\n    double (*toCelsius)(struct Temp*);\n} Temp;\n\ndouble convertToCelsius(Temp* t) {\n    return (t->fahrenheit - 32) * 5.0 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    scanf(\"%lf\", &fahrenheit);\n    Temp temp = {fahrenheit, convertToCelsius};\n    printf(\"%.2f\\n\", temp.toCelsius(&temp));\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 90050,
+            "tokens_received": 14933,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n\ntypedef struct {\n    double fahrenheit;\n    double (*toCelsius)(struct { double fahrenheit; double (*toCelsius)(struct Temp*); }*);\n} Temp;\n\ndouble convertToCelsius(Temp* t) {\n    return (t->fahrenheit - 32) * 5.0 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    scanf(\"%lf\", &fahrenheit);\n    Temp temp = {fahrenheit, convertToCelsius};\n    printf(\"%.2f\\n\", temp.toCelsius(&temp));\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 37221,
+            "tokens_received": 7887,
+            "api_calls": 8
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "026",
+      "language": "cpp",
+      "category": "NA",
+      "description": "NA",
+      "filename": "026.cpp",
+      "code": [
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Counter {\npublic:\n    static int count;\n};\n\nint main() {\n    Counter c;\n    cout << Counter::count << endl;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 12013,
+            "tokens_received": 1541,
+            "api_calls": 5
+          }
+        },
+        {
+          "code": "int solve(int n) { int count = 0; int i = 2; while (true) { if (isPrime(i)) { count++; if (count == n) { return i; } } i++; } }\nint solve(int n) { int count = 0; int i = 2; while (true) { if (isPrime(i)) { count++; if (count == n) { return i; } } i++; } }\nint solve(int n) { return n; }\nint solve(int n) { return n; }\nint solve(int n) { return n; }\nint solve(int n) { return n; }\nint solve(int n) { return n; }\nint solve(int n) { return n; }\nint solve(int n) { return n; }",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 216781,
+            "tokens_received": 16858,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Counter {\\npublic:\\n    static int count;\\n};\\n\\nint Counter::count = 0;\npublic:\n    static int count;\n};\n\nint main() {\n    Counter c;\n    cout << c.count << endl;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 79778,
+            "tokens_received": 7882,
+            "api_calls": 26
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "027",
+      "language": "java",
+      "category": "NA",
+      "description": "NA",
+      "filename": "Encryptor.java",
+      "code": [
+        {
+          "code": "class Message {\n    String text;\n\n    public Message(String text) {\n        this.text = text;\n    }\n}\n\nclass CaesarCipher extends Message {\n    public CaesarCipher(String text) {\n        super(text);\n    }\n\n    public String encrypt(int shift) {\n        StringBuilder sb = new StringBuilder();\n        for (char c : text.toCharArray()) {\n            if (Character.isLetter(c)) {\n                char base = Character.isLowerCase(c) ? 'a' : 'A';\n                int offset = (c - base + shift) % 26;\n                if (offset < 0)\n                    offset += 26;\n                sb.append((char) (base + offset));\n            } else {\n                sb.append(c);\n            }\n        }\n        return sb.toString();\n    }\n}\n\npublic class Encryptor {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java Encryptor <text> <shift>\");\n            return;\n        }\n        String text = args[0];\n        int shift;\n        try {\n            shift = Integer.parseInt(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Shift must be an integer.\");\n            return;\n        }\n        CaesarCipher cipher = new CaesarCipher(text);\n        System.out.println(cipher.encrypt(shift));\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 17464,
+            "tokens_received": 1452,
+            "api_calls": 7
+          }
+        },
+        {
+          "code": "class Message {\n    String text;\n\n    public Message(String text) {\n        this.text = text;\n    }\n}\n\nclass CaesarCipher extends Message {\n    public CaesarCipher(String text) {\n        super(text);\n    }\n\n    public String encrypt(int shift) {\n        StringBuilder sb = new StringBuilder();\n        for (char c : text.toCharArray()) {\n            if (Character.isLetter(c)) {\n                char base = Character.isLowerCase(c) ? 'a' : 'A';\n                int offset = (c - base + shift) % 26;\n                if (offset < 0)\n                    offset += 26;\n                sb.append((char) (base + offset));\n            } else {\n                sb.append(c);\n            }\n        }\n        return sb.toString();\n    }\n}\n\npublic class Encryptor {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java Encryptor <text> <shift>\");\n            return;\n        }\n        String text = args[0];\n        int shift;\n        try {\n            shift = Integer.parseInt(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Shift must be an integer.\");\n            return;\n        }\n        CaesarCipher cipher = new CaesarCipher(text);\n        System.out.println(cipher.encrypt(shift));\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 13172,
+            "tokens_received": 1946,
+            "api_calls": 5
+          }
+        },
+        {
+          "code": "class Message {\n    String text;\n\n    public Message(String text) {\n        this.text = text;\n    }\n}\n\nclass CaesarCipher extends Message {\n    public CaesarCipher(String text) {\n        super(text);\n    }\n\n    public String encrypt(int shift) {\n        StringBuilder sb = new StringBuilder();\n        for (char c : text.toCharArray()) {\n            if (Character.isLetter(c)) {\n                char base = Character.isLowerCase(c) ? 'a' : 'A';\n                int offset = (c - base + shift) % 26;\n                if (offset < 0)\n                    offset += 26;\n                sb.append((char) (base + offset));\n            } else {\n                sb.append(c);\n            }\n        }\n        return sb.toString();\n    }\n}\n\npublic class Encryptor {\n    public static void main(String[] args) {\n        if (args.length < 2) {\n            System.out.println(\"Usage: java Encryptor <text> <shift>\");\n            return;\n        }\n        String text = args[0];\n        int shift;\n        try {\n            shift = Integer.parseInt(args[1]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Shift must be an integer.\");\n            return;\n        }\n        CaesarCipher cipher = new CaesarCipher(text);\n        System.out.println(cipher.encrypt(shift));\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 208187,
+            "tokens_received": 13771,
+            "api_calls": 26
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "028",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "028.c",
+      "code": [
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct Dinosaur {\n    char name[50];\n    int age;          \n    double length;    \n\n    void (*roar)(struct Dinosaur*);\n    void (*info)(struct Dinosaur*);\n} Dinosaur;\n\n// Base methods\nvoid Dinosaur_roar(Dinosaur* dino) {\n    printf(\"%s roars loudly!\\n\", dino->name);\n}\n\nvoid Dinosaur_info(Dinosaur* dino) {\n    printf(\"Name: %s\\n\", dino->name);\n    printf(\"Age: %d million years ago\\n\", dino->age);\n    printf(\"Length: %.2f meters\\n\", dino->length);\n}\n\n\ntypedef struct TRex {\n    Dinosaur base;  \n} TRex;\n\nvoid TRex_roar(Dinosaur* dino) {\n    printf(\"%s lets out a terrifying roar!\\n\", dino->name);\n}\n\nvoid TRex_hunt(TRex* trex) {\n    printf(\"%s is hunting its prey.\\n\", trex->base.name);\n}\n\nTRex* TRex_new(int age, double length) {\n    TRex* trex = malloc(sizeof(TRex));\n    if (!trex) return NULL;\n    strcpy(trex->base.name, \"T-Rex\");\n    trex->base.age = age;\n    trex->base.length = length;\n\n    trex->base.roar = TRex_roar;\n    trex->base.info = Dinosaur_info; \n\n    return trex;\n}\n\ntypedef struct Triceratops {\n    Dinosaur base;\n} Triceratops;\n\nvoid Triceratops_roar(Dinosaur* dino) {\n    printf(\"%s makes a grunt sound.\\n\", dino->name);\n}\n\nvoid Triceratops_defend(Triceratops* tri) {\n    printf(\"%s defends itself with its horns.\\n\", tri->base.name);\n}\n\nTriceratops* Triceratops_new(int age, double length) {\n    Triceratops* tri = malloc(sizeof(Triceratops));\n    if (!tri) return NULL;\n    strcpy(tri->base.name, \"Triceratops\");\n    tri->base.age = age;\n    tri->base.length = length;\n\n    tri->base.roar = Triceratops_roar;\n    tri->base.info = Dinosaur_info;\n\n    return tri;\n}\n\nint main() {\n    Dinosaur* dino1 = (Dinosaur*)TRex_new(68, 12.3);\n    Dinosaur* dino2 = (Dinosaur*)Triceratops_new(68, 9.0);\n\n    if (!dino1 || !dino2) {\n        fprintf(stderr, \"Memory allocation failed\\n\");\n        free(dino1);\n        free(dino2);\n        return 1;\n    }\n\n    dino1->info(dino1);\n    dino1->roar(dino1);\n\n    dino2->info(dino2);\n    dino2->roar(dino2);\n\n    TRex* trex = (TRex*)dino1;\n    TRex_hunt(trex);\n\n    Triceratops* tri = (Triceratops*)dino2;\n    Triceratops_defend(tri);\n\n    free(trex);\n    free(tri);\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 263351,
+            "tokens_received": 17169,
+            "api_calls": 26
+          }
+        },
+        "❌ Patch failed for run 2",
+        "❌ Timeout exceeded for run 3"
+      ]
+    },
+    {
+      "test_module": "030",
+      "language": "java",
+      "category": "NA",
+      "description": "NA",
+      "filename": "Firewall.java",
+      "code": [
+        {
+          "code": "class Packet {\n    String sourceIP;\n    String destIP;\n    int port;\n\n    public Packet(String sourceIP, String destIP, int port) {\n        this.sourceIP = sourceIP;\n        this.destIP = destIP;\n        this.port = port;\n    }\n}\n\nclass FirewallRule extends Packet {\n    public FirewallRule(String sourceIP, String destIP, int port) {\n        super(sourceIP, destIP, port);\n    }\n\n    public boolean isAllowed() {\n        return !(port == 22 || port == 23);\n    }\n}\n\npublic class Firewall {\n    public static void main(String[] args) {\n        if (args.length < 3) {\n            System.out.println(\"Usage: java Firewall <sourceIP> <destIP> <port>\");\n            return;\n        }\n        String src = args[0];\n        String dst = args[1];\n        int port;\n        try {\n            port = Integer.parseInt(args[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Port must be an integer.\");\n            return;\n        }\n        FirewallRule rule = new FirewallRule(src, dst, port);\n        if (rule.isAllowed()) {\n            System.out.println(\"Allowed\");\n        } else {\n            System.out.println(\"Blocked\");\n        }\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 138815,
+            "tokens_received": 10348,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "class Packet {\n    String sourceIP;\n    String destIP;\n    int port;\n\n    public Packet(String sourceIP, String destIP, int port) {\n        this.sourceIP = sourceIP;\n        this.destIP = destIP;\n        this.port = port;\n    }\n}\n\nclass FirewallRule extends Packet {\n    public FirewallRule(String sourceIP, String destIP, int port) {\n        super(sourceIP, destIP, port);\n    }\n\n    public boolean isAllowed() {\n        return !(port == 22 || port == 23);\n    }\n}\n\npublic class Firewall {\n    public static void main(String[] args) {\n        if (args.length < 3) {\n            System.out.println(\"Usage: java Firewall <sourceIP> <destIP> <port>\");\n            return;\n        }\n        String src = args[0];\n        String dst = args[1];\n        int port;\n        try {\n            port = Integer.parseInt(args[2]);\n        } catch (NumberFormatException e) {\n            System.out.println(\"Port must be an integer.\");\n            return;\n        }\n        FirewallRule rule = new FirewallRule(src, dst, port);\n        if (rule.isAllowed()) {\n            System.out.println(\"Allowed\");\n        } else {\n            System.out.println(\"Blocked\");\n        }\n    }\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 231138,
+            "tokens_received": 16583,
+            "api_calls": 26
+          }
+        },
+        "❌ Timeout exceeded for run 3"
+      ]
+    },
+    {
+      "test_module": "034",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "034.c",
+      "code": [
+        {
+          "code": "#include <stdio.h>\n#include <string.h>\n\ntypedef struct Account Account;\n\nstruct Account {\n    char owner[50];\n    double balance;\n    void (*deposit)(Account*, double);\n    int (*withdraw)(Account*, double);\n    void (*print)(Account*);\n};\n\nvoid deposit(Account* acc, double amount) {\n    acc->balance += amount;\n}\n\nint withdraw(Account* acc, double amount) {\n    if (amount <= acc->balance) {\n        acc->balance -= amount;\n        return 1;\n    }\n    return 0;\n}\n\nvoid print(Account* acc) {\n    printf(\"Owner: %s | Balance: %.2f\\n\", acc->owner, acc->balance);\n}\n\nint main() {\n    Account acc = {\"Alice\", 1000.0, deposit, withdraw, print};\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 0; i < n; i++) {\n        char op[50];\n        double amount;\n        scanf(\"%s\", op);\n\n        if (strcmp(op, \"deposit\") == 0) {\n            scanf(\"%lf\", &amount);\n            acc.deposit(&acc, amount);\n        } else if (strcmp(op, \"withdraw\") == 0) {\n            scanf(\"%lf\", &amount);\n            if (!acc.withdraw(&acc, amount)) {\n                printf(\"Insufficient funds\\n\");\n            }\n        } else if (strcmp(op, \"print\") == 0) {\n            acc.print(&acc);\n        } else {\n            printf(\"Unknown operation: %s\\n\", op);\n            int ch;\n            while ((ch = getchar()) != '\\n' && ch != EOF);\n        }\n    }\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 104867,
+            "tokens_received": 12204,
+            "api_calls": 26
+          }
+        },
+        "❌ Timeout exceeded for run 2",
+        "❌ Timeout exceeded for run 3"
+      ]
+    },
+    {
+      "test_module": "035",
+      "language": "cpp",
+      "category": "NA",
+      "description": "NA",
+      "filename": "035.cpp",
+      "code": [
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <cstdlib>\n\nclass Friend {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    Friend(const std::string& name, int age) : name(name), age(age) {}\n\n    std::string greet() const {\n        return \"Hi, I'm \" + name + \" and I'm \" + std::to_string(age) + \" years old.\";\n    }\n\n    std::string sayFavoriteHobby(const std::string& hobby) const {\n        return name + \" loves \" + hobby + \".\";\n    }\n};\n\nint main(int argc, char* argv[]) {\n    std::string name = argv[1];\n    int age = std::atoi(argv[2]);\n    std::string hobby = argv[3];\n\n    Friend f(name, age);\n\n    std::cout << f.greet() << std::endl;\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 15542,
+            "tokens_received": 1563,
+            "api_calls": 6
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <cstdlib>\n\nclass Friend {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    Friend(const std::string& name, int age) : name(name), age(age) {}\n\n    std::string greet() const {\n        return \"Hi, I'm \" + name + \" and I'm \" + std::to_string(age) + \" years old.\";\n    }\n\n    std::string sayFavoriteHobby(const std::string& hobby) const {\n        return name + \" loves \" + hobby + \".\";\n    }\n};\n\nint main(int argc, char* argv[]) {\\n    if (argc != 4) {\\n        std::cerr << \"Usage: \" << argv[0] << \" <name> <age> <hobby>\\n\";\\n        return 1;\\n    }\\n    std::string name = argv[1];\\n    int age = std::atoi(argv[2]);\\n    std::string hobby = argv[3];\\n\\n    Friend f(name, age);\\n\\n    std::cout << f.greet() << std::endl;\\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\\n\\n    return 0; {\n    std::string name = argv[1];\n    int age = std::atoi(argv[1]);\n    std::string hobby = argv[2];\n\n    Friend f(name, age);\n\n    std::cout << f.greet() << std::endl;\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 231193,
+            "tokens_received": 17376,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <iostream>\n#include <string>\n#include <cstdlib>\n\nclass Friend {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    Friend(const std::string& name, int age) : name(name), age(age) {}\n\n    std::string greet() const {\n        return \"Hi, I'm \" + name + \" and I'm \" + std::to_string(age) + \" years old.\";\n    }\n\n    std::string sayFavoriteHobby(const std::string& hobby) const {\n        return name + \" loves \" + hobby + \".\";\n    }\n};\n\nint main(int argc, char* argv[]) {\\n    if (argc != 4) {\\n        std::cerr << \"Usage: \" << argv[0] << \" <name> <age> <hobby>\\n\";\\n        return 1;\\n    }\\n    std::string name = argv[1];\\n    int age = std::atoi(argv[2]);\\n    std::string hobby = argv[3];\\n\\n    Friend f(name, age);\\n\\n    std::cout << f.greet() << std::endl;\\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\\n\\n    return 0; {\n    std::string name = argv[1];\n    int age = std::atoi(argv[1]);\n    std::string hobby = argv[2];\n\n    Friend f(name, age);\n\n    std::cout << f.greet() << std::endl;\n    std::cout << f.sayFavoriteHobby(hobby) << std::endl;\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 254303,
+            "tokens_received": 20030,
+            "api_calls": 25
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "047",
+      "language": "cpp",
+      "category": "NA",
+      "description": "NA",
+      "filename": "047.cpp",
+      "code": [
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int add(int a, int b) {\n        return a + b;\n    }\n\n    int multiply(int a, int b) {\n        return a * b;\n    }\n};\n\nint main() {\n    Calculator calc;\n    int result = calc.add(3);\n    cout << \"Result: \" << result << endl;\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 183391,
+            "tokens_received": 13737,
+            "api_calls": 26
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int add(int a, int b) {\n        return a + b;\n    }\n\n    int multiply(int a, int b) {\n        return a * b;\n    }\n};\n\nint main() {\n    Calculator calc;\n    int result = calc.add(3);\n    cout << \"Result: \" << result << endl;\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 8765,
+            "tokens_received": 2937,
+            "api_calls": 4
+          }
+        },
+        {
+          "code": "#include <iostream>\nusing namespace std;\n\nclass Calculator {\npublic:\n    int add(int a, int b) {\n        return a + b;\n    }\n\n    int multiply(int a, int b) {\n        return a * b;\n    }\n};\n\nint main() {\n    Calculator calc;\n    int result = calc.add(3);\n    cout << \"Result: \" << result << endl;\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 332157,
+            "tokens_received": 16624,
+            "api_calls": 26
+          }
+        }
+      ]
+    },
+    {
+      "test_module": "058",
+      "language": "c",
+      "category": "NA",
+      "description": "NA",
+      "filename": "058.c",
+      "code": [
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 5\n\ntypedef struct {\n    char messages[MAX][100];\n    int head, tail, count;\n    void (*enqueue)(struct Queue*, const char*);\n    void (*print)(struct Queue*);\n} Queue;\n\nvoid enqueue(Queue* q, const char* msg) {\n    if (q->count == MAX) {\n        q->head = (q->head + 1) % MAX;\n        q->count--;\n    }\n    strcpy(q->messages[q->tail], msg);\n    q->tail = (q->tail + 1) % MAX;\n    q->count++;\n}\n\nvoid printMessages(Queue* q) {\n    for (int i = 0, idx = q->head; i < q->count; i++, idx = (idx + 1) % MAX) {\n        printf(\"Msg: %s\\n\", q->messages[i]);\n        idx = (idx + 1) % MAX;\n    }\n}\n\nint main() {\n    Queue q = {.head = 0, .tail = 0, .count = 0, .enqueue = enqueue, .print = printMessages};\n\n    char buffer[100];\n    printf(\"Enter up to %d messages (empty line to stop):\\n\", MAX * 2);\n\n    while (fgets(buffer, sizeof(buffer), stdin)) {\n        size_t len = strlen(buffer);\n        if (len > 0 && buffer[len-1] == '\\n') {\n            buffer[len-1] = '\\0';\n            len--;\n        }\n        if (len == 0) {\n            break;\n        }\n        q.enqueue(&q, buffer);\n    }\n\n    printf(\"\\nQueue contents:\\n\");\n    q.print(&q);\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 16724,
+            "tokens_received": 2920,
+            "api_calls": 6
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 5\n\ntypedef struct {\n    char messages[MAX][100];\n    int head, tail, count;\n    void (*enqueue)(struct Queue*, const char*);\n    void (*print)(struct Queue*);\n} Queue;\n\nvoid enqueue(Queue* q, const char* msg) {\n    if (q->count == MAX) {\n        q->head = (q->head + 1) % MAX;\n        q->count--;\n    }\n    strcpy(q->messages[q->tail], msg);\n    q->tail = (q->tail + 1) % MAX;\n    q->count++;\n}\n\nvoid printMessages(Queue* q) {\n    for (int i = 0, idx = q->head; i < q->count; i++, idx = (idx + 1) % MAX) {\n        printf(\"Msg: %s\\n\", q->messages[i]);\n        idx = (idx + 1) % MAX;\n    }\n}\n\nint main() {\n    Queue q = {.head = 0, .tail = 0, .count = 0, .enqueue = enqueue, .print = printMessages};\n\n    char buffer[100];\n    printf(\"Enter up to %d messages (empty line to stop):\\n\", MAX * 2);\n\n    while (fgets(buffer, sizeof(buffer), stdin)) {\n        size_t len = strlen(buffer);\n        if (len > 0 && buffer[len-1] == '\\n') {\n            buffer[len-1] = '\\0';\n            len--;\n        }\n        if (len == 0) {\n            break;\n        }\n        q.enqueue(&q, buffer);\n    }\n\n    printf(\"\\nQueue contents:\\n\");\n    q.print(&q);\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 8551,
+            "tokens_received": 1810,
+            "api_calls": 4
+          }
+        },
+        {
+          "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 5\n\ntypedef struct {\n    char messages[MAX][100];\n    int head, tail, count;\n    void (*enqueue)(struct Queue*, const char*);\n    void (*print)(struct Queue*);\n} Queue;\n\nvoid enqueue(Queue* q, const char* msg) {\n    if (q->count == MAX) {\n        q->head = (q->head + 1) % MAX;\n        q->count--;\n    }\n    strcpy(q->messages[q->tail], msg);\n    q->tail = (q->tail + 1) % MAX;\n    q->count++;\n}\n\nvoid printMessages(Queue* q) {\n    for (int i = 0, idx = q->head; i < q->count; i++, idx = (idx + 1) % MAX) {\n        printf(\"Msg: %s\\n\", q->messages[i]);\n        idx = (idx + 1) % MAX;\n    }\n}\n\nint main() {\n    Queue q = {.head = 0, .tail = 0, .count = 0, .enqueue = enqueue, .print = printMessages};\n\n    char buffer[100];\n    printf(\"Enter up to %d messages (empty line to stop):\\n\", MAX * 2);\n\n    while (fgets(buffer, sizeof(buffer), stdin)) {\n        size_t len = strlen(buffer);\n        if (len > 0 && buffer[len-1] == '\\n') {\n            buffer[len-1] = '\\0';\n            len--;\n        }\n        if (len == 0) {\n            break;\n        }\n        q.enqueue(&q, buffer);\n    }\n\n    printf(\"\\nQueue contents:\\n\");\n    q.print(&q);\n\n    return 0;\n}",
+          "model_stats": {
+            "instance_cost": 0,
+            "tokens_sent": 180502,
+            "tokens_received": 18309,
+            "api_calls": 26
+          }
+        }
+      ]
+    }
+  ],
+  "model": "hf.co/GhostMopey115/Model_16",
+  "temperature": 0.35,
+  "top_p": 1,
+  "coherence": 0.00,
+  "k": 3,
+  "time_elapsed": "08:55:43"
+}

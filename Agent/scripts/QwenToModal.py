@@ -30,7 +30,7 @@ MODEL_DIR = "/ollama_models"
 
 # Define the models we want to work with
 # You can specify different model versions using the format "model:tag"
-MODELS_TO_DOWNLOAD = ["hf.co/GhostMopey115/Model_16", "qwen3:14b"]
+MODELS_TO_DOWNLOAD = ["hf.co/GhostMopey115/Model_16", "hf.co/GhostMopey115/model_16_final", "qwen3:14b"]
 MODELS_TO_TEST = []
 
 # Ollama version to install - you may need to update this for the latest models
@@ -85,14 +85,14 @@ ollama_image = (
 )
 
 # Create a Modal App, which groups our functions together
-app = modal.App("ollama-server", image=ollama_image)
+app = modal.App("ollama-server-T11", image=ollama_image)
 
 # ## Persistent Storage for Models
 
 # We use a Modal Volume to cache downloaded models between runs.
 # This prevents needing to re-download large model files each time.
 
-model_volume = modal.Volume.from_name("ollama-models-store", create_if_missing=True)
+model_volume = modal.Volume.from_name("ollama-models-store-T11", create_if_missing=True)
 
 # ## The Ollama Server Class
 
@@ -105,11 +105,11 @@ model_volume = modal.Volume.from_name("ollama-models-store", create_if_missing=T
 
 
 @app.cls(
-    gpu="H100",  # Use H100 GPUs for best performance
+    gpu="H100", 
     volumes={MODEL_DIR: model_volume},  # Mount our model storage
-    timeout=60 * 120,
-    keep_warm=False,
-    scaledown_window=60 * 2
+    timeout=3600 * 5,
+    # min_containers=1,  # Keep at least one container warm
+    min_containers=0,
 )
 class OllamaServer:
     ollama_process: subprocess.Popen | None = None
@@ -137,6 +137,8 @@ class OllamaServer:
         ollama_list_proc = subprocess.run(
             ["ollama", "list"], capture_output=True, text=True
         )
+
+        print(ollama_list_proc)
 
         if ollama_list_proc.returncode != 0:
             print(f"Error: 'ollama list' failed: {ollama_list_proc.stderr}")

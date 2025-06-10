@@ -30,6 +30,13 @@ agent:
       INDENTATION IS CRITICAL:
       If adding code like `print(x);`, ensure you include the correct spaces: `        print(x);`.
 
+      IMPORTANT: If an `edit` command does not work (for example, if the search text is not found or multiple occurrences exist),
+      you may try to perform the replacement directly using `sed` commands as a fallback, for example:
+      `sed -i 's/search_text/replace_text/' <filename>`
+      or
+      `sed -i 's/search_text/replace_text/g' <filename>`
+      Use `sed` only if the `edit` command fails.
+
       RESPONSE FORMAT:
       Your shell prompt will look like this:
       (Open file: <path>) <cwd> $
@@ -72,6 +79,8 @@ agent:
       2. If a command fails, modify it before retrying.
       3. Always verify edits after using `edit`, and fix any issues immediately.
       4. The open file might differ from your current directory. Pay attention to both.
+      5. If it doesn't work, you can use `sed` commands as a fallback for replacements. If the `edit` command fails, you can use:
+        `sed -i 's/search_text/replace_text/' <filename>`
 
       (Open file: {{open_file}})
       (Current directory: {{working_dir}})
@@ -88,15 +97,6 @@ agent:
       (Open file: {{open_file}})
       (Current directory: {{working_dir}})
       bash-$
-
-    demonstration_template: |
-      Here is a demonstration of how to correctly use the interface.
-      --- DEMONSTRATION ---
-      {{demonstration}}
-      --- END OF DEMONSTRATION ---
-
-    demonstrations:
-      - trajectories/demonstrations/human_thought__swe-bench-HumanEvalFix-python__lcb__t-0.00__p-0.95__c-4.00__install-0/humanevalfix-python-0.traj
 
   tools:
     env_variables:
@@ -123,10 +123,9 @@ agent:
       n: 5
 
   model:
-    name: ollama/gemma3:27b
-    api_base: https://talent-pentagon--ollama-server-ollamaserver-serve.modal.run
+    #api_base: https://talent-pentagon--ollama-server-ollamaserver-serve.modal.run
+    api_base: https://talent-pentagon--ollama-server-t11-ollamaserver-serve.modal.run
     per_instance_cost_limit: 0
     total_cost_limit: 0
-    per_instance_call_limit: 100
+    per_instance_call_limit: 25
     max_input_tokens: 0
-    temperature: 0.1

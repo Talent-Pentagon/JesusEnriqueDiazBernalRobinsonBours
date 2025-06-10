@@ -221,3 +221,6 @@ website/frontend/build
 # Disasm / Decomp output
 *.decomp.json
 *.disas.json
+
+# Runs
+Benchmarks/runs/

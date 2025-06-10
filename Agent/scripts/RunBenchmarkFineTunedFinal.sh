@@ -7,7 +7,7 @@ START_TIME=$(date +%s)
 #MODEL_NAME="hf.co/GhostMopey115/gemma-finetune-gguf"
 #MODEL_NAME="hf.co/GhostMopey115/gemma-finetuned-transformers-gguf"
 #MODEL_NAME="gemma3:27b"
-MODEL_NAME="qwen3:14b"
+MODEL_NAME="hf.co/GhostMopey115/model_16_final"
 T=0.35
 P=1
 C=0.00
@@ -25,8 +25,11 @@ TRAJECTORY_DIR="$ROOT_DIR/Benchmark/runs/${MODEL_NAME}__t-${T}__p-${P}__c-${C}__
 TESTS_REPO_URL="https://github.com/Talent-Pentagon/Tests"
 
 # Ruta del Benchmark.json
-BENCHMARK_FILE="problems.json"
-BENCHMARK_PATH="$ROOT_DIR/Benchmark/Tests/$BENCHMARK_FILE"
+#BENCHMARK_FILE="problems.json"
+#BENCHMARK_PATH="$ROOT_DIR/Benchmark/Tests/$BENCHMARK_FILE"
+
+BENCHMARK_FILE="fineTunedTemplateFinal.json"
+BENCHMARK_PATH="$ROOT_DIR/Agent/scripts/$BENCHMARK_FILE"
 
 # Function to clean binary patches
 clean_patch() {
@@ -95,7 +98,7 @@ if [ ! -d "$ROOT_DIR/Benchmark" ]; then
 fi
 
 # Output file
-OUTPUT_FILE="$ROOT_DIR/Benchmark/resultsBaseModel.json"
+OUTPUT_FILE="$ROOT_DIR/Benchmark/resultsFinetunedFinal.json"
 echo '{' > "$OUTPUT_FILE"
 echo '\"tests\": [' >> "$OUTPUT_FILE"
 
@@ -108,12 +111,12 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
     filename=$(echo "$item" | jq -r '.filename')
 
     if [[ -z "$test_module" || -z "$language" || -z "$filename" ]]; then
-        echo "Missing fields in JSON entry: $item"
+        echo "❌ Missing fields in JSON entry: $item"
         continue
     fi
 
     if [[ "$language" != "c" && "$language" != "cpp" && "$language" != "java" ]]; then
-        echo "Unsupported language: $language"
+        echo "❌ Unsupported language: $language"
         continue
     fi
 
@@ -124,23 +127,23 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
         TEST_REPO_DIR="../../Benchmark/Tests"
 
         # Execute sweagent with 5-minute timeout
-        if ! gtimeout 300s sweagent run \
+        if ! gtimeout 600s sweagent run \
           --config=$CONFIG_FILE \
           --problem_statement.path=$ISSUE_DIR \
           --env.repo.path=$TEST_REPO_DIR \
           --agent.model.temperature=$T \
           --agent.model.top_p=$P \
           --output_dir=$TRAJECTORY_DIR \
-          --problem_statement.id="benchmark_run_basemodel" \
+          --problem_statement.id="benchmark_run_finetuned_final" \
           --agent.model.name="ollama/$MODEL_NAME"; then
           
-          echo "Timeout exceeded for $test_module (run $i)"
-          responses+=("\"Timeout exceeded for run $i\"")
+          echo "❌ Timeout exceeded for $test_module (run $i)"
+          responses+=("\"❌ Timeout exceeded for run $i\"")
           continue
       fi
 
         cd "$ROOT_DIR/Benchmark/Tests/"
-        PATCH="$TRAJECTORY_DIR/benchmark_run_basemodel/benchmark_run_basemodel.patch"
+        PATCH="$TRAJECTORY_DIR/benchmark_run_finetuned_final/benchmark_run_finetuned_final.patch"
         CLEAN_PATCH="/tmp/clean_benchmark_run.patch"
 
         # Clean last artifact
@@ -149,8 +152,8 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
 
         git apply "$CLEAN_PATCH"
         if [ $? -ne 0 ]; then
-            echo "Failed to apply patch for $test_module (run $i)"
-            responses+=("\"Patch failed for run $i\"")
+            echo "❌ Failed to apply patch for $test_module (run $i)"
+            responses+=("\"❌ Patch failed for run $i\"")
             continue
         fi
 
@@ -160,7 +163,7 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
             escaped_code=$(jq -Rn --arg code "$full_code" '$code')
             
             # Path to .traj file
-            TRAJ_FILE="$TRAJECTORY_DIR/benchmark_run_basemodel/benchmark_run_basemodel.traj"
+            TRAJ_FILE="$TRAJECTORY_DIR/benchmark_run_finetuned_final/benchmark_run_finetuned_final.traj"
             if [ -f "$TRAJ_FILE" ]; then
                 # Extract model_stats as JSON
                 model_stats=$(jq '.info.model_stats' "$TRAJ_FILE")
@@ -176,8 +179,8 @@ jq -c '.[]' "$BENCHMARK_PATH" | while read -r item; do
             
             responses+=("$combined")
         else
-            echo "File not found: $PATCHED_FILE (run $i)"
-            responses+=("\"Patched file not found: $PATCHED_FILE\"")
+            echo "❌ File not found: $PATCHED_FILE (run $i)"
+            responses+=("\"❌ Patched file not found: $PATCHED_FILE\"")
         fi
 
         git reset --hard HEAD
